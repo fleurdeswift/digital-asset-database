@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "01623136F9E026D534CFE2AC533A56250BB549C9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "58831C705A692BDC954938C63DAF2EABA6896A73" : 0,
+    "D3615CBC628485C8992C89C83BE8EFBBA58446CF" : 0,
+    "01623136F9E026D534CFE2AC533A56250BB549C9" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "315B0290-FD61-41F2-AAA1-0EC0E6AB1153",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "58831C705A692BDC954938C63DAF2EABA6896A73" : "vlc-mac\/",
+    "D3615CBC628485C8992C89C83BE8EFBBA58446CF" : "extra-appkit\/",
+    "01623136F9E026D534CFE2AC533A56250BB549C9" : "digital-asset-database\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DigitalAssetDatabase",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "DigitalAssetDatabase.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fleurdeswift\/digital-asset-database.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "01623136F9E026D534CFE2AC533A56250BB549C9"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fleurdeswift\/vlc-mac.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58831C705A692BDC954938C63DAF2EABA6896A73"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fleurdeswift\/extra-appkit.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D3615CBC628485C8992C89C83BE8EFBBA58446CF"
+    }
+  ]
+}
