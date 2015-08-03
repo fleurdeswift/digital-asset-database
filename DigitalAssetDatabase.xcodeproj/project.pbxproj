@@ -34,8 +34,8 @@
 		7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4B91B6DA660007B8840 /* TagSource.swift */; };
 		7B6CCF051B6DE07B00AE0438 /* ExtraAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; };
 		7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */; };
-		7B6CCF121B6DED6300AE0438 /* TagPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B6CCF111B6DED6300AE0438 /* TagPane.xib */; };
 		7B6CCF171B6E827800AE0438 /* ExtraAppKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7B6F4CCA1B6F329900286C9A /* TagPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B6F4CCC1B6F329900286C9A /* TagPane.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,7 +93,7 @@
 		7B14B4B91B6DA660007B8840 /* TagSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagSource.swift; sourceTree = "<group>"; };
 		7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ExtraAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagPaneController.swift; sourceTree = "<group>"; };
-		7B6CCF111B6DED6300AE0438 /* TagPane.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagPane.xib; sourceTree = "<group>"; };
+		7B6F4CCB1B6F329900286C9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TagPane.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +193,7 @@
 				7B14B47F1B6D813B007B8840 /* Library.swift */,
 				7B14B46E1B6D75FC007B8840 /* Main.storyboard */,
 				7B14B4B71B6D8A7D007B8840 /* NavigationBarSource.swift */,
-				7B6CCF111B6DED6300AE0438 /* TagPane.xib */,
+				7B6F4CCC1B6F329900286C9A /* TagPane.xib */,
 				7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */,
 				7B14B4B91B6DA660007B8840 /* TagSource.swift */,
 				7B14B46A1B6D75FC007B8840 /* ViewController.swift */,
@@ -329,7 +329,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B6CCF121B6DED6300AE0438 /* TagPane.xib in Resources */,
+				7B6F4CCA1B6F329900286C9A /* TagPane.xib in Resources */,
 				7B14B46D1B6D75FC007B8840 /* Assets.xcassets in Resources */,
 				7B14B4B61B6D87E0007B8840 /* Library.storyboard in Resources */,
 				7B14B4701B6D75FC007B8840 /* Main.storyboard in Resources */,
@@ -398,6 +398,14 @@
 				7B14B4B41B6D85F0007B8840 /* Base */,
 			);
 			name = Library.storyboard;
+			sourceTree = "<group>";
+		};
+		7B6F4CCC1B6F329900286C9A /* TagPane.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B6F4CCB1B6F329900286C9A /* Base */,
+			);
+			name = TagPane.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
