@@ -62,8 +62,11 @@ public class Tag {
                 try statement.bind(newValue, atIndex: 1)
                 try statement.bind(self.id, atIndex: 2)
                 try statement.step()
-                self.database.fireTagNameChanged(self);
             };
+        }
+        
+        didSet {
+            self.database.fireTagNameChanged(self);
         }
     }
     
@@ -74,8 +77,11 @@ public class Tag {
                 try statement.bind(newValue, atIndex: 1)
                 try statement.bind(self.id, atIndex: 2)
                 try statement.step()
-                self.database.fireTagTypeChanged(self);
             };
+        }
+        
+        didSet {
+            self.database.fireTagTypeChanged(self, oldType: oldValue);
         }
     }
 
@@ -160,10 +166,55 @@ public extension Database {
         }
     }
 
-    internal func fireTagTypeChanged(tag: Tag) {
+    internal func fireTagTypeChanged(tag: Tag, oldType: String) {
         for delegate in delegates {
-            delegate.tagTypeChanged(tag);
+            delegate.tagTypeChanged(tag, oldType: oldType);
         }
+    }
+
+    public func addTag(name: String, type: TagType) throws -> Tag {
+        let newTag = try handle!.transaction(queue) { () throws -> (id: String, created: Bool) in
+            do {
+                let s = try self.handle!.prepare("SELECT dad_tag_id FROM dad_tag WHERE name = ? AND type = ?")
+                try s.bind(name, atIndex: 1);
+                try s.bind(type.rawValue, atIndex: 2);
+                
+                if try s.step() {
+                    return (s.columnString(0)!, false);
+                }
+            }
+            
+            var newID = (type.rawValue + "." + name).sha256();
+            
+            do {
+                let s = try self.handle!.prepare("INSERT INTO dad_tag VALUES (?, ?, ?, 1);");
+                try s.bind(newID, atIndex: 1);
+                try s.bind(name, atIndex: 2);
+                try s.bind(type.rawValue, atIndex: 3);
+                try s.step();
+            }
+            catch SQLError.Constraint {
+                newID = Database.createNewID();
+
+                let s = try self.handle!.prepare("INSERT INTO dad_tag VALUES (?, ?, ?, 1);");
+                try s.bind(newID, atIndex: 1);
+                try s.bind(name, atIndex: 2);
+                try s.bind(type.rawValue, atIndex: 3);
+                try s.step();
+            }
+
+            return (newID, true);
+        };
+        
+        let tag = try Tag.shared(newTag.id, fromDatabase: self);
+
+        if newTag.created {
+            for delegate in delegates {
+                delegate.tagAdded(tag);
+            }
+        }
+        
+        return tag;
     }
 
     public func findTags(type type: TagType, block: (tags: [Tag]) -> Void) -> Void {
@@ -173,7 +224,7 @@ public extension Database {
     public func findTags(type type: String, block: (tags: [Tag]) -> Void) -> Void {
         dispatch_async(queue) {
             do {
-                let s = try self.handle!.prepare("SELECT * FROM dad_tag WHERE type = ? ORDER BY name")
+                let s = try self.handle!.prepare("SELECT * FROM dad_tag WHERE type = ? ORDER BY name COLLATE NOCASE")
                 try s.bind(type, atIndex: 1);
                 
                 var tags = [Tag]();
@@ -217,6 +268,5 @@ public extension Database {
         try handle.exec(sql);
         try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.File.rawValue)', 'FILE', '\(TagType.Special.rawValue)', 0);");
         try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Scene.rawValue)', 'SCENE', '\(TagType.Special.rawValue)', 0);");
-        try handle.exec("INSERT INTO dad_tag VALUES ('7e82ae9338a025d10400242bcf1c436bfc339827ff3306cafaa87fc3bbb51496', 'Shower', '\(TagType.Set.rawValue)', 1);");
     }
 }

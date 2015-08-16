@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import SQL
 @testable import DigitalAssetDatabase
 
 class DigitalAssetDatabaseTests: XCTestCase {
@@ -101,6 +102,23 @@ class DigitalAssetDatabaseTests: XCTestCase {
             }
             
             self.waitForExpectationsWithTimeout(2, handler: nil);
+        }
+        catch {
+            XCTFail();
+        }
+    }
+
+    func testAddTag() {
+        do {
+            let database = try Database(path: ":memory:");
+            let bedroom1 = try database.addTag("Bedroom", type: TagType.Set);
+            let bedroom2 = try database.addTag("Bedroom", type: TagType.Set);
+            
+            XCTAssert(bedroom1 === bedroom2);
+            bedroom1.name = "Old Bedroom";
+            
+            let bedroom3 = try database.addTag("Bedroom", type: TagType.Set);
+            XCTAssert(bedroom1 !== bedroom3);
         }
         catch {
             XCTFail();

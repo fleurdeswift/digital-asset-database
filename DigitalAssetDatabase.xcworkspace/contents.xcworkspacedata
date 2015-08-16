@@ -14,6 +14,9 @@
       location = "group:/Volumes/Work/fds/sqlite/SQL.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../video-clip-annotation-editor/VideoClipAnnotationEditor.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../vlc-mac/VLCKit/VLCKit.xcodeproj">
    </FileRef>
 </Workspace>

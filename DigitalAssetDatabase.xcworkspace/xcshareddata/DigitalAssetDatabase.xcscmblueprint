@@ -5,6 +5,7 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "58831C705A692BDC954938C63DAF2EABA6896A73" : 0,
+    "5E5B1163583E3302F19D1ECBD5181E48C8794B92" : 0,
     "01623136F9E026D534CFE2AC533A56250BB549C9" : 0,
     "D3615CBC628485C8992C89C83BE8EFBBA58446CF" : 0,
     "6B72AAEA39E1C1864BFFD1055D8DB33F6060A1D0" : 0,
@@ -13,6 +14,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "7C5F3E56-294D-4637-BFCD-6C195F8C41A6",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "58831C705A692BDC954938C63DAF2EABA6896A73" : "vlc-mac\/",
+    "5E5B1163583E3302F19D1ECBD5181E48C8794B92" : "video-clip-annotation-editor\/",
     "01623136F9E026D534CFE2AC533A56250BB549C9" : "digital-asset-database\/",
     "D3615CBC628485C8992C89C83BE8EFBBA58446CF" : "extra-appkit\/",
     "6B72AAEA39E1C1864BFFD1055D8DB33F6060A1D0" : "sqlite\/",
@@ -31,6 +33,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fleurdeswift\/vlc-mac.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58831C705A692BDC954938C63DAF2EABA6896A73"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fleurdeswift\/video-clip-annotation-editor.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5E5B1163583E3302F19D1ECBD5181E48C8794B92"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fleurdeswift\/data-structure.git",

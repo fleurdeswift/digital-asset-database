@@ -12,7 +12,7 @@ import ExtraDataStructures
 public protocol DatabaseDelegate : class {
     func tagAdded(tag: Tag);
     func tagNameChanged(tag: Tag);
-    func tagTypeChanged(tag: Tag);
+    func tagTypeChanged(tag: Tag, oldType: String);
 }
 
 public class Database {
@@ -23,7 +23,7 @@ public class Database {
     public init(path: String) throws {
         handle = nil
         
-        let database = try SQLOpen(path, flags: SQL.SQL_OPEN_READWRITE | SQL.SQL_OPEN_URI | SQL.SQL_OPEN_CREATE | SQL.SQL_OPEN_FULLMUTEX, vfs: nil);
+        let database = try SQLDatabase(filename: path, flags: SQL.SQL_OPEN_READWRITE | SQL.SQL_OPEN_URI | SQL.SQL_OPEN_CREATE | SQL.SQL_OPEN_FULLMUTEX, vfs: nil);
         
         handle = database;
         
@@ -71,13 +71,7 @@ public class Database {
     }
     
     private class func hex() -> String {
-        var s = String(arc4random(), radix: 16, uppercase: false);
-
-        while s.characters.count < 8 {
-            s = "0" + s;
-        }
-        
-        return s;
+        return arc4random().asHexString;
     }
     
     public class func createNewID() -> String {
@@ -98,19 +92,3 @@ public class Database {
         }
     }
 }
-
-public extension String {
-    public var asLikeClause: String {
-        get {
-            let ws = NSCharacterSet.whitespaceAndNewlineCharacterSet();
-            var s  = self;
-        
-            while let range = s.rangeOfCharacterFromSet(ws) {
-                s.replaceRange(range, with: "%");
-            }
-            
-            return "%" + s + "%";
-        }
-    }
-}
-
