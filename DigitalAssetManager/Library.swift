@@ -12,6 +12,14 @@ public let DADTagAddedNotification        = "DADTagAdded";
 public let DADTagNameChangedNotification  = "DADTagNameChanged";
 public let DADTagTypeChangedNotification  = "DADTagTypeChanged";
 
+public extension NSNotificationCenter {
+    public class func postAsync(name: String, object: NSObject?, userInfo: [String: AnyObject]) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.defaultCenter().postNotificationName(name, object: object, userInfo: userInfo);
+        }
+    }
+}
+
 private class LibraryDatabaseBridge : DatabaseDelegate {
     private weak var library: Library?;
 
@@ -21,7 +29,7 @@ private class LibraryDatabaseBridge : DatabaseDelegate {
 
     func dispatchNotification(name: String, forTag tag: Tag) {
         if let library = library {
-            NSNotificationCenter.defaultCenter().postNotificationName(name, object: library, userInfo: [
+            NSNotificationCenter.postAsync(name, object: library, userInfo: [
                 "Tag": tag
             ])
         }
@@ -35,8 +43,13 @@ private class LibraryDatabaseBridge : DatabaseDelegate {
         dispatchNotification(DADTagNameChangedNotification, forTag: tag);
     }
     
-    func tagTypeChanged(tag: Tag) {
-        dispatchNotification(DADTagTypeChangedNotification, forTag: tag);
+    func tagTypeChanged(tag: Tag, oldType: String) {
+        if let library = library {
+            NSNotificationCenter.postAsync(DADTagTypeChangedNotification, object: library, userInfo: [
+                "Tag":     tag,
+                "OldType": oldType
+            ])
+        }
     }
 }
 

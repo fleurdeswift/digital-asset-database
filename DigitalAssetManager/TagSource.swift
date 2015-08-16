@@ -38,6 +38,10 @@ public class TagSource : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegat
                 return type.localizedName;
             }
         }
+        
+        public func sort() {
+            items.sortInPlace { return $0.name ^< $1.name; }
+        }
     }
     
     public let categories: [Category] = [
@@ -50,6 +54,57 @@ public class TagSource : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegat
         Category(TagType.Rating),
         Category(TagType.Serie),
     ]
+
+    public func outlineView(outlineView: NSOutlineView, tagNameChanged tag: Tag) {
+        if let index = categories.indexOf({ return $0.type.rawValue == tag.type }) {
+            let category = categories[index];
+            
+            if let oldIndex = category.items.indexOf(tag) {
+                category.sort();
+                
+                if let newIndex = category.items.indexOf(tag) {
+                    outlineView.beginUpdates();
+                    outlineView.moveItemAtIndex(oldIndex, inParent: category, toIndex: newIndex, inParent: category);
+                    outlineView.endUpdates();
+                }
+            }
+        }
+        outlineView.reloadItem(tag);
+    }
+
+    public func outlineView(outlineView: NSOutlineView, tagTypeChanged tag: Tag, oldType: TagType) {
+        if let oldCategoryIndex = categories.indexOf({ return $0.type == oldType }),
+           let newCategoryIndex = categories.indexOf({ return $0.type.rawValue == tag.type }) {
+            let oldCategory = categories[oldCategoryIndex];
+            let newCategory = categories[newCategoryIndex];
+
+            if let oldIndex = oldCategory.items.indexOf(tag) {
+                newCategory.items.append(tag);
+                newCategory.sort();
+                
+                if let newIndex = newCategory.items.indexOf(tag) {
+                    outlineView.beginUpdates();
+                    outlineView.moveItemAtIndex(oldIndex, inParent: oldCategory, toIndex: newIndex, inParent: newCategory);
+                    outlineView.endUpdates();
+                }
+            }
+        }
+    }
+    
+    public func outlineView(outlineView: NSOutlineView, tagAdded tag: Tag) {
+        if let index = categories.indexOf({ return $0.type.rawValue == tag.type }) {
+            let category = categories[index];
+            
+            category.items.append(tag);
+            category.sort()
+            
+            if let itemIndex = category.items.indexOf({ return $0 === tag }) {
+                outlineView.beginUpdates();
+                outlineView.insertItemsAtIndexes(NSIndexSet(index: itemIndex), inParent: category, withAnimation: NSTableViewAnimationOptions.SlideDown);
+                outlineView.endUpdates();
+            }
+        }
+    }
 
     public func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         if item == nil {
@@ -84,6 +139,10 @@ public class TagSource : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegat
     public func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
         return !(item is Category);
     }
+
+    public func outlineView(outlineView: NSOutlineView, shouldEditTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> Bool {
+        return !(item is Category);
+    }
     
     public func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
         if let category = item as? Category {
@@ -94,8 +153,8 @@ public class TagSource : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegat
         }
 
         if let tag = item as? Tag {
-            if let dataCell = outlineView.makeViewWithIdentifier("DataCell", owner:self) as? NSTableCellView {
-                dataCell.textField!.stringValue = tag.name;
+            if let dataCell = outlineView.makeViewWithIdentifier("DataCell", owner:self) as? TagCellView {
+                dataCell.representedTag = tag;
                 return dataCell;
             }
         }
