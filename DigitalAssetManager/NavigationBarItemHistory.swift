@@ -8,7 +8,7 @@
 import Cocoa
 
 public let NavigationBarItemLogicalPasteboardType = "com.fds.sidebar.item.logical";
-public let PlainTextPasteboardType = "public.utf8.plain-text";
+public let PlainTextPasteboardType = "public.utf8-plain-text";
 
 public class NavigationBarItemHistory : NavigationBarItem, NSPasteboardWriting {
     public override var description: String {

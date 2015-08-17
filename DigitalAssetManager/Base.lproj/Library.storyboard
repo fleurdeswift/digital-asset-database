@@ -75,18 +75,18 @@
         <scene sceneID="jgP-vU-zGT">
             <objects>
                 <viewController id="QEu-dr-0Qz" sceneMemberID="viewController">
-                    <view key="view" id="KS0-sq-n1a">
+                    <view key="view" id="KS0-sq-n1a" customClass="LibraryRootView" customModule="DigitalAssetManager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GpL-zO-0uM">
                                 <rect key="frame" x="-1" y="-1" width="452" height="302"/>
                                 <clipView key="contentView" id="wD0-4P-9gb">
-                                    <rect key="frame" x="1" y="1" width="181" height="94"/>
+                                    <rect key="frame" x="1" y="1" width="450" height="300"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dl4-k5-njx">
-                                            <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                            <rect key="frame" x="0.0" y="206" width="450" height="300"/>
                                             <animations/>
                                         </customView>
                                     </subviews>
@@ -98,7 +98,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Afc-2L-Vdl">
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Afc-2L-Vdl">
                                     <rect key="frame" x="436" y="1" width="15" height="300"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>

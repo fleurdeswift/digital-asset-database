@@ -51,6 +51,9 @@
 		7BB938D11B732A85000EDCCF /* ExtraDataStructures.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B14B45F1B6D7317007B8840 /* ExtraDataStructures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE31B80FEF3000CA651 /* NavigationBarGroupStandard.swift */; };
 		7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */; };
+		7BDA4CE81B8116F1000CA651 /* LibraryRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */; };
+		7BDA4CEF1B812191000CA651 /* ImportFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CED1B812191000CA651 /* ImportFiles.swift */; };
+		7BDA4CF11B81219F000CA651 /* ImportFiles.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BDA4CF31B81219F000CA651 /* ImportFiles.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +126,9 @@
 		7BB938CC1B73262A000EDCCF /* TagCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		7BDA4CE31B80FEF3000CA651 /* NavigationBarGroupStandard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarGroupStandard.swift; sourceTree = "<group>"; };
 		7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarDelegate.swift; sourceTree = "<group>"; };
+		7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryRootView.swift; sourceTree = "<group>"; };
+		7BDA4CED1B812191000CA651 /* ImportFiles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportFiles.swift; sourceTree = "<group>"; };
+		7BDA4CF21B81219F000CA651 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ImportFiles.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,9 +229,12 @@
 			children = (
 				7B14B4681B6D75FC007B8840 /* AppDelegate.swift */,
 				7B14B46C1B6D75FC007B8840 /* Assets.xcassets */,
+				7BDA4CED1B812191000CA651 /* ImportFiles.swift */,
+				7BDA4CF31B81219F000CA651 /* ImportFiles.xib */,
 				7B14B4711B6D75FC007B8840 /* Info.plist */,
 				7B14B4B51B6D85F0007B8840 /* Library.storyboard */,
 				7B14B47F1B6D813B007B8840 /* Library.swift */,
+				7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */,
 				7B14B46E1B6D75FC007B8840 /* Main.storyboard */,
 				7B1F0B211B804BB5006FD3FE /* NavigationBarController.swift */,
 				7B1F0B271B804BBF006FD3FE /* NavigationBarController.xib */,
@@ -387,6 +396,7 @@
 				7B14B46D1B6D75FC007B8840 /* Assets.xcassets in Resources */,
 				7B14B4B61B6D87E0007B8840 /* Library.storyboard in Resources */,
 				7B14B4701B6D75FC007B8840 /* Main.storyboard in Resources */,
+				7BDA4CF11B81219F000CA651 /* ImportFiles.xib in Resources */,
 				7B1F0B251B804BBF006FD3FE /* NavigationBarController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,9 +430,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7BDA4CE81B8116F1000CA651 /* LibraryRootView.swift in Sources */,
 				7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */,
 				7B1F0B231B804BB5006FD3FE /* NavigationBarController.swift in Sources */,
 				7B1F0B451B80F243006FD3FE /* NavigationBarItemRoot.swift in Sources */,
+				7BDA4CEF1B812191000CA651 /* ImportFiles.swift in Sources */,
 				7B1F0B1E1B803DB8006FD3FE /* NavigationBarItem.swift in Sources */,
 				7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */,
 				7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */,
@@ -480,6 +492,14 @@
 				7B6F4CCB1B6F329900286C9A /* Base */,
 			);
 			name = TagPane.xib;
+			sourceTree = "<group>";
+		};
+		7BDA4CF31B81219F000CA651 /* ImportFiles.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7BDA4CF21B81219F000CA651 /* Base */,
+			);
+			name = ImportFiles.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

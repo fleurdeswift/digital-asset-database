@@ -12,6 +12,8 @@ public let DADTagAddedNotification        = "DADTagAdded";
 public let DADTagNameChangedNotification  = "DADTagNameChanged";
 public let DADTagTypeChangedNotification  = "DADTagTypeChanged";
 
+public let DAMFileDropped = "DAMFileDropped";
+
 public extension NSNotificationCenter {
     public class func postAsync(name: String, object: NSObject?, userInfo: [String: AnyObject]) {
         dispatch_async(dispatch_get_main_queue()) {
@@ -76,8 +78,23 @@ public class Library : NSDocument {
     }
 
     public override func makeWindowControllers() {
+        let notificationCenter = NSNotificationCenter.defaultCenter();
+
+        notificationCenter.addObserver(self, selector: Selector("fileDropped:"), name: DAMFileDropped, object: nil);
+
         let storyboard       = NSStoryboard(name: "Library", bundle: nil)
         let windowController = storyboard.instantiateControllerWithIdentifier("Library Window Controller") as! NSWindowController
         self.addWindowController(windowController)
+    }
+
+    @objc
+    public func fileDropped(notification: NSNotification) {
+        if let windowController = self.windowControllers.first {
+            if let urls: [NSURL] = notification.userInfo?["urls"] as? [NSURL] {
+                if let sheet = ImportFiles(urls: urls), contentViewController = windowController.contentViewController {
+                    contentViewController.presentViewControllerAsSheet(sheet)
+                }
+            }
+        }
     }
 }

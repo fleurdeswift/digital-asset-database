@@ -16,7 +16,7 @@ public class NavigationBarController: NSViewController {
         topLevels = self.injectNib("NavigationBarController");
 
         if let ov = outlineView {
-            ov.registerForDraggedTypes(["public.utf8.plain-text"]);
+            ov.registerForDraggedTypes([NavigationBarItemLogicalPasteboardType]);
             ov.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal:true);
             ov.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal:false);
         }

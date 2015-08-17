@@ -7,6 +7,8 @@
 
 import Cocoa
 
+public let NavigationBarSelectionChanged = "NavigationBarSelectionChanged";
+
 @objc
 public class NavigationBarDelegate : NSObject, NSOutlineViewDelegate {
     public func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
@@ -67,5 +69,17 @@ public class NavigationBarDelegate : NSObject, NSOutlineViewDelegate {
         }
 
         return 17;
+    }
+
+    public func outlineViewSelectionDidChange(notification: NSNotification) {
+        if let outlineView = notification.object as? NSOutlineView {
+            if let item = outlineView.itemAtRow(outlineView.selectedRow) as? NavigationBarItem {
+                dispatch_async(dispatch_get_main_queue()) {
+                    NSNotificationCenter.defaultCenter().postNotificationName(NavigationBarSelectionChanged, object: self, userInfo: [
+                        "Item": item
+                    ]);
+                }
+            }
+        }
     }
 }
