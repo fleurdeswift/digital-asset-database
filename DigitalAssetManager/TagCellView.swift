@@ -25,7 +25,12 @@ public class TagCellView : NSTableCellView, NSTextFieldDelegate {
         let value = control.stringValue;
     
         if value.characters.count > 0 {
-            representedTag?.name = value;
+            if let database = representedTag?.database {
+                database.transactionAsync {
+                    try representedTag?.setName(value);
+                }
+            }
+
             return true;
         }
         

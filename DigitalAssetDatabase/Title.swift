@@ -15,36 +15,38 @@ public class Title {
     public let database: Database;
     public let id: String;
 
+    private var _name: String;
     public var name: String {
-        willSet {
-            database.transactionAsync {
-                let statement = try self.database.handle!.prepare("UPDATE dad_title SET name = ? WHERE dad_title_id = ?")
-                try statement.bind(newValue, atIndex: 1)
-                try statement.bind(self.id, atIndex: 2)
-                try statement.step()
-            };
+        get {
+            return _name;
         }
+    }
+
+    internal func setName(newValue: String) throws {
+        self.database.assertInTransaction();
+        let statement = try self.database.handle!.prepare("UPDATE dad_title SET name = ? WHERE dad_title_id = ?")
+        try statement.bind(newValue, atIndex: 1)
+        try statement.bind(self.id,  atIndex: 2)
+        try statement.step()
+        self._name = newValue;
     }
 
     public init(createWithName name: String, inDatabase database: Database) throws {
         self.database = database;
         self.id       = Database.createNewID();
-        self.name     = name;
+        self._name    = name;
 
-        try database.transaction {
-            let statement = try database.handle!.prepare("INSERT INTO dad_title VALUES(?,?);")
-            try statement.bind(self.id,   atIndex: 1);
-            try statement.bind(self.name, atIndex: 2);
-            try statement.step();
-        }
-        
+        let statement = try database.handle!.prepare("INSERT INTO dad_title VALUES(?,?);")
+        try statement.bind(self.id, atIndex: 1);
+        try statement.bind(name,    atIndex: 2);
+        try statement.step();
         titleCache.getOrSet(self.id, value: self);
     }
-    
+
     internal init(id: String, name: String, fromDatabase database: Database) {
         self.database = database;
         self.id       = id;
-        self.name     = name;
+        self._name    = name;
     }
     
     public class func optionalShared(id: String?, fromDatabase database: Database) throws -> Title? {

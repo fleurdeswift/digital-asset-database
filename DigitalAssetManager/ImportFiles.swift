@@ -10,17 +10,35 @@ import VLCKit
 
 private let ImportFilePasteboardType = "com.fds.ImportFilePasteboardType";
 
-private extension NSURL {
-    var lastPathComponentWithoutExtension: String {
-        if let lp = self.lastPathComponent {
-            return lp.stringByDeletingPathExtension;
-        }
+func CGImageWriteToFile(image: CGImageRef, _ path: String) -> Bool {
+    let url = NSURL(fileURLWithPath: path);
+    let mdestination = CGImageDestinationCreateWithURL(url, kUTTypePNG, 1, nil);
 
-        return "<nil>";
+    if let destination = mdestination {
+        CGImageDestinationAddImage(destination, image, nil);
+        return CGImageDestinationFinalize(destination);
     }
+
+    return false;
+}
+
+func CGImageWriteToJPEG(image: CGImageRef, _ path: String) -> Bool {
+    let url = NSURL(fileURLWithPath: path);
+    let mdestination = CGImageDestinationCreateWithURL(url, kUTTypeJPEG, 1, nil);
+
+    if let destination = mdestination {
+        let options: [NSString: NSNumber] = [kCGImageDestinationLossyCompressionQuality: Double(0.7)];
+
+        CGImageDestinationSetProperties(destination, options);
+        CGImageDestinationAddImage(destination, image, nil);
+        return CGImageDestinationFinalize(destination);
+    }
+
+    return false;
 }
 
 public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+    public let  library: Library;
     public var  urls: [NSURL];
     public var  medias = [NSURL: VLCMedia]();
     private let queue  = dispatch_queue_create("org.fds.ImportFiles", DISPATCH_QUEUE_SERIAL);
@@ -34,15 +52,17 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
 
     private var mediaPlayer: VLCMediaPlayer?;
 
-    public init?(urls: [NSURL]) {
-        self.urls = urls;
+    public init?(library: Library, urls: [NSURL]) {
+        self.library = library;
+        self.urls    = urls;
         super.init(nibName: "ImportFiles", bundle: nil);
 
         parseMedias();
     }
 
     public required init?(coder decoder: NSCoder) {
-        self.urls = [NSURL]();
+        self.library = decoder.decodeObjectForKey("library") as! Library;
+        self.urls    = [NSURL]();
         super.init(coder: decoder);
     }
 
@@ -134,7 +154,7 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
                 let url = urls[row];
 
                 if (column.identifier == "url") {
-                    cell.textField?.stringValue = url.lastPathComponentWithoutExtension;
+                    cell.textField?.stringValue = url.lastPathComponent!;
                 }
                 else if (column.identifier == "type") {
                     if let info = infos[url] {
@@ -256,6 +276,37 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
 
     @IBAction
     public func importFiles(sender: AnyObject?) {
+        let presentingViewController = self.presentingViewController;
+
+        if let parentView = presentingViewController {
+            parentView.dismissViewController(self);
+        }
+
+        let block = { (images: [NSURL: (image: CGImageRef?, error: NSError?)]) -> Void in
+            var errors = [NSURL: NSError]();
+
+            for (url, pair) in images {
+                if let e = pair.error {
+                    errors[url] = e;
+                }
+            }
+
+            if errors.count > 0 {
+                NSAlert(infoText: "Failed to generate preview images", urls: errors).runModal();
+                return;
+            }
+
+            for (index, pair) in images.enumerate() {
+                if let image = pair.1.image {
+                    CGImageWriteToFile(image, "/Users/rhoule/t-\(index).png");
+                    CGImageWriteToJPEG(image, "/Users/rhoule/t-\(index).jpg");
+                }
+            }
+        };
+
+        let task = GeneratePreviewTask(medias: medias, completionBlock: block);
+
+        LongTaskSheet.show(task, parent: presentingViewController!);
     }
 
     @IBAction
@@ -277,18 +328,19 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
             switch (Int(char)) {
             case NSDeleteFunctionKey:
                 deleteForward(self);
-                break;
+                return;
             case NSDeleteCharacter:
                 deleteForward(self);
-                break;
+                return;
             case NSBackspaceCharacter:
                 deleteForward(self);
-                break;
+                return;
             default:
-                Swift.print("\(theEvent) \(theEvent.keyCode)");
                 break;
             }
         }
+
+        super.keyDown(theEvent);
     }
 
     @IBAction

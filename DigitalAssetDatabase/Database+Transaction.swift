@@ -43,4 +43,8 @@ public extension Database {
         
         return result;
     }
+
+    public func assertInTransaction() {
+        handle!.assertInTransaction();
+    }
 }

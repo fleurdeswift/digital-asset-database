@@ -91,10 +91,14 @@ public class Library : NSDocument {
     public func fileDropped(notification: NSNotification) {
         if let windowController = self.windowControllers.first {
             if let urls: [NSURL] = notification.userInfo?["urls"] as? [NSURL] {
-                if let sheet = ImportFiles(urls: urls), contentViewController = windowController.contentViewController {
+                if let sheet = ImportFiles(library: self, urls: urls), contentViewController = windowController.contentViewController {
                     contentViewController.presentViewControllerAsSheet(sheet)
                 }
             }
         }
+    }
+
+    public func urlFor(titleInstance: TitleInstance) -> NSURL {
+        return storageURL!.URLByAppendingPathComponent(titleInstance.id);
     }
 }

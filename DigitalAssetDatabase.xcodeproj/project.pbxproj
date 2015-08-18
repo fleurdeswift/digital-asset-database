@@ -49,6 +49,11 @@
 		7BB938CD1B73262A000EDCCF /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB938CC1B73262A000EDCCF /* TagCellView.swift */; };
 		7BB938D01B732A78000EDCCF /* ExtraDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B14B45F1B6D7317007B8840 /* ExtraDataStructures.framework */; };
 		7BB938D11B732A85000EDCCF /* ExtraDataStructures.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B14B45F1B6D7317007B8840 /* ExtraDataStructures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7BC742F01B8285EA00279393 /* LongTaskSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742EE1B8285EA00279393 /* LongTaskSheet.swift */; };
+		7BC742F11B8285EA00279393 /* LongTaskSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BC742EF1B8285EA00279393 /* LongTaskSheet.xib */; };
+		7BC742F41B82D81C00279393 /* NSSize+AspectRatio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F31B82D81C00279393 /* NSSize+AspectRatio.swift */; };
+		7BC742F61B82D85900279393 /* GeneratePreviewTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F51B82D85900279393 /* GeneratePreviewTask.swift */; };
+		7BC742F81B82EF6300279393 /* NSAlert+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F71B82EF6300279393 /* NSAlert+URL.swift */; };
 		7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE31B80FEF3000CA651 /* NavigationBarGroupStandard.swift */; };
 		7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */; };
 		7BDA4CE81B8116F1000CA651 /* LibraryRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */; };
@@ -124,6 +129,11 @@
 		7B6F4CD41B6F3C6000286C9A /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.map; sourceTree = "<group>"; };
 		7B908BAE1B71CE900039B622 /* String+Sorting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Sorting.swift"; sourceTree = "<group>"; };
 		7BB938CC1B73262A000EDCCF /* TagCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
+		7BC742EE1B8285EA00279393 /* LongTaskSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongTaskSheet.swift; sourceTree = "<group>"; };
+		7BC742EF1B8285EA00279393 /* LongTaskSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LongTaskSheet.xib; sourceTree = "<group>"; };
+		7BC742F31B82D81C00279393 /* NSSize+AspectRatio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSize+AspectRatio.swift"; sourceTree = "<group>"; };
+		7BC742F51B82D85900279393 /* GeneratePreviewTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratePreviewTask.swift; sourceTree = "<group>"; };
+		7BC742F71B82EF6300279393 /* NSAlert+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAlert+URL.swift"; sourceTree = "<group>"; };
 		7BDA4CE31B80FEF3000CA651 /* NavigationBarGroupStandard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarGroupStandard.swift; sourceTree = "<group>"; };
 		7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarDelegate.swift; sourceTree = "<group>"; };
 		7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryRootView.swift; sourceTree = "<group>"; };
@@ -229,12 +239,15 @@
 			children = (
 				7B14B4681B6D75FC007B8840 /* AppDelegate.swift */,
 				7B14B46C1B6D75FC007B8840 /* Assets.xcassets */,
+				7BC742F51B82D85900279393 /* GeneratePreviewTask.swift */,
 				7BDA4CED1B812191000CA651 /* ImportFiles.swift */,
 				7BDA4CF31B81219F000CA651 /* ImportFiles.xib */,
 				7B14B4711B6D75FC007B8840 /* Info.plist */,
 				7B14B4B51B6D85F0007B8840 /* Library.storyboard */,
 				7B14B47F1B6D813B007B8840 /* Library.swift */,
 				7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */,
+				7BC742EE1B8285EA00279393 /* LongTaskSheet.swift */,
+				7BC742EF1B8285EA00279393 /* LongTaskSheet.xib */,
 				7B14B46E1B6D75FC007B8840 /* Main.storyboard */,
 				7B1F0B211B804BB5006FD3FE /* NavigationBarController.swift */,
 				7B1F0B271B804BBF006FD3FE /* NavigationBarController.xib */,
@@ -246,6 +259,8 @@
 				7B1F0B461B80F28F006FD3FE /* NavigationBarItemHistory.swift */,
 				7B1F0B441B80F243006FD3FE /* NavigationBarItemRoot.swift */,
 				7B14B4B71B6D8A7D007B8840 /* NavigationBarSource.swift */,
+				7BC742F71B82EF6300279393 /* NSAlert+URL.swift */,
+				7BC742F31B82D81C00279393 /* NSSize+AspectRatio.swift */,
 				7B908BAE1B71CE900039B622 /* String+Sorting.swift */,
 				7BB938CC1B73262A000EDCCF /* TagCellView.swift */,
 				7B6F4CCC1B6F329900286C9A /* TagPane.xib */,
@@ -397,6 +412,7 @@
 				7B14B4B61B6D87E0007B8840 /* Library.storyboard in Resources */,
 				7B14B4701B6D75FC007B8840 /* Main.storyboard in Resources */,
 				7BDA4CF11B81219F000CA651 /* ImportFiles.xib in Resources */,
+				7BC742F11B8285EA00279393 /* LongTaskSheet.xib in Resources */,
 				7B1F0B251B804BBF006FD3FE /* NavigationBarController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,7 +453,10 @@
 				7BDA4CEF1B812191000CA651 /* ImportFiles.swift in Sources */,
 				7B1F0B1E1B803DB8006FD3FE /* NavigationBarItem.swift in Sources */,
 				7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */,
+				7BC742F01B8285EA00279393 /* LongTaskSheet.swift in Sources */,
 				7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */,
+				7BC742F41B82D81C00279393 /* NSSize+AspectRatio.swift in Sources */,
+				7BC742F61B82D85900279393 /* GeneratePreviewTask.swift in Sources */,
 				7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */,
 				7B1F0B491B80F2F2006FD3FE /* NavigationBarItemDropBox.swift in Sources */,
 				7B1F0B4B1B80F35D006FD3FE /* NavigationBarGroup.swift in Sources */,
@@ -446,6 +465,7 @@
 				7B14B4691B6D75FC007B8840 /* AppDelegate.swift in Sources */,
 				7B14B4B81B6D8A7D007B8840 /* NavigationBarSource.swift in Sources */,
 				7B908BAF1B71CE900039B622 /* String+Sorting.swift in Sources */,
+				7BC742F81B82EF6300279393 /* NSAlert+URL.swift in Sources */,
 				7B14B4801B6D813B007B8840 /* Library.swift in Sources */,
 				7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */,
 			);

@@ -45,8 +45,10 @@ public enum TagType : String {
 }
 
 public enum StandardTagID : String {
-    case File  = "991ab620f9caaa639a8547d593aa82d445121e687889fc3c7c7afc8b22c6ee22"
-    case Scene = "ccdcda42124d564fef6d24ca4326bec84e8f660b392f03c299130122bf2f5de8"
+    case File    = "991ab620f9caaa639a8547d593aa82d445121e687889fc3c7c7afc8b22c6ee22"
+    case Scene   = "ccdcda42124d564fef6d24ca4326bec84e8f660b392f03c299130122bf2f5de8"
+    case DropBox = "9753d4438475ac2d6d620b6f7ccdb96f1ddef9d97e8a7c10872c5c93bd121e29"
+    case Preview = "324b134f57c70c729ae3dc4d298bb451656717d70523e942c1ce667b8024ea07"
 }
 
 private let tagCache = ReferenceCache<String, Tag>();
@@ -54,73 +56,82 @@ private let tagCache = ReferenceCache<String, Tag>();
 public class Tag {
     public let database: Database;
     public let id: String;
-    
+
+    private var _name: String;
     public var name: String {
-        willSet {
-            database.transactionAsync {
-                let statement = try self.database.handle!.prepare("UPDATE dad_tag SET name = ? WHERE dad_tag_id = ?")
-                try statement.bind(newValue, atIndex: 1)
-                try statement.bind(self.id, atIndex: 2)
-                try statement.step()
-            };
-        }
-        
-        didSet {
-            self.database.fireTagNameChanged(self);
-        }
-    }
-    
-    public var type: String {
-        willSet {
-            database.transactionAsync {
-                let statement = try self.database.handle!.prepare("UPDATE dad_tag SET type = ? WHERE dad_tag_id = ?")
-                try statement.bind(newValue, atIndex: 1)
-                try statement.bind(self.id, atIndex: 2)
-                try statement.step()
-            };
-        }
-        
-        didSet {
-            self.database.fireTagTypeChanged(self, oldType: oldValue);
+        get {
+            return _name;
         }
     }
 
-    public var searchable: Bool {
-        willSet {
-            database.transactionAsync {
-                let statement = try self.database.handle!.prepare("UPDATE dad_tag SET searchable = ? WHERE dad_tag_id = ?")
-                try statement.bind(newValue, atIndex: 1)
-                try statement.bind(self.id, atIndex: 2)
-                try statement.step()
-            };
+    public func setName(newValue: String) throws {
+        database.assertInTransaction();
+        let statement = try self.database.handle!.prepare("UPDATE dad_tag SET name = ? WHERE dad_tag_id = ?")
+        try statement.bind(newValue, atIndex: 1)
+        try statement.bind(self.id, atIndex: 2)
+        try statement.step()
+        self._name = newValue;
+        self.database.fireTagNameChanged(self);
+    }
+
+    private var _type: String;
+    public var type: String {
+        get {
+            return _type;
         }
+    }
+
+    public func setType(newValue: String) throws {
+        database.assertInTransaction();
+        let statement = try self.database.handle!.prepare("UPDATE dad_tag SET type = ? WHERE dad_tag_id = ?")
+        try statement.bind(newValue, atIndex: 1)
+        try statement.bind(self.id, atIndex: 2)
+        try statement.step()
+        let oldValue = _type;
+        _type = newValue;
+        self.database.fireTagTypeChanged(self, oldType: oldValue);
+    }
+
+    private var _searchable: Bool;
+    public var searchable: Bool {
+        get {
+            return _searchable;
+        }
+    }
+
+    public func setSearchable(newValue: Bool) throws {
+        database.assertInTransaction();
+        let statement = try self.database.handle!.prepare("UPDATE dad_tag SET searchable = ? WHERE dad_tag_id = ?")
+        try statement.bind(newValue, atIndex: 1)
+        try statement.bind(self.id, atIndex: 2)
+        try statement.step()
+        _searchable = newValue;
     }
     
     public init(createWithName name: String, type: String, searchable: Bool, inDatabase database: Database) throws {
-        self.database   = database;
-        self.id         = Database.createNewID();
-        self.name       = name;
-        self.type       = type;
-        self.searchable = searchable;
+        database.assertInTransaction();
+        self.database    = database;
+        self.id          = Database.createNewID();
+        self._name       = name;
+        self._type       = type;
+        self._searchable = searchable;
 
-        try database.transaction {
-            let statement = try database.handle!.prepare("INSERT INTO dad_tag VALUES(?,?,?,?);")
-            try statement.bind(self.id,         atIndex: 1);
-            try statement.bind(self.name,       atIndex: 2);
-            try statement.bind(self.type,       atIndex: 3);
-            try statement.bind(self.searchable, atIndex: 2);
-            try statement.step();
-        }
+        let statement = try database.handle!.prepare("INSERT INTO dad_tag VALUES(?,?,?,?);")
+        try statement.bind(self.id,         atIndex: 1);
+        try statement.bind(self.name,       atIndex: 2);
+        try statement.bind(self.type,       atIndex: 3);
+        try statement.bind(self.searchable, atIndex: 2);
+        try statement.step();
         
         tagCache.getOrSet(self.id, value: self);
     }
     
     internal init(id: String, name: String, type: String, searchable: Bool, fromDatabase database: Database) {
-        self.database   = database;
-        self.id         = id;
-        self.name       = name;
-        self.type       = type;
-        self.searchable = searchable;
+        self.database    = database;
+        self.id          = id;
+        self._name       = name;
+        self._type       = type;
+        self._searchable = searchable;
     }
     
     public class func optionalShared(id: String?, fromDatabase database: Database) throws -> Tag? {
@@ -268,5 +279,7 @@ public extension Database {
         try handle.exec(sql);
         try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.File.rawValue)', 'FILE', '\(TagType.Special.rawValue)', 0);");
         try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Scene.rawValue)', 'SCENE', '\(TagType.Special.rawValue)', 0);");
+        try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Preview.rawValue)', 'PREVIEW', '\(TagType.Special.rawValue)', 0);");
+        try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.DropBox.rawValue)', 'DROP BOX', '\(TagType.Special.rawValue)', 0);");
     }
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A261" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="LongTaskSheet" customModule="DigitalAssetManager" customModuleProvider="target">
+            <connections>
+                <outlet property="cancel" destination="BsW-d8-7Bz" id="QIq-Iw-kmX"/>
+                <outlet property="progress" destination="CJ5-gc-75n" id="UKk-VX-YF2"/>
+                <outlet property="status" destination="5Lr-Fy-130" id="KWq-IK-qqm"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="101"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <visualEffectView appearanceType="vibrantDark" blendingMode="behindWindow" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="x4j-TV-No0">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="101"/>
+                    <subviews>
+                        <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="CJ5-gc-75n">
+                            <rect key="frame" x="20" y="57" width="350" height="20"/>
+                            <animations/>
+                        </progressIndicator>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Lr-Fy-130">
+                            <rect key="frame" x="18" y="44" width="354" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="350" id="W71-Jk-lOy"/>
+                            </constraints>
+                            <animations/>
+                            <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Status Text" id="SeA-wM-dhT">
+                                <font key="font" metaFont="smallSystem"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BsW-d8-7Bz">
+                            <rect key="frame" x="295" y="14" width="80" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="70" id="96r-AA-m5z"/>
+                            </constraints>
+                            <animations/>
+                            <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="q0K-Xu-NGl">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="smallSystem"/>
+                                <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                            </buttonCell>
+                            <connections>
+                                <action selector="cancel:" target="-2" id="6fl-7u-B5b"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="CJ5-gc-75n" firstAttribute="trailing" secondItem="5Lr-Fy-130" secondAttribute="trailing" id="5mw-RI-qVK"/>
+                        <constraint firstItem="5Lr-Fy-130" firstAttribute="top" secondItem="CJ5-gc-75n" secondAttribute="bottom" id="77V-1M-Sh5"/>
+                        <constraint firstItem="CJ5-gc-75n" firstAttribute="leading" secondItem="x4j-TV-No0" secondAttribute="leading" constant="20" symbolic="YES" id="XrG-cD-8Fx"/>
+                        <constraint firstItem="5Lr-Fy-130" firstAttribute="centerY" secondItem="x4j-TV-No0" secondAttribute="centerY" id="ZLL-6Z-0LD"/>
+                        <constraint firstItem="5Lr-Fy-130" firstAttribute="trailing" secondItem="BsW-d8-7Bz" secondAttribute="trailing" id="ate-U9-f15"/>
+                        <constraint firstAttribute="bottom" secondItem="BsW-d8-7Bz" secondAttribute="bottom" constant="20" symbolic="YES" id="axG-N9-7qf"/>
+                        <constraint firstItem="BsW-d8-7Bz" firstAttribute="top" secondItem="5Lr-Fy-130" secondAttribute="bottom" constant="6" id="cLn-BX-ds4"/>
+                        <constraint firstItem="5Lr-Fy-130" firstAttribute="leading" secondItem="CJ5-gc-75n" secondAttribute="leading" id="sJU-KP-EqB"/>
+                        <constraint firstAttribute="trailing" secondItem="CJ5-gc-75n" secondAttribute="trailing" constant="20" symbolic="YES" id="uPh-sD-Cme"/>
+                    </constraints>
+                    <animations/>
+                </visualEffectView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="x4j-TV-No0" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="Z6W-Id-KZe"/>
+                <constraint firstAttribute="trailing" secondItem="x4j-TV-No0" secondAttribute="trailing" id="kLg-EK-9Yz"/>
+                <constraint firstAttribute="bottom" secondItem="x4j-TV-No0" secondAttribute="bottom" id="yQj-L9-Tfq"/>
+                <constraint firstItem="x4j-TV-No0" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="zEO-9c-6Cr"/>
+            </constraints>
+            <animations/>
+            <point key="canvasLocation" x="227.5" y="105.5"/>
+        </customView>
+    </objects>
+</document>
