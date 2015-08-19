@@ -6,6 +6,8 @@
 //
 
 import Cocoa
+import DigitalAssetDatabase
+import SQL
 import VLCKit
 
 private let ImportFilePasteboardType = "com.fds.ImportFilePasteboardType";
@@ -22,8 +24,7 @@ func CGImageWriteToFile(image: CGImageRef, _ path: String) -> Bool {
     return false;
 }
 
-func CGImageWriteToJPEG(image: CGImageRef, _ path: String) -> Bool {
-    let url = NSURL(fileURLWithPath: path);
+private func CGImageWriteToJPEG(image: CGImageRef, _ url: NSURL) -> Bool {
     let mdestination = CGImageDestinationCreateWithURL(url, kUTTypeJPEG, 1, nil);
 
     if let destination = mdestination {
@@ -274,6 +275,51 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
 
+    private class func produceErrorMap(images: [NSURL: (image: CGImageRef?, error: NSError?)]) -> [NSURL: NSError] {
+        var errors = [NSURL: NSError]();
+
+        for (url, pair) in images {
+            if let e = pair.error {
+                errors[url] = e;
+            }
+        }
+
+        return errors;
+    }
+
+    private func produceFileMap() -> [TitleInstanceFile] {
+        var results = [TitleInstanceFile]();
+
+        for url in urls {
+            if let media = medias[url] {
+                let lpc = url.lastPathComponent!;
+
+                results.append(TitleInstanceFile(
+                    moveFileName:    lpc,
+                    previewFileName: lpc.stringByDeletingPathExtension + ".jpg",
+                    duration:        media.duration))
+            }
+        }
+
+        return results;
+    }
+
+    private func produceMoveMap(titleInstance: TitleInstance) -> [NSURL: NSURL] {
+        var moves = [NSURL: NSURL]();
+
+        for url in self.urls {
+            moves[url] = self.library.urlFor(titleInstance, create: true).URLByAppendingPathComponent(url.lastPathComponent!);
+        }
+
+        return moves;
+    }
+
+    private func previewURL(titleInstance: TitleInstance, movieFile: NSURL) -> NSURL {
+        let instanceURL = self.library.urlFor(titleInstance, create: true);
+        let previewName = movieFile.lastPathComponent!.stringByDeletingPathExtension + ".jpg";
+        return instanceURL.URLByAppendingPathComponent(previewName);
+    }
+
     @IBAction
     public func importFiles(sender: AnyObject?) {
         let presentingViewController = self.presentingViewController;
@@ -283,30 +329,42 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
 
         let block = { (images: [NSURL: (image: CGImageRef?, error: NSError?)]) -> Void in
-            var errors = [NSURL: NSError]();
-
-            for (url, pair) in images {
-                if let e = pair.error {
-                    errors[url] = e;
-                }
-            }
-
+            var errors = ImportFiles.produceErrorMap(images);
             if errors.count > 0 {
                 NSAlert(infoText: "Failed to generate preview images", urls: errors).runModal();
                 return;
             }
 
-            for (index, pair) in images.enumerate() {
-                if let image = pair.1.image {
-                    CGImageWriteToFile(image, "/Users/rhoule/t-\(index).png");
-                    CGImageWriteToJPEG(image, "/Users/rhoule/t-\(index).jpg");
+            let database = self.library.database;
+            do {
+                try database.handle.write { (access: SQLWrite) throws in
+                    let title         = try Title(createWithName: self.urls[0].lastPathComponent!, inDatabase: database, withAccess: access);
+                    let dropBoxTag    = try Tag.shared(StandardTagID.DropBox.rawValue, fromDatabase: database, withAccess: access);
+                    let titleInstance = try TitleInstance(createWithFiles: self.produceFileMap(), tags: [dropBoxTag], title: title, inDatabase: database, withAccess: access)
+
+                    let moves = self.produceMoveMap(titleInstance);
+
+                    try MoveFileTask.moveFiles(moves, presentingViewController: presentingViewController!) {
+                        (errors: [NSURL: NSError]?) -> Void in
+                            if let errors = errors {
+                                NSAlert(infoText: "Failed to move files", urls: errors).runModal();
+                            }
+                    }
+
+                    for (url, pair) in images {
+                        if let image = pair.image {
+                            CGImageWriteToJPEG(image, self.previewURL(titleInstance, movieFile: url));
+                        }
+                    }
                 }
+            }
+            catch {
+                NSAlert(infoText: "Failed to create objects in database", errorType: error).runModal();
+                return;
             }
         };
 
-        let task = GeneratePreviewTask(medias: medias, completionBlock: block);
-
-        LongTaskSheet.show(task, parent: presentingViewController!);
+        LongTaskSheet.show(GeneratePreviewTask(medias: medias, completionBlock: block), parent: presentingViewController!);
     }
 
     @IBAction

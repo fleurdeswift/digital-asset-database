@@ -13,7 +13,6 @@
 		7B14B43A1B6C7F9B007B8840 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4391B6C7F9B007B8840 /* Database.swift */; };
 		7B14B43C1B6C82FE007B8840 /* SQL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B14B43B1B6C82FE007B8840 /* SQL.framework */; };
 		7B14B43E1B6C94D4007B8840 /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B43D1B6C94D4007B8840 /* Title.swift */; };
-		7B14B4401B6C9F60007B8840 /* Database+Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B43F1B6C9F60007B8840 /* Database+Transaction.swift */; };
 		7B14B4421B6CA77B007B8840 /* TitleInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4411B6CA77B007B8840 /* TitleInstance.swift */; };
 		7B14B4591B6D2B2C007B8840 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4581B6D2B2C007B8840 /* Tag.swift */; };
 		7B14B45D1B6D34E7007B8840 /* TagInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B45C1B6D34E7007B8840 /* TagInstance.swift */; };
@@ -99,7 +98,6 @@
 		7B14B4391B6C7F9B007B8840 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		7B14B43B1B6C82FE007B8840 /* SQL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SQL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B14B43D1B6C94D4007B8840 /* Title.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
-		7B14B43F1B6C9F60007B8840 /* Database+Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Database+Transaction.swift"; sourceTree = "<group>"; };
 		7B14B4411B6CA77B007B8840 /* TitleInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstance.swift; sourceTree = "<group>"; };
 		7B14B4581B6D2B2C007B8840 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		7B14B45C1B6D34E7007B8840 /* TagInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagInstance.swift; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 			isa = PBXGroup;
 			children = (
 				7B14B4391B6C7F9B007B8840 /* Database.swift */,
-				7B14B43F1B6C9F60007B8840 /* Database+Transaction.swift */,
 				7B14B4201B6C7EDB007B8840 /* DigitalAssetDatabase.h */,
 				7B14B4221B6C7EDB007B8840 /* Info.plist */,
 				7B14B43D1B6C94D4007B8840 /* Title.swift */,
@@ -433,7 +430,6 @@
 				7B6F4CD21B6F39BA00286C9A /* String+Hash.swift in Sources */,
 				7B14B4591B6D2B2C007B8840 /* Tag.swift in Sources */,
 				7B14B43A1B6C7F9B007B8840 /* Database.swift in Sources */,
-				7B14B4401B6C9F60007B8840 /* Database+Transaction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,13 @@
 import AppKit
 
 public extension NSAlert {
+    public convenience init(infoText: String, errorType: ErrorType) {
+        self.init();
+
+        self.informativeText = infoText;
+        self.messageText     = "\(errorType)";
+    }
+
     public convenience init(infoText: String, urls: [NSURL: NSError]) {
         self.init();
 

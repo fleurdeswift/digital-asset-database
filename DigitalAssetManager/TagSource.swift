@@ -8,14 +8,19 @@
 import Cocoa
 import DigitalAssetDatabase
 import ExtraAppKit
+import SQL
 
 @objc
 public class TagSource : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate, FilterablePredicateGenerator {
-    public weak var library: Library? {
+    public weak var library: Library! {
         didSet {
-            if let database = library?.database {
-                for category in categories {
-                    database.findTags(type: category.type) { (tags: [Tag]) -> Void in
+            do {
+                let database = library.database;
+
+                database.handle.readAsync { (access: SQLRead) throws -> Void in
+                    for category in self.categories {
+                        let tags = database.findTags(type: category.type, withAccess: access);
+
                         dispatch_async(dispatch_get_main_queue()) {
                             self.loadCategory(category, tags: tags)
                         }

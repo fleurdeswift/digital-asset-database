@@ -59,7 +59,7 @@ public class Library : NSDocument {
     private var format = NSPropertyListFormat.XMLFormat_v1_0;
     private var databaseURL: NSURL?;
     private var storageURL:  NSURL?;
-    private(set) public var database: Database?;
+    private(set) public var database: Database!;
 
     public override func readFromURL(url: NSURL, ofType typeName: String) throws {
         let data  = try NSData(contentsOfURL: url, options: NSDataReadingOptions());
@@ -73,7 +73,7 @@ public class Library : NSDocument {
             databaseURL = NSURL(string: config["DatabaseURL"] as! String, relativeToURL: url);
             storageURL  = NSURL(string: config["StorageURL"]  as! String, relativeToURL: url);
             database    = try Database(path: databaseURL!.absoluteString);
-            database?.addDelegate(LibraryDatabaseBridge(library: self), strong: true)
+            database.addDelegate(LibraryDatabaseBridge(library: self), strong: true)
         }
     }
 
@@ -98,7 +98,23 @@ public class Library : NSDocument {
         }
     }
 
+    public func urlFor(titleInstance titleInstance: String, create: Bool) -> NSURL {
+        let url = storageURL!.URLByAppendingPathComponent(titleInstance, isDirectory: true);
+
+        if create {
+            if let path = url.path {
+                Darwin.mkdir(path, 0o755);
+            }
+        }
+
+        return url;
+    }
+
     public func urlFor(titleInstance: TitleInstance) -> NSURL {
-        return storageURL!.URLByAppendingPathComponent(titleInstance.id);
+        return urlFor(titleInstance: titleInstance.id, create: false);
+    }
+
+    public func urlFor(titleInstance: TitleInstance, create: Bool) -> NSURL {
+        return urlFor(titleInstance: titleInstance.id, create: create);
     }
 }
