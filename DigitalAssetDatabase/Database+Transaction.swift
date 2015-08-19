@@ -8,23 +8,24 @@
 import Foundation
 
 public extension Database {
-    public func transactionAsync(block: () throws -> Void, errorBlock: (error: ErrorType) -> Void) -> Void {
+/*
+    internal func transactionAsync(block: () throws -> Void, errorBlock: (error: ErrorType) -> Void) -> Void {
         handle!.transactionAsync(queue, block: block, errorBlock: errorBlock);
     }
 
-    public func transactionAsync(block: () throws -> Void) -> Void {
+    internal func transactionAsync(block: () throws -> Void) -> Void {
         handle!.transactionAsync(queue, block: block, errorBlock: { (error: ErrorType) in
             print("UNHANDLED ERROR: \(error)\n")
         });
     }
     
-    public func transaction(block: () throws -> Void) throws -> Void {
+    internal func transaction(block: () throws -> Void) throws -> Void {
         try handle!.transaction(queue) {
             try block();
         }
     }
     
-    public func transaction<T>(block: () throws -> T) throws -> T {
+    internal func transaction<T>(block: () throws -> T) throws -> T {
         var result: T?;
     
         try handle!.transaction(queue) {
@@ -34,7 +35,7 @@ public extension Database {
         return result!;
     }
 
-    public func transaction<T>(block: () throws -> T?) throws -> T? {
+    internal func transaction<T>(block: () throws -> T?) throws -> T? {
         var result: T?;
     
         try handle!.transaction(queue) {
@@ -44,7 +45,7 @@ public extension Database {
         return result;
     }
 
-    public func assertInTransaction() {
+    internal func assertInTransaction() {
         handle!.assertInTransaction();
-    }
+    }*/
 }

@@ -12,8 +12,8 @@ import ExtraDataStructures
 private let tagInstanceCache = ReferenceCache<String, TagInstance>();
 
 public class TagInstance {
-    public let database:          Database;
-    public let id:                String;
+    public let database: Database;
+    public let id:       String;
 
     private var _tag: Tag;
     public var tag: Tag {
@@ -22,9 +22,8 @@ public class TagInstance {
         }
     }
 
-    public func setTag(newValue: Tag) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET dad_tag_id = ? WHERE dad_tag_instance_id = ?")
+    public func setTag(newValue: Tag, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET dad_tag_id = ? WHERE dad_tag_instance_id = ?")
         try statement.bind(newValue.id, atIndex: 1)
         try statement.bind(self.id,     atIndex: 2)
         try statement.step()
@@ -38,9 +37,8 @@ public class TagInstance {
         }
     }
 
-    public func setTitle(newValue: Title?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET dad_title_id = ? WHERE dad_tag_instance_id = ?")
+    public func setTitle(newValue: Title?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET dad_title_id = ? WHERE dad_tag_instance_id = ?")
 
         if let title = newValue {
             try statement.bind(title.id, atIndex: 1)
@@ -58,9 +56,8 @@ public class TagInstance {
         }
     }
 
-    public func setTitleInstance(newValue: TitleInstance?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET dad_title_instance_id = ? WHERE dad_tag_instance_id = ?")
+    public func setTitleInstance(newValue: TitleInstance?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET dad_title_instance_id = ? WHERE dad_tag_instance_id = ?")
 
         if let titleInstance = newValue {
             try statement.bind(titleInstance.id, atIndex: 1)
@@ -78,9 +75,8 @@ public class TagInstance {
         }
     }
 
-    public func setParentTag(newValue: Tag?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET dad_parent_tag_id = ? WHERE dad_tag_instance_id = ?")
+    public func setParentTag(newValue: Tag?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET dad_parent_tag_id = ? WHERE dad_tag_instance_id = ?")
 
         if let parentTag = newValue {
             try statement.bind(parentTag.id, atIndex: 1)
@@ -98,9 +94,8 @@ public class TagInstance {
         }
     }
 
-    public func setParentTagInstance(newValue: TagInstance?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET dad_parent_tag_instance_id = ? WHERE dad_tag_instance_id = ?")
+    public func setParentTagInstance(newValue: TagInstance?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET dad_parent_tag_instance_id = ? WHERE dad_tag_instance_id = ?")
 
         if let parentTagInstance = newValue {
             try statement.bind(parentTagInstance.id, atIndex: 1)
@@ -118,9 +113,8 @@ public class TagInstance {
         }
     }
 
-    public func setTime(newValue: TimeRange?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET start = ?, end = ? WHERE dad_tag_instance_id = ?")
+    public func setTime(newValue: TimeRange?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET start = ?, end = ? WHERE dad_tag_instance_id = ?")
 
         if let t = newValue {
             try statement.bind(t.start, atIndex: 1)
@@ -143,9 +137,8 @@ public class TagInstance {
         }
     }
 
-    public func setData(newValue: String) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag_instance SET data = ? WHERE dad_tag_instance_id = ?")
+    public func setData(newValue: String, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag_instance SET data = ? WHERE dad_tag_instance_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
@@ -164,9 +157,7 @@ public class TagInstance {
         self.database           = database;
     }
 
-    public init(createWithTag tag: Tag, title: Title?, titleInstance: TitleInstance?, parentTag: Tag?, parentTagInstance: TagInstance?, time: TimeRange?, data: String?, database: Database) throws {
-        database.assertInTransaction();
-
+    public init(createWithTag tag: Tag, title: Title?, titleInstance: TitleInstance?, parentTag: Tag?, parentTagInstance: TagInstance?, time: TimeRange?, data: String?, database: Database, withAccess access: SQLWrite) throws {
         self.id                 = Database.createNewID();
         self._tag               = tag;
         self._title             = title;
@@ -177,8 +168,7 @@ public class TagInstance {
         self._data              = data;
         self.database           = database;
         
-        let statement = try database.handle!.prepare("INSERT INFO dad_tag_instance VALUES (?,?,?,?,?,?,?,?,?)");
-        
+        let statement = try access.prepare("INSERT INFO dad_tag_instance VALUES (?,?,?,?,?,?,?,?,?)");
         try statement.bind(self.id, atIndex: 1);
         try statement.bind(tag.id,  atIndex: 2);
         
@@ -214,38 +204,41 @@ public class TagInstance {
         try statement.step();
     }
 
-    public class func optionalShared(id: String?, fromDatabase database: Database) throws -> TagInstance? {
+    public class func optionalShared(id: String?, fromDatabase database: Database, withAccess access: SQLRead) -> TagInstance? {
         if let nnid = id {
-            return try shared(nnid, fromDatabase: database);
+            do {
+                return try shared(nnid, fromDatabase: database, withAccess: access);
+            }
+            catch {
+            }
         }
         
         return nil;
     }
 
-    public class func shared(id: String, fromDatabase database: Database) throws -> TagInstance? {
+    public class func shared(id: String, fromDatabase database: Database, withAccess access: SQLRead) throws -> TagInstance? {
         return try tagInstanceCache.get(id) {
-            try database.exec("SELECT * FROM dad_tag_instance WHERE dad_tag_instance_id = ?") { (statement: SQLStatement) in
-                try statement.bind(id, atIndex: 1);
-                try statement.step();
-                return try fromRow(id, statement: statement, fromDatabase: database);
-            }
+            let statement = try access.prepare("SELECT * FROM dad_tag_instance WHERE dad_tag_instance_id = ?")
+            try statement.bind(id, atIndex: 1);
+            try statement.step();
+            return try fromRow(id, statement: statement, fromDatabase: database, withAccess: access);
         }
     }
     
-    public class func shared(statement: SQLStatement, fromDatabase database: Database) throws -> TagInstance {
+    public class func shared(statement: SQLStatement, fromDatabase database: Database, withAccess access: SQLRead) throws -> TagInstance {
         let id = statement.columnString(0)!;
         
         return try tagInstanceCache.get(id) {
-            try fromRow(id, statement: statement, fromDatabase: database);
+            try fromRow(id, statement: statement, fromDatabase: database, withAccess: access);
         }
     }
 
-    private class func fromRow(id: String, statement: SQLStatement, fromDatabase database: Database) throws -> TagInstance {
-        let tag               = try Tag.shared(statement.columnString(1)!, fromDatabase: database);
-        let title             = try Title.optionalShared(statement.columnString(2), fromDatabase: database);
-        let titleInstance     = try TitleInstance.optionalShared(statement.columnString(3), fromDatabase: database);
-        let parentTag         = try Tag.optionalShared(statement.columnString(4), fromDatabase: database);
-        let parentTagInstance = try TagInstance.optionalShared(statement.columnString(5), fromDatabase: database);
+    private class func fromRow(id: String, statement: SQLStatement, fromDatabase database: Database, withAccess access: SQLRead) throws -> TagInstance {
+        let tag               = try Tag.shared(statement.columnString(1)!, fromDatabase: database, withAccess: access);
+        let title             = Title.optionalShared(statement.columnString(2), fromDatabase: database, withAccess: access);
+        let titleInstance     = TitleInstance.optionalShared(statement.columnString(3), fromDatabase: database, withAccess: access);
+        let parentTag         = Tag.optionalShared(statement.columnString(4), fromDatabase: database, withAccess: access);
+        let parentTagInstance = TagInstance.optionalShared(statement.columnString(5), fromDatabase: database, withAccess: access);
         let start: NSTimeInterval? = statement.columnDouble(6);
         let end:   NSTimeInterval? = statement.columnDouble(7);
 
@@ -269,24 +262,23 @@ public class TagInstance {
 }
 
 public extension TitleInstance {
-    public func files() throws -> [TagInstance] {
-        return try database.exec("SELECT * FROM dad_tag_instance WHERE dad_tag_id = ? AND dad_title_instance_id = ? ORDER BY start") { (statement: SQLStatement) in
-            try statement.bind(StandardTagID.File.rawValue, atIndex: 1);
-            try statement.bind(self.id, atIndex: 2);
+    public func files(access: SQLRead) throws -> [TagInstance] {
+        let statement = try access.prepare("SELECT * FROM dad_tag_instance WHERE dad_tag_id = ? AND dad_title_instance_id = ? ORDER BY start")
+        try statement.bind(StandardTagID.File.rawValue, atIndex: 1);
+        try statement.bind(self.id, atIndex: 2);
             
-            var f = [TagInstance]();
+        var f = [TagInstance]();
             
-            while try statement.step() {
-                f.append(try TagInstance.shared(statement, fromDatabase: self.database));
-            }
-            
-            return f;
+        while try statement.step() {
+            f.append(try TagInstance.shared(statement, fromDatabase: self.database, withAccess: access));
         }
+            
+        return f;
     }
 }
 
 public extension Database {
-    public func createTagInstanceTable(handle: SQLDatabase) throws {
+    public func createTagInstanceTable(access: SQLWrite) throws {
         let sql = "CREATE TABLE dad_tag_instance(\n" +
             "  dad_tag_instance_id        VARCHAR(64)  PRIMARY KEY,\n" +
             "  dad_tag_id                 VARCHAR(64)  REFERENCES dad_tag NOT NULL,\n" +
@@ -299,6 +291,6 @@ public extension Database {
             "  data                       TEXT\n" +
             ");";
 
-        try handle.exec(sql);
+        try access.exec(sql);
     }
 }

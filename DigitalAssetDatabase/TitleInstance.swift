@@ -10,8 +10,15 @@ import ExtraDataStructures
 import SQL
 
 public struct TitleInstanceFile {
-    public var fileName: String;
-    public var duration: Double;
+    public var moveFileName:    String;
+    public var previewFileName: String;
+    public var duration:        NSTimeInterval;
+
+    public init(moveFileName: String, previewFileName: String, duration: NSTimeInterval) {
+        self.moveFileName    = moveFileName;
+        self.previewFileName = previewFileName;
+        self.duration        = duration;
+    }
 }
 
 private let titleInstanceCache = ReferenceCache<String, TitleInstance>();
@@ -27,9 +34,8 @@ public class TitleInstance {
         }
     }
 
-    private func setTitle(newValue: Title?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_title_instance SET dad_title_id = ? WHERE dad_title_instance_id = ?")
+    private func setTitle(newValue: Title?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_title_instance SET dad_title_id = ? WHERE dad_title_instance_id = ?")
 
         if let title = newValue {
             try statement.bind(title.id, atIndex: 1)
@@ -47,9 +53,8 @@ public class TitleInstance {
         }
     }
 
-    private func setDuration(newValue: NSTimeInterval) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_title_instance SET duration = ? WHERE dad_title_instance_id = ?")
+    private func setDuration(newValue: NSTimeInterval, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_title_instance SET duration = ? WHERE dad_title_instance_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
@@ -63,9 +68,8 @@ public class TitleInstance {
         }
     }
 
-    public func setDateProduced(newValue: NSTimeInterval?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_title_instance SET date_produced = ? WHERE dad_title_instance_id = ?")
+    public func setDateProduced(newValue: NSTimeInterval?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_title_instance SET date_produced = ? WHERE dad_title_instance_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
@@ -79,9 +83,8 @@ public class TitleInstance {
         }
     }
 
-    private func setDatePublished(newValue: NSTimeInterval?) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_title_instance SET date_published = ? WHERE dad_title_instance_id = ?")
+    private func setDatePublished(newValue: NSTimeInterval?, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_title_instance SET date_published = ? WHERE dad_title_instance_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
@@ -97,18 +100,15 @@ public class TitleInstance {
         }
     }
 
-    private func setDateModified(newValue: NSTimeInterval) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_title_instance SET date_modified = ? WHERE dad_title_instance_id = ?")
+    private func setDateModified(newValue: NSTimeInterval, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_title_instance SET date_modified = ? WHERE dad_title_instance_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
         _dateModified = newValue;
     }
 
-    public init(createWithFiles files: [TitleInstanceFile], tags: [Tag]?, title: Title?, inDatabase database: Database) throws {
-        database.assertInTransaction();
-
+    public init(createWithFiles files: [TitleInstanceFile], tags: [Tag]?, title: Title?, inDatabase database: Database, withAccess access: SQLWrite) throws {
         var duration: Double = 0;
     
         for file in files {
@@ -130,11 +130,10 @@ public class TitleInstance {
             realTitle = t;
         }
         else {
-            realTitle = try Title(createWithName: "", inDatabase: database);
+            realTitle = try Title(createWithName: "", inDatabase: database, withAccess: access);
         }
 
-        let handle = database.handle!;
-        var statement = try handle.prepare("INSERT INTO dad_title_instance (dad_title_instance_id, dad_title_id, duration, date_added, date_modified) VALUES (?,?,?,?,?)")
+        var statement = try access.prepare("INSERT INTO dad_title_instance (dad_title_instance_id, dad_title_id, duration, date_added, date_modified) VALUES (?,?,?,?,?)")
         
         try statement.bind(self.id,      atIndex: 1);
         try statement.bind(realTitle.id, atIndex: 2);
@@ -143,35 +142,46 @@ public class TitleInstance {
         try statement.bind(now,          atIndex: 5);
         try statement.step();
 
-        statement = try handle.prepare("INSERT INTO dad_tag_instance (dad_tag_instance_id, dad_tag_id, dad_title_id, dad_title_instance_id, start, end, data) VALUES (?,?,?,?,?,?,?)")
+        statement = try access.prepare("INSERT INTO dad_tag_instance (dad_tag_instance_id, dad_tag_id, dad_title_id, dad_title_instance_id, start, end, data) VALUES (?,?,?,?,?,?,?)")
         
-        try statement.bind(StandardTagID.File.rawValue, atIndex: 2);
         try statement.bind(realTitle.id,                atIndex: 3);
         try statement.bind(self.id,                     atIndex: 4);
 
         var current: Double = 0;
-        
+
+        let fileTag    = StandardTagID.File.rawValue;
+        let previewTag = StandardTagID.Preview.rawValue;
+
         for file in files {
-            let tagInstanceID = Database.createNewID();
-            
-            try statement.bind(tagInstanceID, atIndex: 1);
-            try statement.bind(current,       atIndex: 5);
+            var tagInstanceID = Database.createNewID();
+            try statement.bind(tagInstanceID,     atIndex: 1);
+            try statement.bind(fileTag,           atIndex: 2);
+            try statement.bind(current,           atIndex: 5);
             current += file.duration;
-            try statement.bind(current,       atIndex: 6);
-            try statement.bind(file.fileName, atIndex: 7);
+            try statement.bind(current,           atIndex: 6);
+            try statement.bind(file.moveFileName, atIndex: 7);
+            try statement.step();
+            try statement.reset();
+
+            tagInstanceID = Database.createNewID();
+            
+            try statement.bind(tagInstanceID,        atIndex: 1);
+            try statement.bind(previewTag,           atIndex: 2);
+            try statement.bind(file.previewFileName, atIndex: 7);
             try statement.step();
             try statement.reset();
         }
 
         if let tags = tags {
+            try statement.bindNull(5); // start
+            try statement.bindNull(6); // end
+            try statement.bindNull(7); // data
+
             for tag in tags {
                 let tagInstanceID = Database.createNewID();
             
                 try statement.bind(tagInstanceID, atIndex: 1);
                 try statement.bind(tag.id,        atIndex: 2);
-                try statement.bindNull(5); // start
-                try statement.bindNull(6); // end
-                try statement.bindNull(7); // data
                 try statement.step();
                 try statement.reset();
             }
@@ -191,17 +201,21 @@ public class TitleInstance {
         self.dateAdded      = dateAdded;
     }
     
-    public class func optionalShared(id: String?, fromDatabase database: Database) throws -> TitleInstance? {
+    public class func optionalShared(id: String?, fromDatabase database: Database, withAccess access: SQLRead) -> TitleInstance? {
         if let nnid = id {
-            return try shared(nnid, fromDatabase: database);
+            do {
+                try shared(nnid, fromDatabase: database, withAccess: access);
+            }
+            catch {
+            }
         }
         
         return nil;
     }
     
-    public class func shared(statement: SQLStatement, fromDatabase database: Database) throws -> TitleInstance {
+    public class func shared(statement: SQLStatement, fromDatabase database: Database, withAccess access: SQLRead) throws -> TitleInstance {
         let id    = statement.columnString(0)!;
-        let title = try Title.shared(statement.columnString(1)!, fromDatabase: database);
+        let title = try Title.shared(statement.columnString(1)!, fromDatabase: database, withAccess: access);
         
         return titleInstanceCache.get(id) {
             return TitleInstance(
@@ -216,19 +230,18 @@ public class TitleInstance {
         }
     }
     
-    public class func shared(id: String, fromDatabase database: Database) throws -> TitleInstance {
+    public class func shared(id: String, fromDatabase database: Database, withAccess access: SQLRead) throws -> TitleInstance {
         return try titleInstanceCache.get(id) {
-            return try database.exec("SELECT * FROM dad_title_instance WHERE dad_title_instance_id = ?") { (statement: SQLStatement) in
-                try statement.bind(id, atIndex: 1);
-                try statement.step()
-                return try shared(statement, fromDatabase: database);
-            }
+            let statement = try access.prepare("SELECT * FROM dad_title_instance WHERE dad_title_instance_id = ?")
+            try statement.bind(id, atIndex: 1);
+            try statement.step()
+            return try shared(statement, fromDatabase: database, withAccess: access);
         }
     }
 }
 
 public extension Database {
-    public func createTitleInstanceTable(handle: SQLDatabase) throws {
+    public func createTitleInstanceTable(access: SQLWrite) throws {
         let sql = "CREATE TABLE dad_title_instance(\n" +
             "  dad_title_instance_id VARCHAR(64) PRIMARY KEY,\n" +
             "  dad_title_id          VARCHAR(64) REFERENCES dad_title NOT NULL,\n" +
@@ -239,6 +252,6 @@ public extension Database {
             "  date_modified         REAL NOT NULL\n" +
             ");";
 
-        try handle.exec(sql);
+        try access.exec(sql);
     }
 }

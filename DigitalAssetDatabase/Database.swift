@@ -16,57 +16,42 @@ public protocol DatabaseDelegate : class {
 }
 
 public class Database {
-    internal(set) public var handle: SQLDatabase?;
+    internal(set) public var handle: SQLQueuedDatabase!;
     internal(set) public var schemaVersion: Int = 0;
     internal(set) public var queue: dispatch_queue_t = dispatch_queue_create("Database", DISPATCH_QUEUE_CONCURRENT);
     
     public init(path: String) throws {
-        handle = nil
-        
-        let database = try SQLDatabase(filename: path, flags: SQL.SQL_OPEN_READWRITE | SQL.SQL_OPEN_URI | SQL.SQL_OPEN_CREATE | SQL.SQL_OPEN_FULLMUTEX, vfs: nil);
-        
-        handle = database;
-        
+        self.handle = try SQLQueuedDatabase(filename: path, flags: SQL.SQL_OPEN_READWRITE | SQL.SQL_OPEN_URI | SQL.SQL_OPEN_CREATE | SQL.SQL_OPEN_FULLMUTEX, vfs: nil);
+
         do {
-            let statement = try database.prepare("SELECT value FROM dad_config WHERE name = 'SCHEMA_VERSION';");
+            try handle.read { (access: SQLRead) throws in
+                let statement = try access.prepare("SELECT value FROM dad_config WHERE name = 'SCHEMA_VERSION';");
             
-            while try statement.step() {
-                schemaVersion = statement.columnInt(0);
+                while try statement.step() {
+                    self.schemaVersion = statement.columnInt(0);
+                }
             }
         }
         catch {
-            try createSchema();
+            try handle.write { (access: SQLWrite) throws in
+                try self.createSchema(access);
+            }
         }
     }
-    
-    public func exec(sql: String, block: (statement: SQLStatement) throws -> Void) throws -> Void {
-        try handle!.exec(queue, sql: sql, block: block);
-    }
-    
-    public func exec<T>(sql: String, block: (statement: SQLStatement) throws -> T) throws -> T {
-        return try handle!.exec(queue, sql: sql, block: block);
-    }
 
-    public func exec<T>(sql: String, block: (statement: SQLStatement) throws -> T?) throws -> T? {
-        return try handle!.exec(queue, sql: sql, block: block);
-    }
-    
-    public func createSchema() throws {
-        try handle!.exec("BEGIN EXCLUSIVE TRANSACTION;");
-
-        try handle!.exec("CREATE TABLE dad_config(\n" +
+    internal func createSchema(access: SQLWrite) throws {
+        try access.exec("CREATE TABLE dad_config(\n" +
             "  name  VARCHAR(64) PRIMARY KEY,\n" +
             "  value VARCHAR(256)\n" +
             ");");
         
-        try handle!.exec("INSERT INTO dad_config VALUES ('SCHEMA_VERSION', '1');");
+        try access.exec("INSERT INTO dad_config VALUES ('SCHEMA_VERSION', '1');");
 
-        try createTitleTable(handle!);
-        try createTitleInstanceTable(handle!);
-        try createTagTable(handle!);
-        try createTagInstanceTable(handle!);
-        try handle!.exec("COMMIT TRANSACTION;");
-        
+        try createTitleTable(access);
+        try createTitleInstanceTable(access);
+        try createTagTable(access);
+        try createTagInstanceTable(access);
+
         schemaVersion = 1;
     }
     

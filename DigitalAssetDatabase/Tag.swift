@@ -64,9 +64,8 @@ public class Tag {
         }
     }
 
-    public func setName(newValue: String) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag SET name = ? WHERE dad_tag_id = ?")
+    public func setName(newValue: String, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag SET name = ? WHERE dad_tag_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
@@ -81,9 +80,8 @@ public class Tag {
         }
     }
 
-    public func setType(newValue: String) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag SET type = ? WHERE dad_tag_id = ?")
+    public func setType(newValue: String, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag SET type = ? WHERE dad_tag_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
@@ -99,30 +97,22 @@ public class Tag {
         }
     }
 
-    public func setSearchable(newValue: Bool) throws {
-        database.assertInTransaction();
-        let statement = try self.database.handle!.prepare("UPDATE dad_tag SET searchable = ? WHERE dad_tag_id = ?")
+    public func setSearchable(newValue: Bool, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("UPDATE dad_tag SET searchable = ? WHERE dad_tag_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
         _searchable = newValue;
     }
     
-    public init(createWithName name: String, type: String, searchable: Bool, inDatabase database: Database) throws {
-        database.assertInTransaction();
+    public init(createWithName name: String, type: String, searchable: Bool, inDatabase database: Database, withAccess access: SQLWrite) throws {
         self.database    = database;
         self.id          = Database.createNewID();
         self._name       = name;
         self._type       = type;
         self._searchable = searchable;
 
-        let statement = try database.handle!.prepare("INSERT INTO dad_tag VALUES(?,?,?,?);")
-        try statement.bind(self.id,         atIndex: 1);
-        try statement.bind(self.name,       atIndex: 2);
-        try statement.bind(self.type,       atIndex: 3);
-        try statement.bind(self.searchable, atIndex: 2);
-        try statement.step();
-        
+        try Tag.create(id, name: name, type: type, searchable: searchable, withAccess: access);
         tagCache.getOrSet(self.id, value: self);
     }
     
@@ -134,15 +124,19 @@ public class Tag {
         self._searchable = searchable;
     }
     
-    public class func optionalShared(id: String?, fromDatabase database: Database) throws -> Tag? {
+    public class func optionalShared(id: String?, fromDatabase database: Database, withAccess access: SQLRead) -> Tag? {
         if let nnid = id {
-            return try Tag.shared(nnid, fromDatabase: database);
+            do {
+                return try Tag.shared(nnid, fromDatabase: database, withAccess: access);
+            }
+            catch {
+            }
         }
         
         return nil;
     }
 
-    public class func shared(statement: SQLStatement, fromDatabase database: Database) -> Tag {
+    public class func shared(statement: SQLStatement, fromDatabase database: Database, withAccess access: SQLRead) -> Tag {
         let id = statement.columnString(0)!;
         return tagCache.get(id) {
             return Tag(
@@ -154,19 +148,28 @@ public class Tag {
         }
     }
     
-    public class func shared(id: String, fromDatabase database: Database) throws -> Tag {
+    public class func shared(id: String, fromDatabase database: Database, withAccess access: SQLRead) throws -> Tag {
         return try tagCache.get(id) {
-            return try database.exec("SELECT name, type, searchable from dad_tag WHERE dad_tag_id = ?") { (statement: SQLStatement) in
-                try statement.bind(id, atIndex: 1);
-                try statement.step()
-                return Tag(
-                    id:           id,
-                    name:         statement.columnString(0)!,
-                    type:         statement.columnString(1)!,
-                    searchable:   statement.columnBool(2)!,
-                    fromDatabase: database);
-            }
+            let statement = try access.prepare("SELECT name, type, searchable from dad_tag WHERE dad_tag_id = ?")
+            try statement.bind(id, atIndex: 1);
+            try statement.step()
+
+            return Tag(
+                id:           id,
+                name:         statement.columnString(0)!,
+                type:         statement.columnString(1)!,
+                searchable:   statement.columnBool(2)!,
+                fromDatabase: database);
         }
+    }
+
+    internal class func create(id: String, name: String, type: String, searchable: Bool, withAccess access: SQLWrite) throws {
+        let statement = try access.prepare("INSERT INTO dad_tag VALUES(?,?,?,?);")
+        try statement.bind(id,         atIndex: 1);
+        try statement.bind(name,       atIndex: 2);
+        try statement.bind(type,       atIndex: 3);
+        try statement.bind(searchable, atIndex: 2);
+        try statement.step();
     }
 }
 
@@ -184,21 +187,21 @@ public extension Database {
     }
 
     public func addTag(name: String, type: TagType) throws -> Tag {
-        let newTag = try handle!.transaction(queue) { () throws -> (id: String, created: Bool) in
+        let newTag = try self.handle.write { (access: SQLWrite) throws -> (tag: Tag, created: Bool) in
             do {
-                let s = try self.handle!.prepare("SELECT dad_tag_id FROM dad_tag WHERE name = ? AND type = ?")
+                let s = try access.prepare("SELECT dad_tag_id FROM dad_tag WHERE name = ? AND type = ?")
                 try s.bind(name, atIndex: 1);
                 try s.bind(type.rawValue, atIndex: 2);
                 
                 if try s.step() {
-                    return (s.columnString(0)!, false);
+                    return (Tag.shared(s, fromDatabase: self, withAccess: access), false);
                 }
             }
             
             var newID = (type.rawValue + "." + name).sha256();
             
             do {
-                let s = try self.handle!.prepare("INSERT INTO dad_tag VALUES (?, ?, ?, 1);");
+                let s = try access.prepare("INSERT INTO dad_tag VALUES (?, ?, ?, 1);");
                 try s.bind(newID, atIndex: 1);
                 try s.bind(name, atIndex: 2);
                 try s.bind(type.rawValue, atIndex: 3);
@@ -207,68 +210,64 @@ public extension Database {
             catch SQLError.Constraint {
                 newID = Database.createNewID();
 
-                let s = try self.handle!.prepare("INSERT INTO dad_tag VALUES (?, ?, ?, 1);");
+                let s = try access.prepare("INSERT INTO dad_tag VALUES (?, ?, ?, 1);");
                 try s.bind(newID, atIndex: 1);
                 try s.bind(name, atIndex: 2);
                 try s.bind(type.rawValue, atIndex: 3);
                 try s.step();
             }
 
-            return (newID, true);
+            return (try Tag.shared(newID, fromDatabase: self, withAccess: access), true);
         };
         
-        let tag = try Tag.shared(newTag.id, fromDatabase: self);
-
         if newTag.created {
             for delegate in delegates {
-                delegate.tagAdded(tag);
+                delegate.tagAdded(newTag.tag);
             }
         }
         
-        return tag;
+        return newTag.tag;
     }
 
-    public func findTags(type type: TagType, block: (tags: [Tag]) -> Void) -> Void {
-        return findTags(type: type.rawValue, block: block);
+    public func findTags(type type: TagType, withAccess access: SQLRead) -> [Tag] {
+        return findTags(type: type.rawValue, withAccess: access);
     }
     
-    public func findTags(type type: String, block: (tags: [Tag]) -> Void) -> Void {
-        dispatch_async(queue) {
-            do {
-                let s = try self.handle!.prepare("SELECT * FROM dad_tag WHERE type = ? ORDER BY name COLLATE NOCASE")
-                try s.bind(type, atIndex: 1);
-                
-                var tags = [Tag]();
-                while try s.step() {
-                    tags.append(Tag.shared(s, fromDatabase: self));
-                }
-                
-                block(tags: tags);
+    public func findTags(type type: String, withAccess access: SQLRead) -> [Tag] {
+        do {
+            let s = try access.prepare("SELECT * FROM dad_tag WHERE type = ? ORDER BY name COLLATE NOCASE")
+            try s.bind(type, atIndex: 1);
+            
+            var tags = [Tag]();
+            while try s.step() {
+                tags.append(Tag.shared(s, fromDatabase: self, withAccess: access));
             }
-            catch {
-            }
+            
+            return tags;
+        }
+        catch {
+            return [];
         }
     }
     
-    public func findTags(title title: String, block: (tags: [Tag]) -> Void) -> Void {
-        dispatch_async(queue) {
-            do {
-                let s = try self.handle!.prepare("SELECT * FROM dad_tag WHERE name LIKE ?")
-                try s.bind(title.asLikeClause, atIndex: 1);
+    public func findTags(title title: String, withAccess access: SQLRead) -> [Tag] {
+        do {
+            let s = try access.prepare("SELECT * FROM dad_tag WHERE name LIKE ?")
+            try s.bind(title.asLikeClause, atIndex: 1);
                 
-                var tags = [Tag]();
-                while try s.step() {
-                    tags.append(Tag.shared(s, fromDatabase: self));
-                }
+            var tags = [Tag]();
+            while try s.step() {
+                tags.append(Tag.shared(s, fromDatabase: self, withAccess: access));
+            }
                 
-                block(tags: tags);
-            }
-            catch {
-            }
+            return tags;
+        }
+        catch {
+            return [];
         }
     }
 
-    public func createTagTable(handle: SQLDatabase) throws {
+    internal func createTagTable(access: SQLWrite) throws {
         let sql = "CREATE TABLE dad_tag(\n" +
             "  dad_tag_id            VARCHAR(64)  PRIMARY KEY,\n" +
             "  name                  VARCHAR(256) NOT NULL,\n" +
@@ -276,10 +275,10 @@ public extension Database {
             "  searchable            INTEGER      DEFAULT 1\n" +
             ");";
 
-        try handle.exec(sql);
-        try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.File.rawValue)', 'FILE', '\(TagType.Special.rawValue)', 0);");
-        try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Scene.rawValue)', 'SCENE', '\(TagType.Special.rawValue)', 0);");
-        try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Preview.rawValue)', 'PREVIEW', '\(TagType.Special.rawValue)', 0);");
-        try handle.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.DropBox.rawValue)', 'DROP BOX', '\(TagType.Special.rawValue)', 0);");
+        try access.exec(sql);
+        try access.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.File.rawValue)', 'FILE', '\(TagType.Special.rawValue)', 0);");
+        try access.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Scene.rawValue)', 'SCENE', '\(TagType.Special.rawValue)', 0);");
+        try access.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.Preview.rawValue)', 'PREVIEW', '\(TagType.Special.rawValue)', 0);");
+        try access.exec("INSERT INTO dad_tag VALUES ('\(StandardTagID.DropBox.rawValue)', 'DROPBOX', '\(TagType.Special.rawValue)', 0);");
     }
 }

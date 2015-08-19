@@ -54,6 +54,7 @@
 		7BC742F41B82D81C00279393 /* NSSize+AspectRatio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F31B82D81C00279393 /* NSSize+AspectRatio.swift */; };
 		7BC742F61B82D85900279393 /* GeneratePreviewTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F51B82D85900279393 /* GeneratePreviewTask.swift */; };
 		7BC742F81B82EF6300279393 /* NSAlert+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F71B82EF6300279393 /* NSAlert+URL.swift */; };
+		7BC742FA1B82F49700279393 /* MoveFileTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC742F91B82F49700279393 /* MoveFileTask.swift */; };
 		7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE31B80FEF3000CA651 /* NavigationBarGroupStandard.swift */; };
 		7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */; };
 		7BDA4CE81B8116F1000CA651 /* LibraryRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */; };
@@ -134,6 +135,7 @@
 		7BC742F31B82D81C00279393 /* NSSize+AspectRatio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSize+AspectRatio.swift"; sourceTree = "<group>"; };
 		7BC742F51B82D85900279393 /* GeneratePreviewTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratePreviewTask.swift; sourceTree = "<group>"; };
 		7BC742F71B82EF6300279393 /* NSAlert+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAlert+URL.swift"; sourceTree = "<group>"; };
+		7BC742F91B82F49700279393 /* MoveFileTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoveFileTask.swift; sourceTree = "<group>"; };
 		7BDA4CE31B80FEF3000CA651 /* NavigationBarGroupStandard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarGroupStandard.swift; sourceTree = "<group>"; };
 		7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarDelegate.swift; sourceTree = "<group>"; };
 		7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryRootView.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				7BC742EE1B8285EA00279393 /* LongTaskSheet.swift */,
 				7BC742EF1B8285EA00279393 /* LongTaskSheet.xib */,
 				7B14B46E1B6D75FC007B8840 /* Main.storyboard */,
+				7BC742F91B82F49700279393 /* MoveFileTask.swift */,
 				7B1F0B211B804BB5006FD3FE /* NavigationBarController.swift */,
 				7B1F0B271B804BBF006FD3FE /* NavigationBarController.xib */,
 				7BDA4CE51B8107C5000CA651 /* NavigationBarDelegate.swift */,
@@ -459,6 +462,7 @@
 				7BC742F61B82D85900279393 /* GeneratePreviewTask.swift in Sources */,
 				7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */,
 				7B1F0B491B80F2F2006FD3FE /* NavigationBarItemDropBox.swift in Sources */,
+				7BC742FA1B82F49700279393 /* MoveFileTask.swift in Sources */,
 				7B1F0B4B1B80F35D006FD3FE /* NavigationBarGroup.swift in Sources */,
 				7B14B46B1B6D75FC007B8840 /* ViewController.swift in Sources */,
 				7BB938CD1B73262A000EDCCF /* TagCellView.swift in Sources */,
