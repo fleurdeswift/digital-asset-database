@@ -17,8 +17,8 @@ public class NavigationBarItem : NSObject, NSCoding {
     public func encodeWithCoder(coder: NSCoder) {
     }
 
-    public func createViewforItem() -> NSView {
-        return NSView();
+    public func createViewControllerforItem() -> NSViewController? {
+        return nil;
     }
 
     public var icon : NSImage {

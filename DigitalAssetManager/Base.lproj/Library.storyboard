@@ -8,7 +8,7 @@
         <!--Window Controller-->
         <scene sceneID="tqc-jN-zRM">
             <objects>
-                <windowController storyboardIdentifier="Library Window Controller" id="eBh-v0-ji2" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="Library Window Controller" id="eBh-v0-ji2" customClass="LibraryWindowController" customModule="DigitalAssetManager" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="" id="9f3-xT-nqa">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
@@ -54,69 +54,36 @@
             <objects>
                 <splitViewController id="Mux-4w-oan" sceneMemberID="viewController">
                     <splitViewItems>
-                        <splitViewItem id="oj1-b6-JA3"/>
                         <splitViewItem id="7KP-4L-xaw"/>
+                        <splitViewItem id="3qO-UT-G9t"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="PX3-Ov-13P">
+                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="PX3-Ov-13P" customClass="LibraryRootView" customModule="DigitalAssetManager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </splitView>
                     <connections>
-                        <segue destination="QEu-dr-0Qz" kind="relationship" relationship="splitItems" id="cSO-Yn-TVP"/>
                         <segue destination="O0n-WM-een" kind="relationship" relationship="splitItems" id="Ix4-vE-MQC"/>
+                        <segue destination="wYP-dD-yJ7" kind="relationship" relationship="splitItems" id="4Fw-nR-sN6"/>
                     </connections>
                 </splitViewController>
                 <customObject id="jQn-Ha-8NB" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="319" y="1003"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="jgP-vU-zGT">
+        <!--Work Area View Controller-->
+        <scene sceneID="caZ-d7-cif">
             <objects>
-                <viewController id="QEu-dr-0Qz" sceneMemberID="viewController">
-                    <view key="view" id="KS0-sq-n1a" customClass="LibraryRootView" customModule="DigitalAssetManager" customModuleProvider="target">
+                <viewController id="wYP-dD-yJ7" customClass="WorkAreaViewController" customModule="DigitalAssetManager" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="NZ9-4p-jG4" customClass="WorkAreaView" customModule="DigitalAssetManager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GpL-zO-0uM">
-                                <rect key="frame" x="-1" y="-1" width="452" height="302"/>
-                                <clipView key="contentView" id="wD0-4P-9gb">
-                                    <rect key="frame" x="1" y="1" width="450" height="300"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dl4-k5-njx">
-                                            <rect key="frame" x="0.0" y="206" width="450" height="300"/>
-                                            <animations/>
-                                        </customView>
-                                    </subviews>
-                                    <animations/>
-                                </clipView>
-                                <animations/>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="GSN-9T-4lU">
-                                    <rect key="frame" x="1" y="285" width="450" height="16"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Afc-2L-Vdl">
-                                    <rect key="frame" x="436" y="1" width="15" height="300"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <animations/>
-                                </scroller>
-                            </scrollView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="GpL-zO-0uM" firstAttribute="centerY" secondItem="KS0-sq-n1a" secondAttribute="centerY" id="R5r-bu-W4i"/>
-                            <constraint firstItem="GpL-zO-0uM" firstAttribute="top" secondItem="KS0-sq-n1a" secondAttribute="top" constant="-1" id="YMx-cU-IFF"/>
-                            <constraint firstItem="GpL-zO-0uM" firstAttribute="centerX" secondItem="KS0-sq-n1a" secondAttribute="centerX" id="pCx-ql-F0o"/>
-                            <constraint firstItem="GpL-zO-0uM" firstAttribute="leading" secondItem="KS0-sq-n1a" secondAttribute="leading" constant="-1" id="pKa-fj-Zzo"/>
-                        </constraints>
                         <animations/>
                     </view>
                 </viewController>
-                <customObject id="w0e-8d-36C" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="IBp-6C-5cO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="798" y="1577"/>
+            <point key="canvasLocation" x="687" y="1562"/>
         </scene>
         <!--Navigation Bar Controller-->
         <scene sceneID="Quw-y8-I2j">

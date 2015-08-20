@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class LibraryRootView : NSView {
+public class LibraryRootView : NSSplitView {
     public override func awakeFromNib() {
         self.registerForDraggedTypes([NSURLPboardType, NSFilenamesPboardType]);
     }

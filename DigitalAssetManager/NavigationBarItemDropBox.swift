@@ -34,4 +34,8 @@ public class NavigationBarItemDropBox : NavigationBarItem, NSPasteboardWriting {
 
         return nil;
     }
+
+    public override func createViewControllerforItem() -> NSViewController? {
+        return ResultViewController.create();
+    }
 }

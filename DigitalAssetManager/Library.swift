@@ -57,8 +57,8 @@ private class LibraryDatabaseBridge : DatabaseDelegate {
 
 public class Library : NSDocument {
     private var format = NSPropertyListFormat.XMLFormat_v1_0;
-    private var databaseURL: NSURL?;
-    private var storageURL:  NSURL?;
+    private var databaseURL: NSURL!;
+    private var storageURL:  NSURL!;
     private(set) public var database: Database!;
 
     public override func readFromURL(url: NSURL, ofType typeName: String) throws {
@@ -80,7 +80,7 @@ public class Library : NSDocument {
     public override func makeWindowControllers() {
         let notificationCenter = NSNotificationCenter.defaultCenter();
 
-        notificationCenter.addObserver(self, selector: Selector("fileDropped:"), name: DAMFileDropped, object: nil);
+        notificationCenter.addObserver(self, selector: Selector("fileDropped:"), name: DAMFileDropped,                object: nil);
 
         let storyboard       = NSStoryboard(name: "Library", bundle: nil)
         let windowController = storyboard.instantiateControllerWithIdentifier("Library Window Controller") as! NSWindowController
@@ -99,7 +99,7 @@ public class Library : NSDocument {
     }
 
     public func urlFor(titleInstance titleInstance: String, create: Bool) -> NSURL {
-        let url = storageURL!.URLByAppendingPathComponent(titleInstance, isDirectory: true);
+        let url = storageURL.URLByAppendingPathComponent(titleInstance, isDirectory: true);
 
         if create {
             if let path = url.path {

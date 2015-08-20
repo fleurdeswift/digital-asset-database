@@ -30,6 +30,14 @@
 		7B14B4B61B6D87E0007B8840 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B14B4B51B6D85F0007B8840 /* Library.storyboard */; };
 		7B14B4B81B6D8A7D007B8840 /* NavigationBarSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4B71B6D8A7D007B8840 /* NavigationBarSource.swift */; };
 		7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B4B91B6DA660007B8840 /* TagSource.swift */; };
+		7B1A42261B8458EE00C65DB7 /* DropBoxTitleInstance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1A42251B8458EE00C65DB7 /* DropBoxTitleInstance.xib */; };
+		7B1A42291B84592900C65DB7 /* DropBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1A42271B84592900C65DB7 /* DropBoxView.swift */; };
+		7B1A422A1B84592900C65DB7 /* DropBoxView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B1A42281B84592900C65DB7 /* DropBoxView.xib */; };
+		7B1A422C1B845CF500C65DB7 /* WorkAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1A422B1B845CF500C65DB7 /* WorkAreaViewController.swift */; };
+		7B1A422E1B845D7F00C65DB7 /* LibraryWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1A422D1B845D7F00C65DB7 /* LibraryWindowController.swift */; };
+		7B1A42311B846B4F00C65DB7 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1A422F1B846B4F00C65DB7 /* ResultViewController.swift */; };
+		7B1A423F1B85557400C65DB7 /* BlankAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1A423D1B85557400C65DB7 /* BlankAreaViewController.swift */; };
+		7B1A42441B856FC200C65DB7 /* WorkAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1A42431B856FC200C65DB7 /* WorkAreaView.swift */; };
 		7B1F0B1C1B801ECA006FD3FE /* VideoClipAnnotationEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1F0B1B1B801ECA006FD3FE /* VideoClipAnnotationEditor.framework */; };
 		7B1F0B1E1B803DB8006FD3FE /* NavigationBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1F0B1D1B803DB8006FD3FE /* NavigationBarItem.swift */; };
 		7B1F0B231B804BB5006FD3FE /* NavigationBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1F0B211B804BB5006FD3FE /* NavigationBarController.swift */; };
@@ -38,6 +46,11 @@
 		7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1F0B461B80F28F006FD3FE /* NavigationBarItemHistory.swift */; };
 		7B1F0B491B80F2F2006FD3FE /* NavigationBarItemDropBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1F0B481B80F2F2006FD3FE /* NavigationBarItemDropBox.swift */; };
 		7B1F0B4B1B80F35D006FD3FE /* NavigationBarGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1F0B4A1B80F35D006FD3FE /* NavigationBarGroup.swift */; };
+		7B30E9641B858F5E00523460 /* AnimatedImagePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B30E9631B858F5E00523460 /* AnimatedImagePreview.swift */; };
+		7B30E9671B8590CC00523460 /* TitleInstance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E9691B8590CC00523460 /* TitleInstance.xib */; };
+		7B30E96B1B85972200523460 /* TitleInstanceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */; };
+		7B30E96C1B85A2A800523460 /* BlankAreaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E96E1B85A2A800523460 /* BlankAreaViewController.xib */; };
+		7B30E96F1B85A2B800523460 /* ResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E9711B85A2B800523460 /* ResultViewController.xib */; };
 		7B6CCF051B6DE07B00AE0438 /* ExtraAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; };
 		7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */; };
 		7B6CCF171B6E827800AE0438 /* ExtraAppKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -113,6 +126,14 @@
 		7B14B4B41B6D85F0007B8840 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Library.storyboard; sourceTree = "<group>"; };
 		7B14B4B71B6D8A7D007B8840 /* NavigationBarSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarSource.swift; sourceTree = "<group>"; };
 		7B14B4B91B6DA660007B8840 /* TagSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagSource.swift; sourceTree = "<group>"; };
+		7B1A42251B8458EE00C65DB7 /* DropBoxTitleInstance.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropBoxTitleInstance.xib; sourceTree = "<group>"; };
+		7B1A42271B84592900C65DB7 /* DropBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropBoxView.swift; sourceTree = "<group>"; };
+		7B1A42281B84592900C65DB7 /* DropBoxView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropBoxView.xib; sourceTree = "<group>"; };
+		7B1A422B1B845CF500C65DB7 /* WorkAreaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkAreaViewController.swift; sourceTree = "<group>"; };
+		7B1A422D1B845D7F00C65DB7 /* LibraryWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryWindowController.swift; sourceTree = "<group>"; };
+		7B1A422F1B846B4F00C65DB7 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		7B1A423D1B85557400C65DB7 /* BlankAreaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlankAreaViewController.swift; sourceTree = "<group>"; };
+		7B1A42431B856FC200C65DB7 /* WorkAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkAreaView.swift; sourceTree = "<group>"; };
 		7B1F0B1B1B801ECA006FD3FE /* VideoClipAnnotationEditor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoClipAnnotationEditor.framework; path = "/Users/rhoule/Library/Developer/Xcode/DerivedData/DigitalAssetDatabase-emmsflcmxkcgtnaupdgkmtkbjgpl/Build/Products/Debug/VideoClipAnnotationEditor.framework"; sourceTree = "<absolute>"; };
 		7B1F0B1D1B803DB8006FD3FE /* NavigationBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarItem.swift; sourceTree = "<group>"; };
 		7B1F0B211B804BB5006FD3FE /* NavigationBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarController.swift; sourceTree = "<group>"; };
@@ -121,6 +142,11 @@
 		7B1F0B461B80F28F006FD3FE /* NavigationBarItemHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarItemHistory.swift; sourceTree = "<group>"; };
 		7B1F0B481B80F2F2006FD3FE /* NavigationBarItemDropBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarItemDropBox.swift; sourceTree = "<group>"; };
 		7B1F0B4A1B80F35D006FD3FE /* NavigationBarGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarGroup.swift; sourceTree = "<group>"; };
+		7B30E9631B858F5E00523460 /* AnimatedImagePreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImagePreview.swift; sourceTree = "<group>"; };
+		7B30E9681B8590CC00523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TitleInstance.xib; sourceTree = "<group>"; };
+		7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceDataSource.swift; sourceTree = "<group>"; };
+		7B30E96D1B85A2A800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BlankAreaViewController.xib; sourceTree = "<group>"; };
+		7B30E9701B85A2B800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ResultViewController.xib; sourceTree = "<group>"; };
 		7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ExtraAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagPaneController.swift; sourceTree = "<group>"; };
 		7B6F4CCB1B6F329900286C9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TagPane.xib; sourceTree = "<group>"; };
@@ -236,8 +262,14 @@
 		7B14B4671B6D75FC007B8840 /* DigitalAssetManager */ = {
 			isa = PBXGroup;
 			children = (
+				7B30E9631B858F5E00523460 /* AnimatedImagePreview.swift */,
 				7B14B4681B6D75FC007B8840 /* AppDelegate.swift */,
 				7B14B46C1B6D75FC007B8840 /* Assets.xcassets */,
+				7B1A423D1B85557400C65DB7 /* BlankAreaViewController.swift */,
+				7B30E96E1B85A2A800523460 /* BlankAreaViewController.xib */,
+				7B1A42251B8458EE00C65DB7 /* DropBoxTitleInstance.xib */,
+				7B1A42271B84592900C65DB7 /* DropBoxView.swift */,
+				7B1A42281B84592900C65DB7 /* DropBoxView.xib */,
 				7BC742F51B82D85900279393 /* GeneratePreviewTask.swift */,
 				7BDA4CED1B812191000CA651 /* ImportFiles.swift */,
 				7BDA4CF31B81219F000CA651 /* ImportFiles.xib */,
@@ -245,6 +277,7 @@
 				7B14B4B51B6D85F0007B8840 /* Library.storyboard */,
 				7B14B47F1B6D813B007B8840 /* Library.swift */,
 				7BDA4CE71B8116F1000CA651 /* LibraryRootView.swift */,
+				7B1A422D1B845D7F00C65DB7 /* LibraryWindowController.swift */,
 				7BC742EE1B8285EA00279393 /* LongTaskSheet.swift */,
 				7BC742EF1B8285EA00279393 /* LongTaskSheet.xib */,
 				7B14B46E1B6D75FC007B8840 /* Main.storyboard */,
@@ -261,12 +294,18 @@
 				7B14B4B71B6D8A7D007B8840 /* NavigationBarSource.swift */,
 				7BC742F71B82EF6300279393 /* NSAlert+URL.swift */,
 				7BC742F31B82D81C00279393 /* NSSize+AspectRatio.swift */,
+				7B1A422F1B846B4F00C65DB7 /* ResultViewController.swift */,
+				7B30E9711B85A2B800523460 /* ResultViewController.xib */,
 				7B908BAE1B71CE900039B622 /* String+Sorting.swift */,
 				7BB938CC1B73262A000EDCCF /* TagCellView.swift */,
 				7B6F4CCC1B6F329900286C9A /* TagPane.xib */,
 				7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */,
 				7B14B4B91B6DA660007B8840 /* TagSource.swift */,
+				7B30E9691B8590CC00523460 /* TitleInstance.xib */,
+				7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */,
 				7B14B46A1B6D75FC007B8840 /* ViewController.swift */,
+				7B1A42431B856FC200C65DB7 /* WorkAreaView.swift */,
+				7B1A422B1B845CF500C65DB7 /* WorkAreaViewController.swift */,
 			);
 			path = DigitalAssetManager;
 			sourceTree = "<group>";
@@ -407,12 +446,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B30E96C1B85A2A800523460 /* BlankAreaViewController.xib in Resources */,
+				7B30E9671B8590CC00523460 /* TitleInstance.xib in Resources */,
 				7B6F4CCA1B6F329900286C9A /* TagPane.xib in Resources */,
 				7B14B46D1B6D75FC007B8840 /* Assets.xcassets in Resources */,
 				7B14B4B61B6D87E0007B8840 /* Library.storyboard in Resources */,
+				7B30E96F1B85A2B800523460 /* ResultViewController.xib in Resources */,
 				7B14B4701B6D75FC007B8840 /* Main.storyboard in Resources */,
 				7BDA4CF11B81219F000CA651 /* ImportFiles.xib in Resources */,
 				7BC742F11B8285EA00279393 /* LongTaskSheet.xib in Resources */,
+				7B1A422A1B84592900C65DB7 /* DropBoxView.xib in Resources */,
+				7B1A42261B8458EE00C65DB7 /* DropBoxTitleInstance.xib in Resources */,
 				7B1F0B251B804BBF006FD3FE /* NavigationBarController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,13 +489,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B1A423F1B85557400C65DB7 /* BlankAreaViewController.swift in Sources */,
 				7BDA4CE81B8116F1000CA651 /* LibraryRootView.swift in Sources */,
 				7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */,
 				7B1F0B231B804BB5006FD3FE /* NavigationBarController.swift in Sources */,
+				7B30E9641B858F5E00523460 /* AnimatedImagePreview.swift in Sources */,
 				7B1F0B451B80F243006FD3FE /* NavigationBarItemRoot.swift in Sources */,
 				7BDA4CEF1B812191000CA651 /* ImportFiles.swift in Sources */,
+				7B1A422C1B845CF500C65DB7 /* WorkAreaViewController.swift in Sources */,
 				7B1F0B1E1B803DB8006FD3FE /* NavigationBarItem.swift in Sources */,
 				7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */,
+				7B1A42441B856FC200C65DB7 /* WorkAreaView.swift in Sources */,
+				7B30E96B1B85972200523460 /* TitleInstanceDataSource.swift in Sources */,
 				7BC742F01B8285EA00279393 /* LongTaskSheet.swift in Sources */,
 				7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */,
 				7BC742F41B82D81C00279393 /* NSSize+AspectRatio.swift in Sources */,
@@ -461,13 +510,16 @@
 				7BC742FA1B82F49700279393 /* MoveFileTask.swift in Sources */,
 				7B1F0B4B1B80F35D006FD3FE /* NavigationBarGroup.swift in Sources */,
 				7B14B46B1B6D75FC007B8840 /* ViewController.swift in Sources */,
+				7B1A422E1B845D7F00C65DB7 /* LibraryWindowController.swift in Sources */,
 				7BB938CD1B73262A000EDCCF /* TagCellView.swift in Sources */,
 				7B14B4691B6D75FC007B8840 /* AppDelegate.swift in Sources */,
 				7B14B4B81B6D8A7D007B8840 /* NavigationBarSource.swift in Sources */,
 				7B908BAF1B71CE900039B622 /* String+Sorting.swift in Sources */,
 				7BC742F81B82EF6300279393 /* NSAlert+URL.swift in Sources */,
+				7B1A42291B84592900C65DB7 /* DropBoxView.swift in Sources */,
 				7B14B4801B6D813B007B8840 /* Library.swift in Sources */,
 				7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */,
+				7B1A42311B846B4F00C65DB7 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +556,30 @@
 				7B1F0B261B804BBF006FD3FE /* Base */,
 			);
 			name = NavigationBarController.xib;
+			sourceTree = "<group>";
+		};
+		7B30E9691B8590CC00523460 /* TitleInstance.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B30E9681B8590CC00523460 /* Base */,
+			);
+			name = TitleInstance.xib;
+			sourceTree = "<group>";
+		};
+		7B30E96E1B85A2A800523460 /* BlankAreaViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B30E96D1B85A2A800523460 /* Base */,
+			);
+			name = BlankAreaViewController.xib;
+			sourceTree = "<group>";
+		};
+		7B30E9711B85A2B800523460 /* ResultViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B30E9701B85A2B800523460 /* Base */,
+			);
+			name = ResultViewController.xib;
 			sourceTree = "<group>";
 		};
 		7B6F4CCC1B6F329900286C9A /* TagPane.xib */ = {

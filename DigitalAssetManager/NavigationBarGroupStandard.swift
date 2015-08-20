@@ -10,16 +10,8 @@ import Foundation
 public class NavigationBarGroupStandard : NavigationBarItemRoot {
     public init() {
         super.init(childs: [
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
-            NavigationBarItemHistory(), NavigationBarItemDropBox(),
+            NavigationBarItemHistory(),
+            NavigationBarItemDropBox(),
         ]);
     }
 

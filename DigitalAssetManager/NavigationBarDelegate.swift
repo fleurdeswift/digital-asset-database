@@ -75,7 +75,7 @@ public class NavigationBarDelegate : NSObject, NSOutlineViewDelegate {
         if let outlineView = notification.object as? NSOutlineView {
             if let item = outlineView.itemAtRow(outlineView.selectedRow) as? NavigationBarItem {
                 dispatch_async(dispatch_get_main_queue()) {
-                    NSNotificationCenter.defaultCenter().postNotificationName(NavigationBarSelectionChanged, object: self, userInfo: [
+                    NSNotificationCenter.defaultCenter().postNotificationName(NavigationBarSelectionChanged, object: outlineView.window!, userInfo: [
                         "Item": item
                     ]);
                 }
