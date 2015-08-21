@@ -6,8 +6,24 @@
 //
 
 import Cocoa
+import DigitalAssetDatabase
+import ExtraDataStructures
 
 public class WorkAreaViewControllerDelegate : NSObject, NSPageControllerDelegate {
+    public weak var windowController: NSWindowController?;
+
+    public var library: Library? {
+        get {
+            return windowController?.document as? Library;
+        }
+    }
+
+    public var database: Database? {
+        get {
+            return self.library?.database;
+        }
+    }
+
     public func pageController(pageController: NSPageController, identifierForObject object: AnyObject) -> String {
         if let _ = object as? NavigationBarItemDropBox {
             return "ResultView";
@@ -25,6 +41,20 @@ public class WorkAreaViewControllerDelegate : NSObject, NSPageControllerDelegate
     }
 
     public func pageController(pageController: NSPageController, prepareViewController viewController: NSViewController, withObject object: AnyObject) {
+        if let database = self.database {
+            if let _ = object as? NavigationBarItemDropBox, resultView = viewController as? ResultViewController {
+                resultView.loadView();
+                let tableView  = resultView.tableView;
+                let dataSource = tableView.dataSource() as! TitleInstanceDataSource;
+
+                database.dropBox(1000) { (instances: [TitleInstance]) in
+                    dispatch_async_main {
+                        dataSource.titleInstances = instances;
+                        tableView.reloadData();
+                    }
+                }
+            }
+        }
     }
 };
 
@@ -43,6 +73,11 @@ public class WorkAreaViewController : NSViewController {
     private let pageController = NSPageController();
 
     public var delegate = WorkAreaViewControllerDelegate();
+
+    public override func viewDidAppear() {
+        super.viewDidAppear();
+        delegate.windowController = self.view.window?.windowController;
+    }
 
     public func navigateTo(item: AnyObject) {
         if (currentObject === item) {

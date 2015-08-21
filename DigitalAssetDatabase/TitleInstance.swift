@@ -27,20 +27,16 @@ public class TitleInstance {
     public let database: Database;
     public let id:       String;
 
-    private var _title: Title?;
-    public var title: Title? {
+    private var _title: Title!;
+    public var title: Title {
         get {
             return _title;
         }
     }
 
-    private func setTitle(newValue: Title?, withAccess access: SQLWrite) throws {
+    private func setTitle(newValue: Title, withAccess access: SQLWrite) throws {
         let statement = try access.prepare("UPDATE dad_title_instance SET dad_title_id = ? WHERE dad_title_instance_id = ?")
-
-        if let title = newValue {
-            try statement.bind(title.id, atIndex: 1)
-        }
-        
+        try statement.bind(title.id, atIndex: 1)
         try statement.bind(self.id, atIndex: 2)
         try statement.step()
         self._title = newValue;
@@ -236,6 +232,157 @@ public class TitleInstance {
             try statement.bind(id, atIndex: 1);
             try statement.step()
             return try shared(statement, fromDatabase: database, withAccess: access);
+        }
+    }
+
+    public var url: NSURL {
+        get {
+            return database.storageURL.URLByAppendingPathComponent(self.id, isDirectory: true);
+        }
+    }
+
+    public func sceneCount(access: SQLRead) -> Int {
+        do {
+            let statement = try access.prepare("SELECT COUNT(*) FROM dad_tag_instance WHERE dad_title_instance_id = '\(self.id)' AND dad_tag_id = '\(StandardTagID.Scene.rawValue)'")
+
+            if try statement.step() {
+                return statement.columnInt(0)
+            }
+        }
+        catch {
+        }
+
+        return 0;
+    }
+
+    public func previews(access: SQLRead) -> [NSURL] {
+        do {
+            let statement = try access.prepare("SELECT data FROM dad_tag_instance WHERE dad_title_instance_id = '\(self.id)' AND dad_tag_id = '\(StandardTagID.Preview.rawValue)' ORDER BY start")
+            var results = [NSURL]();
+            let u = self.url;
+
+            while try statement.step() {
+                results.append(u.URLByAppendingPathComponent(statement.columnString(0)!));
+            }
+
+            return results;
+        }
+        catch {
+            return [];
+        }
+    }
+
+    public func getTagInstances(ignoreSpecialTags ignoreSpecialTags: Bool, withAccess access: SQLRead) throws -> [TagInstance] {
+        let sql       = "SELECT * FROM dad_tag_instance WHERE dad_title_instance_id = '\(self.id)' AND start IS NULL AND end IS NULL";
+        let statement = try access.prepare(sql);
+        var results   = [TagInstance]();
+
+        while try statement.step() {
+            results.append(try TagInstance.shared(statement, fromDatabase: database, withAccess: access));
+        }
+
+        if ignoreSpecialTags {
+            results = results.filter { return !$0.tag.isSpecial }
+        }
+        
+        return results;
+    }
+
+    public func setTags(tokens: [AnyObject], withAccess access: SQLWrite) throws -> [TagInstance] {
+        let currentInstances = Set<TagOrInstance>(try getTagInstances(ignoreSpecialTags: true, withAccess: access).map({ return TagOrInstance.Instance(instance: $0) }));
+        if currentInstances.count == 0 && tokens.count == 0 {
+            // Nothing to do.
+            return [];
+        }
+
+        let expectedInstances = Set<TagOrInstance>(database.normalizeTagTokens(tokens, withAccess: access).map({ return TagOrInstance.create($0) }))
+        let toCreate = expectedInstances.subtract(currentInstances);
+        let toDelete = currentInstances.subtract(expectedInstances);
+        if toCreate.count == 0 && toDelete.count == 0 {
+            // Nothing to do.
+            return currentInstances.map { return $0.toInstance() };
+        }
+
+        var toKeep: [TagInstance] = currentInstances.intersect(expectedInstances).map { return $0.toInstance() };
+
+        for create in toCreate {
+            switch (create) {
+            case .Template(let tag):
+                toKeep.append(try TagInstance(createWithTag: tag, titleInstance: self, inDatabase: database, withAccess: access));
+                break;
+            case .Instance(let instance):
+                toKeep.append(instance);
+                break;
+            }
+        }
+
+        for delete in toDelete {
+            switch (delete) {
+            case .Instance(let instance):
+                try instance.delete(access);
+                break;
+            default:
+                break;
+            }
+        }
+
+        return toKeep;
+    }
+}
+
+private enum TagOrInstance : Hashable {
+    case Template(tag: Tag)
+    case Instance(instance: TagInstance)
+
+    var hashValue: Int {
+        get {
+            switch (self) {
+            case .Template(let tag):
+                return tag.hashValue;
+            case .Instance(let instance):
+                return instance.hashValue;
+            }
+        }
+    }
+
+    static func create(o: AnyObject) -> TagOrInstance {
+        if let instance = o as? TagInstance {
+            return TagOrInstance.Instance(instance: instance);
+        }
+        else {
+            return TagOrInstance.Template(tag: o as! Tag);
+        }
+    }
+
+    func toInstance() -> TagInstance {
+        switch (self) {
+        case .Instance(let instance):
+            return instance;
+        default:
+            assert(false);
+        }
+    }
+}
+
+public func == (o1: Tag, o2: TagInstance) -> Bool {
+    return o1.id == o2.tag.id;
+}
+
+private func == (o1: TagOrInstance, o2: TagOrInstance) -> Bool {
+    switch (o1) {
+    case .Template(let t1):
+        switch (o2) {
+        case .Template(let t2):
+            return t1 == t2;
+        case .Instance(let i2):
+            return t1 == i2;
+        }
+    case .Instance(let i1):
+        switch (o2) {
+        case .Template(let t2):
+            return t2 == i1;
+        case .Instance(let i2):
+            return i1 == i2;
         }
     }
 }

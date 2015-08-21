@@ -54,7 +54,7 @@ public class LibraryWindowController : NSWindowController {
         }
 
         if let window = self.window {
-            window.appearance = NSAppearance(named: NSAppearanceNameVibrantLight);
+            window.appearance = NSAppearance(named: NSAppearanceNameVibrantDark);
             window.contentView?.enumerateSubviews { (view: NSView) -> Bool in
                 if let workArea = view as? WorkAreaView {
                     self.workArea = workArea;

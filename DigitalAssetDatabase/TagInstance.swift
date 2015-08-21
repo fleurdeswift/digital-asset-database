@@ -11,7 +11,7 @@ import ExtraDataStructures
 
 private let tagInstanceCache = ReferenceCache<String, TagInstance>();
 
-public class TagInstance {
+public class TagInstance : Hashable, CustomStringConvertible {
     public let database: Database;
     public let id:       String;
 
@@ -137,6 +137,18 @@ public class TagInstance {
         }
     }
 
+    public var hashValue: Int {
+        get {
+            return id.hashValue;
+        }
+    }
+
+    public var description: String {
+        get {
+            return tag.name;
+        }
+    }
+
     public func setData(newValue: String, withAccess access: SQLWrite) throws {
         let statement = try access.prepare("UPDATE dad_tag_instance SET data = ? WHERE dad_tag_instance_id = ?")
         try statement.bind(newValue, atIndex: 1)
@@ -157,6 +169,18 @@ public class TagInstance {
         self.database           = database;
     }
 
+    public convenience init(createWithTag tag: Tag, titleInstance: TitleInstance, inDatabase database: Database, withAccess access: SQLWrite) throws {
+        try self.init(createWithTag: tag,
+                              title: titleInstance.title,
+                      titleInstance: titleInstance,
+                          parentTag: nil,
+                  parentTagInstance: nil,
+                               time: nil,
+                               data: nil,
+                           database: database,
+                         withAccess: access);
+    }
+
     public init(createWithTag tag: Tag, title: Title?, titleInstance: TitleInstance?, parentTag: Tag?, parentTagInstance: TagInstance?, time: TimeRange?, data: String?, database: Database, withAccess access: SQLWrite) throws {
         self.id                 = Database.createNewID();
         self._tag               = tag;
@@ -168,7 +192,7 @@ public class TagInstance {
         self._data              = data;
         self.database           = database;
         
-        let statement = try access.prepare("INSERT INFO dad_tag_instance VALUES (?,?,?,?,?,?,?,?,?)");
+        let statement = try access.prepare("INSERT INTO dad_tag_instance VALUES (?,?,?,?,?,?,?,?,?)");
         try statement.bind(self.id, atIndex: 1);
         try statement.bind(tag.id,  atIndex: 2);
         
@@ -202,6 +226,7 @@ public class TagInstance {
         }
         
         try statement.step();
+        tagInstanceCache.getOrSet(self.id, value: self);
     }
 
     public class func optionalShared(id: String?, fromDatabase database: Database, withAccess access: SQLRead) -> TagInstance? {
@@ -259,6 +284,10 @@ public class TagInstance {
             data:              statement.columnString(8),
             database:          database);
     }
+
+    public func delete(access: SQLWrite) throws -> Void {
+        try access.exec("DELETE FROM dad_tag_instance WHERE dad_tag_instance_id = '\(self.id)'")
+    }
 }
 
 public extension TitleInstance {
@@ -277,6 +306,10 @@ public extension TitleInstance {
     }
 }
 
+public func == (ti1: TagInstance, ti2: TagInstance) -> Bool {
+    return ti1.id == ti2.id;
+}
+
 public extension Database {
     public func createTagInstanceTable(access: SQLWrite) throws {
         let sql = "CREATE TABLE dad_tag_instance(\n" +
@@ -292,5 +325,39 @@ public extension Database {
             ");";
 
         try access.exec(sql);
+    }
+
+    public func dropBox(maxResults: Int, block: ([TitleInstance]) -> Void) -> Void {
+        handle.readAsync { (access: SQLRead) in
+            do {
+                let dropBoxSQL =
+                    "SELECT dad_title_instance_id " +
+                    "FROM   dad_tag_instance " +
+                    "WHERE  dad_title_instance_id IS NOT NULL AND " +
+                    "       dad_tag_id = '\(StandardTagID.DropBox.rawValue)' " +
+                    "LIMIT  \(maxResults)";
+
+                let sql = "SELECT   * " +
+                          "FROM     dad_title_instance " +
+                          "WHERE    dad_title_instance_id IN (\(dropBoxSQL)) " +
+                          "ORDER BY date_added";
+
+                let statement = try access.prepare(sql);
+                var results   = [TitleInstance]();
+
+                while try statement.step() {
+                    do {
+                        results.append(try TitleInstance.shared(statement, fromDatabase: self, withAccess: access));
+                    }
+                    catch {
+                    }
+                }
+
+                block(results);
+            }
+            catch {
+                block([]);
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import ExtraDataStructures
 
 public let LongTaskProgressChanged = "LongTaskProgressChanged";
 public let LongTaskStatusChanged   = "LongTaskStatusChanged";
@@ -59,7 +60,7 @@ public class LongTaskSheet: NSViewController {
             timer = nil;
         }
 
-        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_async_main {
             if let presenting = self.presentingViewController {
                 presenting.dismissViewController(self);
             }

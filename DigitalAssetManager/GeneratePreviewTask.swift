@@ -5,6 +5,7 @@
 //  Copyright © 2015 Fleur de Swift. All rights reserved.
 //
 
+import ExtraDataStructures
 import Foundation
 import VLCKit
 
@@ -132,7 +133,7 @@ public class GeneratePreviewTask : NSObject, LongTask {
     }
 
     internal func finish() {
-        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_async_main {
             self.progress = 1.0;
             NSNotificationCenter.defaultCenter().postNotificationName(LongTaskProgressChanged, object: self);
             self.completionBlock(images: self.results);
@@ -159,7 +160,7 @@ public class GeneratePreviewTask : NSObject, LongTask {
     private func stepFinished(adv: Int = 1) {
         let totalStep = fileCount * (2 + (captureCount * 2));
 
-        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_async_main {
             self.step += adv;
             self.progress = min(0.999, Double(self.step) / Double(totalStep));
             NSNotificationCenter.defaultCenter().postNotificationName(LongTaskProgressChanged, object: self);
@@ -170,7 +171,7 @@ public class GeneratePreviewTask : NSObject, LongTask {
 
     internal(set) public var status: String {
         didSet {
-            dispatch_async(dispatch_get_main_queue()) {
+            dispatch_async_main {
                 NSNotificationCenter.defaultCenter().postNotificationName(LongTaskStatusChanged, object: self);
             }
         }

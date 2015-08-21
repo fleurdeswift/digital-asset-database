@@ -73,7 +73,7 @@ public class TagPaneController : NSViewController {
     }
         
     @IBAction
-    public func addTag(sender: AnyObject?) {
+    public func addTag(sender: AnyObject?) {/*
         if let sheet = addTagSheet {
             addTagName?.stringValue = "";
             self.view.window?.beginSheet(sheet) { (response: NSModalResponse) in
@@ -89,7 +89,7 @@ public class TagPaneController : NSViewController {
                     }
                 }
             }
-        }
+        }*/
     }
     
     @IBAction

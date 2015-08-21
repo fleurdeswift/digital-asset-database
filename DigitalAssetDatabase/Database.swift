@@ -19,9 +19,11 @@ public class Database {
     internal(set) public var handle: SQLQueuedDatabase!;
     internal(set) public var schemaVersion: Int = 0;
     internal(set) public var queue: dispatch_queue_t = dispatch_queue_create("Database", DISPATCH_QUEUE_CONCURRENT);
-    
-    public init(path: String) throws {
-        self.handle = try SQLQueuedDatabase(filename: path, flags: SQL.SQL_OPEN_READWRITE | SQL.SQL_OPEN_URI | SQL.SQL_OPEN_CREATE | SQL.SQL_OPEN_FULLMUTEX, vfs: nil);
+    internal(set) public var storageURL: NSURL;
+
+    public init(databasePath: String, storageURL: NSURL) throws {
+        self.storageURL = storageURL;
+        self.handle = try SQLQueuedDatabase(filename: databasePath, flags: SQL.SQL_OPEN_READWRITE | SQL.SQL_OPEN_URI | SQL.SQL_OPEN_CREATE | SQL.SQL_OPEN_FULLMUTEX, vfs: nil);
 
         do {
             try handle.read { (access: SQLRead) throws in

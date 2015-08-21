@@ -7,6 +7,7 @@
 
 import Cocoa
 import DigitalAssetDatabase;
+import ExtraDataStructures;
 
 public let DADTagAddedNotification        = "DADTagAdded";
 public let DADTagNameChangedNotification  = "DADTagNameChanged";
@@ -16,7 +17,7 @@ public let DAMFileDropped = "DAMFileDropped";
 
 public extension NSNotificationCenter {
     public class func postAsync(name: String, object: NSObject?, userInfo: [String: AnyObject]) {
-        dispatch_async(dispatch_get_main_queue()) {
+        dispatch_async_main {
             self.defaultCenter().postNotificationName(name, object: object, userInfo: userInfo);
         }
     }
@@ -59,7 +60,9 @@ public class Library : NSDocument {
     private var format = NSPropertyListFormat.XMLFormat_v1_0;
     private var databaseURL: NSURL!;
     private var storageURL:  NSURL!;
+    private(set) public var tokenDelegate: TagTokenDelegate!;
     private(set) public var database: Database!;
+    private var bridge: LibraryDatabaseBridge!;
 
     public override func readFromURL(url: NSURL, ofType typeName: String) throws {
         let data  = try NSData(contentsOfURL: url, options: NSDataReadingOptions());
@@ -72,8 +75,10 @@ public class Library : NSDocument {
             
             databaseURL = NSURL(string: config["DatabaseURL"] as! String, relativeToURL: url);
             storageURL  = NSURL(string: config["StorageURL"]  as! String, relativeToURL: url);
-            database    = try Database(path: databaseURL!.absoluteString);
+            database    = try Database(databasePath: databaseURL!.absoluteString, storageURL: storageURL);
             database.addDelegate(LibraryDatabaseBridge(library: self), strong: true)
+            
+            tokenDelegate = TagTokenDelegate(library: self);
         }
     }
 

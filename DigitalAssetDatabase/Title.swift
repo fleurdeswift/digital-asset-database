@@ -22,7 +22,7 @@ public class Title {
         }
     }
 
-    internal func setName(newValue: String, withAccess access: SQLWrite) throws {
+    public func setName(newValue: String, withAccess access: SQLWrite) throws {
         let statement = try access.prepare("UPDATE dad_title SET name = ? WHERE dad_title_id = ?")
         try statement.bind(newValue, atIndex: 1)
         try statement.bind(self.id,  atIndex: 2)
@@ -72,7 +72,7 @@ public class Title {
 
     public class func shared(id: String, fromDatabase database: Database, withAccess access: SQLRead) throws -> Title {
         return try titleCache.get(id) {
-            let statement = try access.prepare("SELECT dad_name from dad_title WHERE dad_id = ?")
+            let statement = try access.prepare("SELECT name from dad_title WHERE dad_title_id = ?")
             try statement.bind(id, atIndex: 1);
             try statement.step()
             return Title(id: id, name: statement.columnString(0)!, fromDatabase: database);

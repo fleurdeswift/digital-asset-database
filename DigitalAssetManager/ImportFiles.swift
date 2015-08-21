@@ -7,6 +7,7 @@
 
 import Cocoa
 import DigitalAssetDatabase
+import ExtraDataStructures
 import SQL
 import VLCKit
 
@@ -100,7 +101,7 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
                 return;
             }
 
-            dispatch_async(dispatch_get_main_queue()) {
+            dispatch_async_main {
                 var errorText: String = "";
 
                 for (url, error) in openErrors {

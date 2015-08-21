@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ResultViewController" customModule="DigitalAssetManager" customModuleProvider="target">
             <connections>
-                <outlet property="tableView" destination="R01-Ng-C16" id="DN0-Xf-Z35"/>
+                <outlet property="tableView" destination="R01-Ng-C16" id="mI2-sn-tLL"/>
                 <outlet property="titleInstances" destination="OAt-nb-STI" id="cHa-p5-BBM"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>

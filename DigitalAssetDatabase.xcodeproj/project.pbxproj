@@ -51,6 +51,8 @@
 		7B30E96B1B85972200523460 /* TitleInstanceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */; };
 		7B30E96C1B85A2A800523460 /* BlankAreaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E96E1B85A2A800523460 /* BlankAreaViewController.xib */; };
 		7B30E96F1B85A2B800523460 /* ResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E9711B85A2B800523460 /* ResultViewController.xib */; };
+		7B30E9731B85BAB300523460 /* TitleInstanceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */; };
+		7B39A7011B866B9600B4CAE9 /* TagTokenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */; };
 		7B6CCF051B6DE07B00AE0438 /* ExtraAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; };
 		7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */; };
 		7B6CCF171B6E827800AE0438 /* ExtraAppKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -147,6 +149,8 @@
 		7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceDataSource.swift; sourceTree = "<group>"; };
 		7B30E96D1B85A2A800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BlankAreaViewController.xib; sourceTree = "<group>"; };
 		7B30E9701B85A2B800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ResultViewController.xib; sourceTree = "<group>"; };
+		7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceCellView.swift; sourceTree = "<group>"; };
+		7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTokenDelegate.swift; sourceTree = "<group>"; };
 		7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ExtraAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagPaneController.swift; sourceTree = "<group>"; };
 		7B6F4CCB1B6F329900286C9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TagPane.xib; sourceTree = "<group>"; };
@@ -301,7 +305,9 @@
 				7B6F4CCC1B6F329900286C9A /* TagPane.xib */,
 				7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */,
 				7B14B4B91B6DA660007B8840 /* TagSource.swift */,
+				7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */,
 				7B30E9691B8590CC00523460 /* TitleInstance.xib */,
+				7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */,
 				7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */,
 				7B14B46A1B6D75FC007B8840 /* ViewController.swift */,
 				7B1A42431B856FC200C65DB7 /* WorkAreaView.swift */,
@@ -497,6 +503,8 @@
 				7B1F0B451B80F243006FD3FE /* NavigationBarItemRoot.swift in Sources */,
 				7BDA4CEF1B812191000CA651 /* ImportFiles.swift in Sources */,
 				7B1A422C1B845CF500C65DB7 /* WorkAreaViewController.swift in Sources */,
+				7B39A7011B866B9600B4CAE9 /* TagTokenDelegate.swift in Sources */,
+				7B30E9731B85BAB300523460 /* TitleInstanceCellView.swift in Sources */,
 				7B1F0B1E1B803DB8006FD3FE /* NavigationBarItem.swift in Sources */,
 				7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */,
 				7B1A42441B856FC200C65DB7 /* WorkAreaView.swift in Sources */,

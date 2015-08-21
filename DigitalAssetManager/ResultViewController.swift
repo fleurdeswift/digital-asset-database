@@ -15,9 +15,7 @@ public class ResultViewController: NSViewController {
     public weak var titleInstances: TitleInstanceDataSource!;
 
     public class func create() -> ResultViewController {
-        let controller = ResultViewController(nibName:"ResultViewController", bundle: NSBundle.mainBundle())!;
-
-        return controller;
+        return ResultViewController(nibName:"ResultViewController", bundle: NSBundle.mainBundle())!;
     }
 
     public override func loadView() {
