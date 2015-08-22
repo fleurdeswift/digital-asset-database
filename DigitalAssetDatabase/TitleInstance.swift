@@ -255,6 +255,23 @@ public class TitleInstance {
         return 0;
     }
 
+    public func scenes(access: SQLRead) -> [TagInstance] {
+        do {
+            let statement = try access.prepare("SELECT * FROM dad_tag_instance WHERE dad_title_instance_id = '\(self.id)' AND dad_tag_id = '\(StandardTagID.Scene.rawValue)'")
+            var results   = [TagInstance]();
+
+            while try statement.step() {
+                try results.append(TagInstance.shared(statement, fromDatabase: database, withAccess: access))
+            }
+
+            return results;
+        }
+        catch {
+        }
+
+        return [];
+    }
+
     public func previews(access: SQLRead) -> [NSURL] {
         do {
             let statement = try access.prepare("SELECT data FROM dad_tag_instance WHERE dad_title_instance_id = '\(self.id)' AND dad_tag_id = '\(StandardTagID.Preview.rawValue)' ORDER BY start")

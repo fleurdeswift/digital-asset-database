@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import DigitalAssetDatabase
 
 public extension NSView {
     public func enumerateSubviews(@noescape block: (NSView) -> Bool) -> Bool {
@@ -72,7 +73,7 @@ public class LibraryWindowController : NSWindowController {
 
     @objc
     public func navigationBarSelectionChanged(notification: NSNotification) {
-        if let item = notification.userInfo?["Item"] as? NavigationBarItem {
+        if let item = notification.userInfo?["Item"] {
             workAreaViewController.navigateTo(item);
         }
     }

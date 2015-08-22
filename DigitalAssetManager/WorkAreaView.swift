@@ -24,12 +24,12 @@ public class WorkAreaView : NSView {
         super.setFrameSize(size);
 
         if let v = contentView {
-            v.frame = self.bounds;
+            v.setFrameSize(size);
         }
     }
 
     public override func drawRect(dirtyRect: NSRect) {
-        NSColor.blackColor().setFill();
+        NSColor(genericGamma22White: 0.2, alpha: 1.0).setFill();
         NSRectFill(dirtyRect);
     }
 
@@ -40,8 +40,10 @@ public class WorkAreaView : NSView {
             }
 
             if let newView = newValue {
-                self.addSubview(newView);
+                newView.autoresizingMask = NSAutoresizingMaskOptions.ViewNotSizable;
+                newView.translatesAutoresizingMaskIntoConstraints = true;
                 newView.frame = self.bounds;
+                self.addSubview(newView);
             }
         }
     }

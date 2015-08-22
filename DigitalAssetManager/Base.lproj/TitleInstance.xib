@@ -28,7 +28,7 @@
                             <rect key="frame" x="0.0" y="83" width="327" height="17"/>
                             <subviews>
                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iLY-i7-3wc">
-                                    <rect key="frame" x="-2" y="0.0" width="238" height="17"/>
+                                    <rect key="frame" x="-2" y="0.0" width="240" height="17"/>
                                     <animations/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Title" id="9Hp-RF-RvX">
                                         <font key="font" metaFont="system"/>
@@ -37,11 +37,11 @@
                                     </textFieldCell>
                                 </textField>
                                 <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-h2-4XE">
-                                    <rect key="frame" x="238" y="0.0" width="40" height="17"/>
+                                    <rect key="frame" x="240" y="0.0" width="38" height="16"/>
                                     <animations/>
-                                    <buttonCell key="cell" type="inline" title="Inline" bezelStyle="inline" alignment="center" controlSize="small" borderStyle="border" inset="2" id="3dL-hD-wWT">
+                                    <buttonCell key="cell" type="inline" title="Inline" bezelStyle="inline" alignment="center" controlSize="mini" borderStyle="border" inset="2" id="3dL-hD-wWT">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="smallSystem"/>
+                                        <font key="font" metaFont="system" size="10"/>
                                     </buttonCell>
                                 </button>
                                 <textField horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VIs-LB-OaK">

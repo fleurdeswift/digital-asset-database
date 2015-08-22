@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B0294C61B870278001E4604 /* AnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0294C41B870278001E4604 /* AnnotationViewController.swift */; };
+		7B0294C81B87028A001E4604 /* AnnotationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B0294CA1B87028A001E4604 /* AnnotationViewController.xib */; };
 		7B14B4211B6C7EDB007B8840 /* DigitalAssetDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B14B4201B6C7EDB007B8840 /* DigitalAssetDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B14B4281B6C7EDB007B8840 /* DigitalAssetDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B14B41D1B6C7EDB007B8840 /* DigitalAssetDatabase.framework */; };
 		7B14B42D1B6C7EDB007B8840 /* DigitalAssetDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B14B42C1B6C7EDB007B8840 /* DigitalAssetDatabaseTests.swift */; };
@@ -104,6 +106,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7B0294C41B870278001E4604 /* AnnotationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationViewController.swift; sourceTree = "<group>"; };
+		7B0294C91B87028A001E4604 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AnnotationViewController.xib; sourceTree = "<group>"; };
 		7B14B41D1B6C7EDB007B8840 /* DigitalAssetDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DigitalAssetDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B14B4201B6C7EDB007B8840 /* DigitalAssetDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DigitalAssetDatabase.h; sourceTree = "<group>"; };
 		7B14B4221B6C7EDB007B8840 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -267,6 +271,8 @@
 			isa = PBXGroup;
 			children = (
 				7B30E9631B858F5E00523460 /* AnimatedImagePreview.swift */,
+				7B0294C41B870278001E4604 /* AnnotationViewController.swift */,
+				7B0294CA1B87028A001E4604 /* AnnotationViewController.xib */,
 				7B14B4681B6D75FC007B8840 /* AppDelegate.swift */,
 				7B14B46C1B6D75FC007B8840 /* Assets.xcassets */,
 				7B1A423D1B85557400C65DB7 /* BlankAreaViewController.swift */,
@@ -462,6 +468,7 @@
 				7BDA4CF11B81219F000CA651 /* ImportFiles.xib in Resources */,
 				7BC742F11B8285EA00279393 /* LongTaskSheet.xib in Resources */,
 				7B1A422A1B84592900C65DB7 /* DropBoxView.xib in Resources */,
+				7B0294C81B87028A001E4604 /* AnnotationViewController.xib in Resources */,
 				7B1A42261B8458EE00C65DB7 /* DropBoxTitleInstance.xib in Resources */,
 				7B1F0B251B804BBF006FD3FE /* NavigationBarController.xib in Resources */,
 			);
@@ -508,6 +515,7 @@
 				7B1F0B1E1B803DB8006FD3FE /* NavigationBarItem.swift in Sources */,
 				7B14B4BA1B6DA660007B8840 /* TagSource.swift in Sources */,
 				7B1A42441B856FC200C65DB7 /* WorkAreaView.swift in Sources */,
+				7B0294C61B870278001E4604 /* AnnotationViewController.swift in Sources */,
 				7B30E96B1B85972200523460 /* TitleInstanceDataSource.swift in Sources */,
 				7BC742F01B8285EA00279393 /* LongTaskSheet.swift in Sources */,
 				7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */,
@@ -542,6 +550,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		7B0294CA1B87028A001E4604 /* AnnotationViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7B0294C91B87028A001E4604 /* Base */,
+			);
+			name = AnnotationViewController.xib;
+			sourceTree = "<group>";
+		};
 		7B14B46E1B6D75FC007B8840 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

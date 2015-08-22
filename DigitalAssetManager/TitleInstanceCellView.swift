@@ -104,4 +104,13 @@ public class TitleInstanceCellView : NSTableCellView {
             }
         }
     }
+
+    public override func mouseDown(event: NSEvent) {
+        if event.clickCount == 2 {
+            NSNotificationCenter.defaultCenter().postNotificationName(NavigationBarSelectionChanged, object: self.window, userInfo: ["Item": self.titleInstance])
+            return;
+        }
+
+        super.mouseDown(event);
+    }
 }

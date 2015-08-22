@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A261" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="eBh-v0-ji2">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A271" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="eBh-v0-ji2">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
@@ -57,7 +57,7 @@
                         <splitViewItem id="7KP-4L-xaw"/>
                         <splitViewItem id="3qO-UT-G9t"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="PX3-Ov-13P" customClass="LibraryRootView" customModule="DigitalAssetManager" customModuleProvider="target">
+                    <splitView key="splitView" identifier="TopLevelSplitView" dividerStyle="thin" vertical="YES" id="PX3-Ov-13P" customClass="LibraryRootView" customModule="DigitalAssetManager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -75,7 +75,7 @@
         <scene sceneID="caZ-d7-cif">
             <objects>
                 <viewController id="wYP-dD-yJ7" customClass="WorkAreaViewController" customModule="DigitalAssetManager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="NZ9-4p-jG4" customClass="WorkAreaView" customModule="DigitalAssetManager" customModuleProvider="target">
+                    <view key="view" identifier="WorkAreaView" id="NZ9-4p-jG4" customClass="WorkAreaView" customModule="DigitalAssetManager" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -89,7 +89,7 @@
         <scene sceneID="Quw-y8-I2j">
             <objects>
                 <viewController id="O0n-WM-een" customClass="NavigationBarController" customModule="DigitalAssetManager" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="XdS-IG-k0H">
+                    <view key="view" identifier="NavigationBarView" id="XdS-IG-k0H">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>

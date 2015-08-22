@@ -295,7 +295,7 @@ public extension TitleInstance {
         let statement = try access.prepare("SELECT * FROM dad_tag_instance WHERE dad_tag_id = ? AND dad_title_instance_id = ? ORDER BY start")
         try statement.bind(StandardTagID.File.rawValue, atIndex: 1);
         try statement.bind(self.id, atIndex: 2);
-            
+
         var f = [TagInstance]();
             
         while try statement.step() {
@@ -303,6 +303,10 @@ public extension TitleInstance {
         }
             
         return f;
+    }
+
+    public func filesURL(access: SQLRead) throws -> [NSURL] {
+        return try files(access).map { return self.url.URLByAppendingPathComponent($0.data!) }
     }
 }
 

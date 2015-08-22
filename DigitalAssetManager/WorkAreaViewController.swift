@@ -28,6 +28,9 @@ public class WorkAreaViewControllerDelegate : NSObject, NSPageControllerDelegate
         if let _ = object as? NavigationBarItemDropBox {
             return "ResultView";
         }
+        else if let _ = object as? TitleInstance {
+            return "AnnotationView"
+        }
 
         return "BlankArea";
     }
@@ -36,36 +39,22 @@ public class WorkAreaViewControllerDelegate : NSObject, NSPageControllerDelegate
         if identifier == "ResultView" {
             return ResultViewController.create();
         }
+        else if identifier == "AnnotationView" {
+            return AnnotationViewController.create();
+        }
 
         return BlankAreaViewController.create();
     }
 
     public func pageController(pageController: NSPageController, prepareViewController viewController: NSViewController, withObject object: AnyObject) {
         if let database = self.database {
-            if let _ = object as? NavigationBarItemDropBox, resultView = viewController as? ResultViewController {
-                resultView.loadView();
-                let tableView  = resultView.tableView;
-                let dataSource = tableView.dataSource() as! TitleInstanceDataSource;
-
-                database.dropBox(1000) { (instances: [TitleInstance]) in
-                    dispatch_async_main {
-                        dataSource.titleInstances = instances;
-                        tableView.reloadData();
-                    }
-                }
-            }
+            viewController.representedObject = [
+                "database": database,
+                "object":   object,
+            ];
         }
     }
 };
-
-public extension NSView {
-    public func addFillContraintsForChild(otherView: NSView) {
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Top,      relatedBy: NSLayoutRelation.Equal, toItem: otherView, attribute: NSLayoutAttribute.Top,      multiplier: 1, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Leading,  relatedBy: NSLayoutRelation.Equal, toItem: otherView, attribute: NSLayoutAttribute.Leading,  multiplier: 1, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Bottom,   relatedBy: NSLayoutRelation.Equal, toItem: otherView, attribute: NSLayoutAttribute.Bottom,   multiplier: 1, constant: 0))
-        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: otherView, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 0))
-    }
-}
 
 public class WorkAreaViewController : NSViewController {
     private var currentObject: AnyObject?;
