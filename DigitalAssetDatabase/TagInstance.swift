@@ -181,6 +181,18 @@ public class TagInstance : Hashable, CustomStringConvertible {
                          withAccess: access);
     }
 
+    public convenience init(createWithTag tag: Tag, atTime time: TimeRange, titleInstance: TitleInstance, inDatabase database: Database, withAccess access: SQLWrite) throws {
+        try self.init(createWithTag: tag,
+                              title: titleInstance.title,
+                      titleInstance: titleInstance,
+                          parentTag: nil,
+                  parentTagInstance: nil,
+                               time: time,
+                               data: nil,
+                           database: database,
+                         withAccess: access);
+    }
+
     public init(createWithTag tag: Tag, title: Title?, titleInstance: TitleInstance?, parentTag: Tag?, parentTagInstance: TagInstance?, time: TimeRange?, data: String?, database: Database, withAccess access: SQLWrite) throws {
         self.id                 = Database.createNewID();
         self._tag               = tag;

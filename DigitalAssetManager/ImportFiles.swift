@@ -46,11 +46,12 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
     private let queue  = dispatch_queue_create("org.fds.ImportFiles", DISPATCH_QUEUE_SERIAL);
     private var infos  = [NSURL: (codec: String, duration: NSTimeInterval)]();
 
-    @IBOutlet public weak var tableView: NSTableView?;
-    @IBOutlet public weak var filesAreScenes: NSButton?;
     @IBOutlet public weak var playButton: NSButton?;
-    @IBOutlet public weak var scrubber: NSSlider?;
-    @IBOutlet public weak var video: VLCView?;
+    @IBOutlet public weak var groupType:  NSPopUpButton!;
+    @IBOutlet public weak var tableView:  NSTableView?;
+    @IBOutlet public weak var tokens:     NSTokenField!;
+    @IBOutlet public weak var scrubber:   NSSlider?;
+    @IBOutlet public weak var video:      VLCView?;
 
     private var mediaPlayer: VLCMediaPlayer?;
 
@@ -76,11 +77,14 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
             tv.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal:true);
             tv.setDraggingSourceOperationMask(NSDragOperation.Every, forLocal:false);
         }
+
+        tokens.delegate               = library.tokenDelegate;
+        tokens.tokenizingCharacterSet = tagSeparators;
     }
 
     private func parseMedias() {
         dispatch_async(queue) {
-            var openErrors = [NSURL: ErrorType]();
+            var openErrors         = [NSURL: ErrorType]();
             let notificationCenter = NSNotificationCenter.defaultCenter();
 
             for url in self.urls {
@@ -288,7 +292,7 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
         return errors;
     }
 
-    private func produceFileMap() -> [TitleInstanceFile] {
+    private func produceFileMap(urls: [NSURL]) -> [TitleInstanceFile] {
         var results = [TitleInstanceFile]();
 
         for url in urls {
@@ -305,14 +309,53 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
         return results;
     }
 
-    private func produceMoveMap(titleInstance: TitleInstance) -> [NSURL: NSURL] {
+    private func produceMoveMap(titleInstance: TitleInstance, urls: [NSURL]) -> [NSURL: NSURL] {
         var moves = [NSURL: NSURL]();
 
-        for url in self.urls {
+        for url in urls {
             moves[url] = self.library.urlFor(titleInstance, create: true).URLByAppendingPathComponent(url.lastPathComponent!);
         }
 
         return moves;
+    }
+
+    private func produceImageMap(titleInstance: TitleInstance, urls: [NSURL]) -> [NSURL: NSURL] {
+        var moves = [NSURL: NSURL]();
+
+        for url in urls {
+            moves[url] = self.library.urlFor(titleInstance, create: true).URLByAppendingPathComponent(url.lastPathComponent!);
+        }
+
+        return moves;
+    }
+
+    private func produceTags(database: Database, withAccess access: SQLWrite) throws -> [AnyObject] {
+        var results: [AnyObject] = [try Tag.shared(StandardTagID.DropBox.rawValue, fromDatabase: database, withAccess: access)];
+
+        if let tokens = self.tokens.objectValue {
+            if let a = tokens as? [AnyObject] {
+                for token in a {
+                    results.append(token);
+                }
+            }
+        }
+
+        return results;
+    }
+
+    private func importFileAllFilesIsTitle(images: [NSURL: (image: CGImageRef?, error: NSError?)], filesAreScene: Bool, withAccess access: SQLWrite) throws -> ([TitleInstance], [NSURL: NSURL], [NSURL: CGImageRef]) {
+        let database      = self.library.database;
+        let title         = try Title(createWithName: self.urls[0].lastPathComponent!, inDatabase: database, withAccess: access);
+        let titleInstance = try TitleInstance(createWithFiles: self.produceFileMap(urls), tags: self.produceTags(database, withAccess: access), title: title, filesAreScene: filesAreScene, inDatabase: database, withAccess: access)
+        var outputImages  = [NSURL: CGImageRef]();
+
+        for (url, pair) in images {
+            if let image = pair.image {
+                outputImages[self.previewURL(titleInstance, movieFile: url)] = image;
+            }
+        }
+
+        return ([titleInstance], self.produceMoveMap(titleInstance, urls: self.urls), outputImages);
     }
 
     private func previewURL(titleInstance: TitleInstance, movieFile: NSURL) -> NSURL {
@@ -321,9 +364,43 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
         return instanceURL.URLByAppendingPathComponent(previewName);
     }
 
+    private func importFileEveryFileIsTitle(images: [NSURL: (image: CGImageRef?, error: NSError?)], withAccess access: SQLWrite) throws -> ([TitleInstance], [NSURL: NSURL], [NSURL: CGImageRef]) {
+        let database      = self.library.database;
+        let tags          = try self.produceTags(database, withAccess: access);
+        var outputImages  = [NSURL: CGImageRef]();
+        var moves         = [NSURL: NSURL]();
+        var titles        = [TitleInstance]();
+
+        for url in urls {
+            let urls          = [url];
+            let title         = try Title(createWithName: url.lastPathComponent!, inDatabase: database, withAccess: access);
+            let titleInstance = try TitleInstance(createWithFiles: self.produceFileMap(urls), tags: tags, title: title, filesAreScene: false, inDatabase: database, withAccess: access)
+
+            for (newSource, newDestination) in produceMoveMap(titleInstance, urls: urls) {
+                moves[newSource] = newDestination;
+            }
+
+            if let pair = images[url] {
+                if let image = pair.image {
+                    outputImages[self.previewURL(titleInstance, movieFile: url)] = image;
+                }
+            }
+
+            titles.append(titleInstance);
+        }
+
+        return (titles, moves, outputImages);
+    }
+
     @IBAction
     public func importFiles(sender: AnyObject?) {
         let presentingViewController = self.presentingViewController;
+        let importType               = self.groupType.selectedTag();
+
+        if importType == -1 {
+            NSAlert(error: NSError(domain: NSPOSIXErrorDomain, code: Int(EINVAL), userInfo: nil)).runModal();
+            return;
+        }
 
         if let parentView = presentingViewController {
             parentView.dismissViewController(self);
@@ -339,23 +416,29 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
             let database = self.library.database;
             do {
                 try database.handle.write { (access: SQLWrite) throws in
-                    let title         = try Title(createWithName: self.urls[0].lastPathComponent!, inDatabase: database, withAccess: access);
-                    let dropBoxTag    = try Tag.shared(StandardTagID.DropBox.rawValue, fromDatabase: database, withAccess: access);
-                    let titleInstance = try TitleInstance(createWithFiles: self.produceFileMap(), tags: [dropBoxTag], title: title, inDatabase: database, withAccess: access)
+                    var results: ([TitleInstance], [NSURL: NSURL], [NSURL: CGImageRef]);
 
-                    let moves = self.produceMoveMap(titleInstance);
+                    switch importType {
+                    case 1:
+                        results = try self.importFileAllFilesIsTitle(images, filesAreScene: true, withAccess: access);
+                        break;
+                    case 2:
+                        results = try self.importFileAllFilesIsTitle(images, filesAreScene: false, withAccess: access);
+                        break;
+                    default:
+                        results = try self.importFileEveryFileIsTitle(images, withAccess: access);
+                        break;
+                    }
 
-                    try MoveFileTask.moveFiles(moves, presentingViewController: presentingViewController!) {
+                    try MoveFileTask.moveFiles(results.1, presentingViewController: presentingViewController!) {
                         (errors: [NSURL: NSError]?) -> Void in
                             if let errors = errors {
                                 NSAlert(infoText: "Failed to move files", urls: errors).runModal();
                             }
                     }
 
-                    for (url, pair) in images {
-                        if let image = pair.image {
-                            CGImageWriteToJPEG(image, self.previewURL(titleInstance, movieFile: url));
-                        }
+                    for (url, image) in results.2 {
+                        CGImageWriteToJPEG(image, url);
                     }
                 }
             }

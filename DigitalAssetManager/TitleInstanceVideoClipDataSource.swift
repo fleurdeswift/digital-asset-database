@@ -44,7 +44,7 @@ public class TitleInstanceVideoClipDataSource : NSObject, VideoClipDataSource {
 
     public var sampleRate: NSTimeInterval {
         get {
-            return clamp(titleInstance.duration, 0.5, 5);
+            return clamp(titleInstance.duration, 1, 10);
         }
     };
 }

@@ -65,10 +65,15 @@ public class TagTokenDelegate : NSObject, NSTokenFieldDelegate {
     }
 
     public func tokenField(tokenField: NSTokenField, completionsForSubstring substring: String, indexOfToken tokenIndex: Int, indexOfSelectedItem selectedIndex: UnsafeMutablePointer<Int>) -> [AnyObject]? {
-        let filtered = self.tags.filter { $0.name.containsSubstringCI(substring) }
+        var filtered = self.tags.filter { $0.name.containsSubstringCI(substring) }
+
+        filtered.sortInPlace { return $0.name ^< $1.name; }
 
         if let indexOf = filtered.indexOf({ $0.name.hasPrefix(substring) }) {
             selectedIndex.memory = indexOf;
+        }
+        else {
+            selectedIndex.memory = -1;
         }
 
         return filtered.map { return $0.name };

@@ -57,6 +57,9 @@
 		7B36B0951B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */; };
 		7B36B0971B894220009FBE7B /* TitleInstanceVideoClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */; };
 		7B36B0991B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */; };
+		7B36B0BD1B896EEC009FBE7B /* AnnotationPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0BB1B896EEC009FBE7B /* AnnotationPickerController.swift */; };
+		7B36B0BE1B896EEC009FBE7B /* AnnotationPickerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B36B0BC1B896EEC009FBE7B /* AnnotationPickerController.xib */; };
+		7B36B0C01B898ADE009FBE7B /* TitleInstanceVideoClipAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0BF1B898ADE009FBE7B /* TitleInstanceVideoClipAnnotation.swift */; };
 		7B39A7011B866B9600B4CAE9 /* TagTokenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */; };
 		7B6CCF051B6DE07B00AE0438 /* ExtraAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; };
 		7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */; };
@@ -160,6 +163,9 @@
 		7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipDataSource.swift; sourceTree = "<group>"; };
 		7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClip.swift; sourceTree = "<group>"; };
 		7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipDelegate.swift; sourceTree = "<group>"; };
+		7B36B0BB1B896EEC009FBE7B /* AnnotationPickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnotationPickerController.swift; sourceTree = "<group>"; };
+		7B36B0BC1B896EEC009FBE7B /* AnnotationPickerController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnnotationPickerController.xib; sourceTree = "<group>"; };
+		7B36B0BF1B898ADE009FBE7B /* TitleInstanceVideoClipAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipAnnotation.swift; sourceTree = "<group>"; };
 		7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTokenDelegate.swift; sourceTree = "<group>"; };
 		7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ExtraAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagPaneController.swift; sourceTree = "<group>"; };
@@ -277,6 +283,8 @@
 			isa = PBXGroup;
 			children = (
 				7B30E9631B858F5E00523460 /* AnimatedImagePreview.swift */,
+				7B36B0BB1B896EEC009FBE7B /* AnnotationPickerController.swift */,
+				7B36B0BC1B896EEC009FBE7B /* AnnotationPickerController.xib */,
 				7B0294C41B870278001E4604 /* AnnotationViewController.swift */,
 				7B0294CA1B87028A001E4604 /* AnnotationViewController.xib */,
 				7B14B4681B6D75FC007B8840 /* AppDelegate.swift */,
@@ -322,6 +330,7 @@
 				7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */,
 				7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */,
 				7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */,
+				7B36B0BF1B898ADE009FBE7B /* TitleInstanceVideoClipAnnotation.swift */,
 				7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */,
 				7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */,
 				7B14B46A1B6D75FC007B8840 /* ViewController.swift */,
@@ -469,6 +478,7 @@
 			files = (
 				7B30E96C1B85A2A800523460 /* BlankAreaViewController.xib in Resources */,
 				7B30E9671B8590CC00523460 /* TitleInstance.xib in Resources */,
+				7B36B0BE1B896EEC009FBE7B /* AnnotationPickerController.xib in Resources */,
 				7B6F4CCA1B6F329900286C9A /* TagPane.xib in Resources */,
 				7B14B46D1B6D75FC007B8840 /* Assets.xcassets in Resources */,
 				7B14B4B61B6D87E0007B8840 /* Library.storyboard in Resources */,
@@ -529,6 +539,7 @@
 				7BC742F01B8285EA00279393 /* LongTaskSheet.swift in Sources */,
 				7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */,
 				7BC742F41B82D81C00279393 /* NSSize+AspectRatio.swift in Sources */,
+				7B36B0C01B898ADE009FBE7B /* TitleInstanceVideoClipAnnotation.swift in Sources */,
 				7B36B0991B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift in Sources */,
 				7BC742F61B82D85900279393 /* GeneratePreviewTask.swift in Sources */,
 				7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */,
@@ -547,6 +558,7 @@
 				7B14B4801B6D813B007B8840 /* Library.swift in Sources */,
 				7B36B0951B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift in Sources */,
 				7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */,
+				7B36B0BD1B896EEC009FBE7B /* AnnotationPickerController.swift in Sources */,
 				7B1A42311B846B4F00C65DB7 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

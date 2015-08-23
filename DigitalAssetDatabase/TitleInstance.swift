@@ -104,7 +104,7 @@ public class TitleInstance {
         _dateModified = newValue;
     }
 
-    public init(createWithFiles files: [TitleInstanceFile], tags: [Tag]?, title: Title?, inDatabase database: Database, withAccess access: SQLWrite) throws {
+    public init(createWithFiles files: [TitleInstanceFile], tags: [AnyObject]?, title: Title?, filesAreScene: Bool, inDatabase database: Database, withAccess access: SQLWrite) throws {
         var duration: Double = 0;
     
         for file in files {
@@ -147,6 +147,7 @@ public class TitleInstance {
 
         let fileTag    = StandardTagID.File.rawValue;
         let previewTag = StandardTagID.Preview.rawValue;
+        let sceneTag   = StandardTagID.Scene.rawValue;
 
         for file in files {
             var tagInstanceID = Database.createNewID();
@@ -166,20 +167,33 @@ public class TitleInstance {
             try statement.bind(file.previewFileName, atIndex: 7);
             try statement.step();
             try statement.reset();
+
+            if filesAreScene {
+                tagInstanceID = Database.createNewID();
+            
+                try statement.bind(tagInstanceID, atIndex: 1);
+                try statement.bind(sceneTag,      atIndex: 2);
+                try statement.bindNull(7);
+                try statement.step();
+                try statement.reset();
+            }
         }
 
         if let tags = tags {
+            let tagsNormalized = database.normalizeTagTokens(tags, withAccess: access);
             try statement.bindNull(5); // start
             try statement.bindNull(6); // end
             try statement.bindNull(7); // data
 
-            for tag in tags {
-                let tagInstanceID = Database.createNewID();
-            
-                try statement.bind(tagInstanceID, atIndex: 1);
-                try statement.bind(tag.id,        atIndex: 2);
-                try statement.step();
-                try statement.reset();
+            for tagAny in tagsNormalized {
+                if let tag = tagAny as? Tag {
+                    let tagInstanceID = Database.createNewID();
+                
+                    try statement.bind(tagInstanceID, atIndex: 1);
+                    try statement.bind(tag.id,        atIndex: 2);
+                    try statement.step();
+                    try statement.reset();
+                }
             }
         }
 
@@ -305,6 +319,36 @@ public class TitleInstance {
         return results;
     }
 
+    public func getTimedTagInstances(time: TimeRange?, withAccess access: SQLRead) throws -> [TagInstance] {
+        let sql       = "SELECT * FROM dad_tag_instance WHERE dad_title_instance_id = '\(self.id)' AND start IS NOT NULL AND end IS NOT NULL AND dad_tag_id NOT IN (\(StandardTagIDs))";
+        let statement = try access.prepare(sql);
+        var results   = [TagInstance]();
+
+        while try statement.step() {
+            results.append(try TagInstance.shared(statement, fromDatabase: database, withAccess: access));
+        }
+
+        return results;
+    }
+
+    public func setTags(tokens: [AnyObject], atTime time: TimeRange, withAccess access: SQLWrite) throws -> [TagInstance] {
+        let tags    = database.normalizeTagTokens(tokens, withAccess: access);
+        var results = [TagInstance]();
+
+        for entry in tags {
+            if let tag = entry as? Tag {
+                results.append(try TagInstance(createWithTag: tag, atTime: time, titleInstance: self, inDatabase: database, withAccess: access));
+            }
+            else if let tagInstance = entry as? TagInstance {
+                try tagInstance.setTime(time, withAccess: access);
+                results.append(tagInstance);
+            }
+        }
+
+        database.fireTitleInstanceTagsChanged(self, tags: results)
+        return results;
+    }
+
     public func setTags(tokens: [AnyObject], withAccess access: SQLWrite) throws -> [TagInstance] {
         let currentInstances = Set<TagOrInstance>(try getTagInstances(ignoreSpecialTags: true, withAccess: access).map({ return TagOrInstance.Instance(instance: $0) }));
         if currentInstances.count == 0 && tokens.count == 0 {
@@ -405,6 +449,12 @@ private func == (o1: TagOrInstance, o2: TagOrInstance) -> Bool {
 }
 
 public extension Database {
+    internal func fireTitleInstanceTagsChanged(titleInstance: TitleInstance, tags: [TagInstance]) {
+        for delegate in delegates {
+            delegate.titleInstanceTagsChanged(titleInstance, tags: tags);
+        }
+    }
+
     public func createTitleInstanceTable(access: SQLWrite) throws {
         let sql = "CREATE TABLE dad_title_instance(\n" +
             "  dad_title_instance_id VARCHAR(64) PRIMARY KEY,\n" +

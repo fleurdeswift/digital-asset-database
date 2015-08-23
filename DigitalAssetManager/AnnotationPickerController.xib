@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A271" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="AnnotationPickerController" customModule="DigitalAssetManager" customModuleProvider="target">
+            <connections>
+                <outlet property="tokens" destination="IZX-gb-wfA" id="VkO-dJ-dzP"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <tokenField focusRingType="none" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IZX-gb-wfA">
+                    <rect key="frame" x="18" y="17" width="444" height="16"/>
+                    <animations/>
+                    <tokenFieldCell key="cell" selectable="YES" editable="YES" focusRingType="none" alignment="left" placeholderString="Tags" allowsEditingTextAttributes="YES" usesSingleLineMode="YES" id="7nr-db-7Bu">
+                        <font key="font" metaFont="cellTitle"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </tokenFieldCell>
+                    <connections>
+                        <action selector="saveTags:" target="-2" id="h3L-oy-O7Z"/>
+                    </connections>
+                </tokenField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="IZX-gb-wfA" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="2bo-rT-YOI"/>
+                <constraint firstItem="IZX-gb-wfA" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" symbolic="YES" id="4ol-aU-BJ9"/>
+                <constraint firstAttribute="trailing" secondItem="IZX-gb-wfA" secondAttribute="trailing" constant="20" symbolic="YES" id="vOZ-NJ-eag"/>
+            </constraints>
+            <animations/>
+            <point key="canvasLocation" x="242" y="162.5"/>
+        </customView>
+    </objects>
+</document>

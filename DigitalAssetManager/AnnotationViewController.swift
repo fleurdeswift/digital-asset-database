@@ -72,6 +72,64 @@ public class AnnotationViewController: NSViewController {
         }
     }
 
+    private var library: Library? {
+        get {
+            return self.view.window?.windowController?.document as? Library;
+        }
+    }
+
+    public func showAnnotationPicker(str: String, event: NSEvent) {
+        let selection     = self.annotations.selection;
+        //let currentTime   = self.annotations.currentTime;
+        let titleInstance = self.titleInstance;
+
+        if selection == nil {
+            return;
+        }
+
+        let popupController = AnnotationPickerController.create(self.library!) {
+            (tokens: [AnyObject]) -> Void in
+
+            if let selection = selection {
+                if let clip = selection.clip as? TitleInstanceVideoClip {
+                    titleInstance.database.handle.writeAsync { (access: SQLWrite) in
+                        do {
+                            try titleInstance.setTags(tokens, atTime:clip.toBackingTime(selection.time), withAccess:access);
+                        }
+                        catch {
+                        }
+                    }
+                }
+            }
+        }
+
+        let popup = NSPopover();
+        popup.behavior              = NSPopoverBehavior.Semitransient;
+        popup.appearance            = NSAppearance(named: NSAppearanceNameVibrantDark);
+        popup.contentViewController = popupController;
+        popup.showRelativeToRect(self.vlcView.bounds, ofView: self.vlcView, preferredEdge: NSRectEdge.MinY);
+        popupController.view.window?.sendEvent(event);
+    }
+
+    public override func viewDidAppear() {
+        if let library = self.library {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timedTagsChanged:"), name: DADTitleInstanceTagsChangedNotification, object: library);
+        }
+    }
+
+    @objc
+    private func timedTagsChanged(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let titleInstance = userInfo["TitleInstance"] as? TitleInstance {
+                if titleInstance !== self.titleInstance {
+                    return;
+                }
+
+                self.annotations.reloadData();
+            }
+        }
+    }
+
     public override func keyDown(ev: NSEvent) {
         if let characters = ev.charactersIgnoringModifiers {
             if characters == " " {
@@ -90,6 +148,19 @@ public class AnnotationViewController: NSViewController {
                 }
 
                 return;
+            }
+        }
+
+        let modifiers = ev.modifierFlags.intersect(NSEventModifierFlags.DeviceIndependentModifierFlagsMask);
+
+        if modifiers.isEmpty || modifiers == NSEventModifierFlags.ShiftKeyMask {
+            if let characters = ev.characters {
+                if let firstChar = characters.utf16.first {
+                    if (NSCharacterSet.alphanumericCharacterSet().characterIsMember(firstChar)) {
+                        showAnnotationPicker(characters, event: ev);
+                        return;
+                    }
+                }
             }
         }
 

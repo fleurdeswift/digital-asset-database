@@ -53,6 +53,7 @@ public enum StandardTagID : String {
     case Preview = "324b134f57c70c729ae3dc4d298bb451656717d70523e942c1ce667b8024ea07"
 }
 
+public let StandardTagIDs = "'\(StandardTagID.File.rawValue)','\(StandardTagID.Scene.rawValue)','\(StandardTagID.Preview.rawValue)'"
 private let tagCache = ReferenceCache<String, Tag>();
 
 public class Tag : CustomStringConvertible, Hashable {

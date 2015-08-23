@@ -9,9 +9,10 @@ import Cocoa
 import DigitalAssetDatabase;
 import ExtraDataStructures;
 
-public let DADTagAddedNotification        = "DADTagAdded";
-public let DADTagNameChangedNotification  = "DADTagNameChanged";
-public let DADTagTypeChangedNotification  = "DADTagTypeChanged";
+public let DADTagAddedNotification                  = "DADTagAdded";
+public let DADTagNameChangedNotification            = "DADTagNameChanged";
+public let DADTagTypeChangedNotification            = "DADTagTypeChanged";
+public let DADTitleInstanceTagsChangedNotification  = "DADTitleInstanceTagsChanged";
 
 public let DAMFileDropped = "DAMFileDropped";
 
@@ -51,6 +52,15 @@ private class LibraryDatabaseBridge : DatabaseDelegate {
             NSNotificationCenter.postAsync(DADTagTypeChangedNotification, object: library, userInfo: [
                 "Tag":     tag,
                 "OldType": oldType
+            ])
+        }
+    }
+
+    func titleInstanceTagsChanged(titleInstance: TitleInstance, tags: [TagInstance]) {
+        if let library = library {
+            NSNotificationCenter.postAsync(DADTitleInstanceTagsChangedNotification, object: library, userInfo: [
+                "TitleInstance": titleInstance,
+                "Tags":          tags
             ])
         }
     }

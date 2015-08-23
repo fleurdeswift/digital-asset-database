@@ -6,6 +6,8 @@
 //
 
 import DigitalAssetDatabase
+import ExtraDataStructures
+import SQL
 import VideoClipAnnotationEditor
 import VLCKit
 
@@ -22,13 +24,19 @@ public class TitleInstanceVideoClip : VideoClip {
         self.tagInstance = tagInstance;
     }
 
+    public var titleInstance: TitleInstance? {
+        get {
+            return dataSource?.titleInstance;
+        }
+    }
+
     public var duration: NSTimeInterval {
         get {
             if let time = tagInstance?.time {
                 return time.length;
             }
 
-            if let titleInstance = dataSource?.titleInstance {
+            if let titleInstance = self.titleInstance {
                 return titleInstance.duration;
             }
 
@@ -38,6 +46,21 @@ public class TitleInstanceVideoClip : VideoClip {
 
     public var annotations: [VideoClipAnnotation] {
         get {
+            if let titleInstance = self.titleInstance {
+                do {
+                    let results = try titleInstance.database.handle.read { (access: SQLRead) throws in
+                        return try titleInstance.getTimedTagInstances(self.tagInstance?.time, withAccess: access);
+                    }
+
+                    return results.map { return TitleInstanceVideoClipAnnotation(tagInstance: $0, delta: tagInstance?.time?.start) }
+                }
+                catch let error as SQLError {
+                    Swift.print(error);
+                }
+                catch {
+                }
+            }
+
             return [];
         }
     }
@@ -72,6 +95,14 @@ public class TitleInstanceVideoClip : VideoClip {
         }
 
         return time;
+    }
+
+    public func toBackingTime(timeRange: TimeRange) -> TimeRange {
+        if let time = tagInstance?.time {
+            return timeRange + time.start;
+        }
+
+        return timeRange;
     }
 
     public func imageAtTime(time: NSTimeInterval, completionBlock: (image: CGImageRef?, error: NSError?) -> NSTimeInterval) {

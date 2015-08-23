@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A261" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A271" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
@@ -7,10 +7,11 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ImportFiles" customModule="DigitalAssetManager" customModuleProvider="target">
             <connections>
-                <outlet property="filesAreScenes" destination="BOB-Tl-5oQ" id="FoS-Vi-aeZ"/>
+                <outlet property="groupType" destination="xlk-DQ-TSG" id="SMZ-qZ-mW0"/>
                 <outlet property="playButton" destination="wpo-Ek-5Kb" id="IAY-AP-YKY"/>
                 <outlet property="scrubber" destination="KSd-2h-Ppm" id="lbU-CU-vVc"/>
                 <outlet property="tableView" destination="gIA-Vs-hgQ" id="O7L-bm-O5E"/>
+                <outlet property="tokens" destination="mut-Ke-yMV" id="Kod-17-3Gf"/>
                 <outlet property="video" destination="ZeD-CG-DV8" id="pC8-fp-5qR"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -40,13 +41,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfV-F0-fwk">
-                                            <rect key="frame" x="20" y="61" width="591" height="142"/>
+                                            <rect key="frame" x="20" y="84" width="591" height="119"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Sxg-qF-NMk">
-                                                <rect key="frame" x="1" y="0.0" width="589" height="141"/>
+                                                <rect key="frame" x="1" y="0.0" width="589" height="118"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="aC3-gz-TQE" viewBased="YES" floatsGroupRows="NO" id="gIA-Vs-hgQ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="589" height="118"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="589" height="95"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <animations/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
@@ -246,32 +247,58 @@ DQ
                                                 <action selector="scrub:" target="-2" id="Kqc-Nb-jqg"/>
                                             </connections>
                                         </slider>
-                                        <button translatesAutoresizingMaskIntoConstraints="NO" id="BOB-Tl-5oQ">
-                                            <rect key="frame" x="17" y="38" width="164" height="18"/>
+                                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xlk-DQ-TSG">
+                                            <rect key="frame" x="18" y="47" width="229" height="26"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="224" id="6sk-lk-nsR"/>
+                                            </constraints>
                                             <animations/>
-                                            <buttonCell key="cell" type="check" title="Each file represent a scene" bezelStyle="regularSquare" imagePosition="left" controlSize="small" inset="2" id="JFr-m8-1LF">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="smallSystem"/>
-                                            </buttonCell>
-                                        </button>
+                                            <popUpButtonCell key="cell" type="push" title="Each file represents a title" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="xZI-Rw-4RV" id="8aX-5R-H5s">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="menu"/>
+                                                <menu key="menu" id="pig-YP-7Jx">
+                                                    <items>
+                                                        <menuItem title="Each file represents a title" state="on" id="xZI-Rw-4RV"/>
+                                                        <menuItem title="Each file represents a scene" tag="1" id="DSZ-Hd-rcH">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="All files represents a title" tag="2" id="pOD-Ir-WF5">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                    </items>
+                                                </menu>
+                                            </popUpButtonCell>
+                                        </popUpButton>
+                                        <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mut-Ke-yMV">
+                                            <rect key="frame" x="252" y="50" width="359" height="21"/>
+                                            <animations/>
+                                            <tokenFieldCell key="cell" selectable="YES" editable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="SHk-cS-0zv">
+                                                <font key="font" metaFont="cellTitle"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </tokenFieldCell>
+                                        </tokenField>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="jYt-q7-he1" secondAttribute="bottom" constant="20" symbolic="YES" id="0jG-Eb-yV4"/>
+                                        <constraint firstItem="n2B-4x-g9W" firstAttribute="top" secondItem="mut-Ke-yMV" secondAttribute="bottom" constant="9" id="3SL-AT-XqZ"/>
                                         <constraint firstItem="sfV-F0-fwk" firstAttribute="trailing" secondItem="KSd-2h-Ppm" secondAttribute="trailing" id="971-jC-uKM"/>
-                                        <constraint firstItem="BOB-Tl-5oQ" firstAttribute="leading" secondItem="sfV-F0-fwk" secondAttribute="leading" id="EMe-fz-oSu"/>
+                                        <constraint firstItem="mut-Ke-yMV" firstAttribute="trailing" secondItem="n2B-4x-g9W" secondAttribute="trailing" id="B5w-MQ-qZU"/>
                                         <constraint firstItem="KSd-2h-Ppm" firstAttribute="leading" secondItem="Uob-Qa-nMz" secondAttribute="leading" constant="20" symbolic="YES" id="IyU-DA-NPU"/>
                                         <constraint firstItem="KSd-2h-Ppm" firstAttribute="leading" secondItem="sfV-F0-fwk" secondAttribute="leading" id="Q3s-0K-Cz9"/>
+                                        <constraint firstItem="xlk-DQ-TSG" firstAttribute="top" secondItem="sfV-F0-fwk" secondAttribute="bottom" constant="13" id="QQ2-WA-CTA"/>
                                         <constraint firstItem="wpo-Ek-5Kb" firstAttribute="top" secondItem="Uob-Qa-nMz" secondAttribute="top" constant="20" symbolic="YES" id="Qz1-8O-M8L"/>
                                         <constraint firstItem="wpo-Ek-5Kb" firstAttribute="centerX" secondItem="KSd-2h-Ppm" secondAttribute="centerX" id="U8p-Xw-zEr"/>
                                         <constraint firstItem="n2B-4x-g9W" firstAttribute="leading" secondItem="jYt-q7-he1" secondAttribute="trailing" constant="12" symbolic="YES" id="WHw-a3-1NV"/>
                                         <constraint firstItem="sfV-F0-fwk" firstAttribute="top" secondItem="KSd-2h-Ppm" secondAttribute="bottom" constant="10" id="ZGu-UR-Uga"/>
-                                        <constraint firstItem="jYt-q7-he1" firstAttribute="top" secondItem="sfV-F0-fwk" secondAttribute="bottom" constant="20" symbolic="YES" id="a57-eg-0XV"/>
                                         <constraint firstItem="wpo-Ek-5Kb" firstAttribute="centerX" secondItem="Uob-Qa-nMz" secondAttribute="centerX" id="a6H-Ir-ol0"/>
                                         <constraint firstItem="n2B-4x-g9W" firstAttribute="width" secondItem="jYt-q7-he1" secondAttribute="width" id="afb-st-A1i"/>
                                         <constraint firstItem="sfV-F0-fwk" firstAttribute="trailing" secondItem="n2B-4x-g9W" secondAttribute="trailing" id="cDi-4d-AKQ"/>
                                         <constraint firstItem="KSd-2h-Ppm" firstAttribute="top" secondItem="wpo-Ek-5Kb" secondAttribute="bottom" constant="8" symbolic="YES" id="fAh-ku-Ivl"/>
-                                        <constraint firstItem="BOB-Tl-5oQ" firstAttribute="top" secondItem="sfV-F0-fwk" secondAttribute="bottom" constant="8" symbolic="YES" id="oGX-f3-erc"/>
+                                        <constraint firstItem="xlk-DQ-TSG" firstAttribute="top" secondItem="mut-Ke-yMV" secondAttribute="top" id="phz-Ic-QPD"/>
+                                        <constraint firstItem="mut-Ke-yMV" firstAttribute="leading" secondItem="xlk-DQ-TSG" secondAttribute="trailing" constant="8" symbolic="YES" id="s6G-pH-QE3"/>
                                         <constraint firstItem="n2B-4x-g9W" firstAttribute="baseline" secondItem="jYt-q7-he1" secondAttribute="baseline" id="xBz-tr-Uac"/>
+                                        <constraint firstItem="xlk-DQ-TSG" firstAttribute="leading" secondItem="sfV-F0-fwk" secondAttribute="leading" id="xfJ-53-2pA"/>
                                     </constraints>
                                     <animations/>
                                 </customView>

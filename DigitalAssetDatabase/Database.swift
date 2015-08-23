@@ -13,6 +13,8 @@ public protocol DatabaseDelegate : class {
     func tagAdded(tag: Tag);
     func tagNameChanged(tag: Tag);
     func tagTypeChanged(tag: Tag, oldType: String);
+
+    func titleInstanceTagsChanged(titleInstance: TitleInstance, tags: [TagInstance]);
 }
 
 public class Database {
