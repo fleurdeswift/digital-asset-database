@@ -100,7 +100,14 @@ public class WorkAreaViewController : NSViewController {
             oldController.removeFromParentViewController();
         }
 
-        (self.view as? WorkAreaView)?.contentView = controller.view;
+        if let workAreaView = self.view as? WorkAreaView {
+            workAreaView.contentView = controller.view;
+
+            if controller.view.acceptsFirstResponder {
+                workAreaView.window?.makeFirstResponder(controller.view);
+            }
+        }
+
         self.currentViewController = controller;
     }
 }

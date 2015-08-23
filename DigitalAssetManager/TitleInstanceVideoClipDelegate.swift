@@ -17,9 +17,18 @@ public class TitleInstanceVideoClipDelegate : NSObject, VideoClipDelegate {
         self.mediaPlayer = mediaPlayer;
     }
 
-    public func currentTimeChanged(videoClipView: VideoClipView, point: VideoClipPoint?) {
+    public func currentTimeChanged(videoClipView: VideoClipView, point: VideoClipPoint?, event: NSEvent?) {
         if let time = point?.time {
             self.lastPoint = point;
+
+            if mediaPlayer.playing {
+                if let event = event {
+                    if event.type != NSEventType.LeftMouseDown || event.clickCount == 1 {
+                        return;
+                    }
+                }
+            }
+
             self.mediaPlayer.time = time;
         }
     }

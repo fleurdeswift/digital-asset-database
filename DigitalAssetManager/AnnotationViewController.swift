@@ -12,6 +12,20 @@ import SQL
 import VLCKit
 import VideoClipAnnotationEditor
 
+public class AnnotationVideoBaseView : NSView {
+    public override var acceptsFirstResponder: Bool {
+        get {
+            return true;
+        }
+    }
+
+    public override var canBecomeKeyView: Bool {
+        get {
+            return true;
+        }
+    }
+}
+
 public class AnnotationVideoBackgroundView : NSView {
     public override var opaque: Bool {
         get {
@@ -56,6 +70,30 @@ public class AnnotationViewController: NSViewController {
                 }
             }
         }
+    }
+
+    public override func keyDown(ev: NSEvent) {
+        if let characters = ev.charactersIgnoringModifiers {
+            if characters == " " {
+                let mediaPlayer = vlcView.mediaPlayer;
+
+                switch (vlcView.mediaPlayer.state) {
+                case .Unknown, .Opening, .Buffering, .Paused:
+                    mediaPlayer.play();
+                    break;
+                case .Stopped, .Ended, .Error:
+                    mediaPlayer.time = 0;
+                    mediaPlayer.play();
+                    break;
+                case .Playing:
+                    mediaPlayer.pause();
+                }
+
+                return;
+            }
+        }
+
+        super.keyDown(ev);
     }
 
     public override func dismissController(sender: AnyObject?) {
