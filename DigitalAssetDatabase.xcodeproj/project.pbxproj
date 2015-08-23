@@ -54,6 +54,9 @@
 		7B30E96C1B85A2A800523460 /* BlankAreaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E96E1B85A2A800523460 /* BlankAreaViewController.xib */; };
 		7B30E96F1B85A2B800523460 /* ResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E9711B85A2B800523460 /* ResultViewController.xib */; };
 		7B30E9731B85BAB300523460 /* TitleInstanceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */; };
+		7B36B0951B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */; };
+		7B36B0971B894220009FBE7B /* TitleInstanceVideoClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */; };
+		7B36B0991B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */; };
 		7B39A7011B866B9600B4CAE9 /* TagTokenDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */; };
 		7B6CCF051B6DE07B00AE0438 /* ExtraAppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */; };
 		7B6CCF0B1B6DECB500AE0438 /* TagPaneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */; };
@@ -154,6 +157,9 @@
 		7B30E96D1B85A2A800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BlankAreaViewController.xib; sourceTree = "<group>"; };
 		7B30E9701B85A2B800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ResultViewController.xib; sourceTree = "<group>"; };
 		7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceCellView.swift; sourceTree = "<group>"; };
+		7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipDataSource.swift; sourceTree = "<group>"; };
+		7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClip.swift; sourceTree = "<group>"; };
+		7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipDelegate.swift; sourceTree = "<group>"; };
 		7B39A7001B866B9600B4CAE9 /* TagTokenDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTokenDelegate.swift; sourceTree = "<group>"; };
 		7B6CCF041B6DE07B00AE0438 /* ExtraAppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ExtraAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B6CCF0A1B6DECB500AE0438 /* TagPaneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagPaneController.swift; sourceTree = "<group>"; };
@@ -315,6 +321,9 @@
 				7B30E9691B8590CC00523460 /* TitleInstance.xib */,
 				7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */,
 				7B30E96A1B85972200523460 /* TitleInstanceDataSource.swift */,
+				7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */,
+				7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */,
+				7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */,
 				7B14B46A1B6D75FC007B8840 /* ViewController.swift */,
 				7B1A42431B856FC200C65DB7 /* WorkAreaView.swift */,
 				7B1A422B1B845CF500C65DB7 /* WorkAreaViewController.swift */,
@@ -520,6 +529,7 @@
 				7BC742F01B8285EA00279393 /* LongTaskSheet.swift in Sources */,
 				7B1F0B471B80F28F006FD3FE /* NavigationBarItemHistory.swift in Sources */,
 				7BC742F41B82D81C00279393 /* NSSize+AspectRatio.swift in Sources */,
+				7B36B0991B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift in Sources */,
 				7BC742F61B82D85900279393 /* GeneratePreviewTask.swift in Sources */,
 				7BDA4CE61B8107C5000CA651 /* NavigationBarDelegate.swift in Sources */,
 				7B1F0B491B80F2F2006FD3FE /* NavigationBarItemDropBox.swift in Sources */,
@@ -531,9 +541,11 @@
 				7B14B4691B6D75FC007B8840 /* AppDelegate.swift in Sources */,
 				7B14B4B81B6D8A7D007B8840 /* NavigationBarSource.swift in Sources */,
 				7B908BAF1B71CE900039B622 /* String+Sorting.swift in Sources */,
+				7B36B0971B894220009FBE7B /* TitleInstanceVideoClip.swift in Sources */,
 				7BC742F81B82EF6300279393 /* NSAlert+URL.swift in Sources */,
 				7B1A42291B84592900C65DB7 /* DropBoxView.swift in Sources */,
 				7B14B4801B6D813B007B8840 /* Library.swift in Sources */,
+				7B36B0951B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift in Sources */,
 				7BDA4CE41B80FEF3000CA651 /* NavigationBarGroupStandard.swift in Sources */,
 				7B1A42311B846B4F00C65DB7 /* ResultViewController.swift in Sources */,
 			);

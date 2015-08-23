@@ -25,54 +25,13 @@ public class AnnotationVideoBackgroundView : NSView {
     }
 }
 
-public class TitleInstanceVideoClipDataSource : NSObject, VideoClipDataSource {
-    public let titleInstance: TitleInstance;
-
-    public init(titleInstance: TitleInstance, withAccess access: SQLRead) {
-        self.titleInstance = titleInstance;
-
-        let scenes = titleInstance.scenes(access);
-
-        if scenes.count == 0 {
-        }
-        else {
-        }
-    }
-
-    public var clips: [VideoClip] {
-        get {
-            return [];
-        }
-    }
-
-    public var previewHeight: Int {
-        get {
-            return 100;
-        }
-    };
-
-    public var sampleRate: NSTimeInterval {
-        get {
-            return clamp(titleInstance.duration, 0.5, 5);
-        }
-    };
-}
-
-public class AnnotationViewController: NSSplitViewController {
-    @IBOutlet public weak var vlcView: VLCView!;
+public class AnnotationViewController: NSViewController {
+    @IBOutlet public weak var vlcView:     VLCView!;
     @IBOutlet public weak var annotations: VideoClipView!;
 
     public var titleInstance: TitleInstance! {
         didSet {
             let titleInstance = self.titleInstance;
-
-            titleInstance.database.handle.readAsync { (access: SQLRead) in
-                let dataSource = TitleInstanceVideoClipDataSource(titleInstance: titleInstance, withAccess: access);
-
-                dispatch_async_main {
-                    self.annotations.dataSource = dataSource;
-                }
-            }
 
             titleInstance.database.handle.readAsync { (access: SQLRead) in
                 do {
@@ -84,14 +43,24 @@ public class AnnotationViewController: NSSplitViewController {
                     }
 
                     let mediaPlayer = try VLCMediaPlayer(medias: medias);
+                    let dataSource  = TitleInstanceVideoClipDataSource(titleInstance: titleInstance, medias: medias, withAccess: access);
 
                     dispatch_async_main {
-                        self.vlcView.mediaPlayer = mediaPlayer;
+                        self.vlcView.mediaPlayer    = mediaPlayer;
+                        self.annotations.dataSource = dataSource;
+                        self.annotations.delegate   = TitleInstanceVideoClipDelegate(mediaPlayer: mediaPlayer);
+                        mediaPlayer.play();
                     }
                 }
                 catch {
                 }
             }
+        }
+    }
+
+    public override func dismissController(sender: AnyObject?) {
+        if let mediaPlayer = vlcView?.mediaPlayer {
+            mediaPlayer.stop();
         }
     }
 

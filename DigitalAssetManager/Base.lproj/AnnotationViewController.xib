@@ -33,9 +33,6 @@
                                     <animations/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="preserveInitialSize" value="YES"/>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                            <color key="value" white="0.19879928691275167" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </customView>
                             </subviews>
@@ -72,7 +69,7 @@
                                         <animations/>
                                     </scroller>
                                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="X9U-Cb-ZHl">
-                                        <rect key="frame" x="547" y="0.0" width="16" height="224"/>
+                                        <rect key="frame" x="548" y="0.0" width="15" height="224"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <animations/>
                                     </scroller>

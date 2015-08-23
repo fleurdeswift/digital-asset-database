@@ -57,20 +57,34 @@ public class WorkAreaViewControllerDelegate : NSObject, NSPageControllerDelegate
 };
 
 public class WorkAreaViewController : NSViewController {
-    private var currentObject: AnyObject?;
+    private var currentObject:         AnyObject?;
     private var currentViewController: NSViewController?;
-    private let pageController = NSPageController();
 
-    public var delegate = WorkAreaViewControllerDelegate();
+    private let pageController = NSPageController();
+    public  var delegate       = WorkAreaViewControllerDelegate();
 
     public override func viewDidAppear() {
         super.viewDidAppear();
         delegate.windowController = self.view.window?.windowController;
     }
 
+    public override func viewDidDisappear() {
+        super.viewDidDisappear();
+
+        if let cvc = currentViewController {
+            cvc.dismissController(self);
+        }
+
+        currentViewController = nil;
+    }
+
     public func navigateTo(item: AnyObject) {
         if (currentObject === item) {
             return;
+        }
+
+        if let cvc = currentViewController {
+            cvc.dismissController(self);
         }
 
         currentObject = item;
