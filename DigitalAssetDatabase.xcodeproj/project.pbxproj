@@ -54,6 +54,7 @@
 		7B30E96C1B85A2A800523460 /* BlankAreaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E96E1B85A2A800523460 /* BlankAreaViewController.xib */; };
 		7B30E96F1B85A2B800523460 /* ResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7B30E9711B85A2B800523460 /* ResultViewController.xib */; };
 		7B30E9731B85BAB300523460 /* TitleInstanceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */; };
+		7B360FB21B8AE01C00D3C7BA /* TitleInstance+DropBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B360FB11B8AE01C00D3C7BA /* TitleInstance+DropBox.swift */; };
 		7B36B0951B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */; };
 		7B36B0971B894220009FBE7B /* TitleInstanceVideoClip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */; };
 		7B36B0991B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */; };
@@ -160,6 +161,7 @@
 		7B30E96D1B85A2A800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BlankAreaViewController.xib; sourceTree = "<group>"; };
 		7B30E9701B85A2B800523460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ResultViewController.xib; sourceTree = "<group>"; };
 		7B30E9721B85BAB300523460 /* TitleInstanceCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceCellView.swift; sourceTree = "<group>"; };
+		7B360FB11B8AE01C00D3C7BA /* TitleInstance+DropBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TitleInstance+DropBox.swift"; sourceTree = "<group>"; };
 		7B36B0941B8941AA009FBE7B /* TitleInstanceVideoClipDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipDataSource.swift; sourceTree = "<group>"; };
 		7B36B0961B894220009FBE7B /* TitleInstanceVideoClip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClip.swift; sourceTree = "<group>"; };
 		7B36B0981B894279009FBE7B /* TitleInstanceVideoClipDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleInstanceVideoClipDelegate.swift; sourceTree = "<group>"; };
@@ -249,11 +251,12 @@
 				7B14B4391B6C7F9B007B8840 /* Database.swift */,
 				7B14B4201B6C7EDB007B8840 /* DigitalAssetDatabase.h */,
 				7B14B4221B6C7EDB007B8840 /* Info.plist */,
-				7B14B43D1B6C94D4007B8840 /* Title.swift */,
-				7B14B4411B6CA77B007B8840 /* TitleInstance.swift */,
+				7B6F4CD11B6F39BA00286C9A /* String+Hash.swift */,
 				7B14B4581B6D2B2C007B8840 /* Tag.swift */,
 				7B14B45C1B6D34E7007B8840 /* TagInstance.swift */,
-				7B6F4CD11B6F39BA00286C9A /* String+Hash.swift */,
+				7B14B43D1B6C94D4007B8840 /* Title.swift */,
+				7B14B4411B6CA77B007B8840 /* TitleInstance.swift */,
+				7B360FB11B8AE01C00D3C7BA /* TitleInstance+DropBox.swift */,
 			);
 			path = DigitalAssetDatabase;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				7B14B4421B6CA77B007B8840 /* TitleInstance.swift in Sources */,
 				7B6F4CD21B6F39BA00286C9A /* String+Hash.swift in Sources */,
 				7B14B4591B6D2B2C007B8840 /* Tag.swift in Sources */,
+				7B360FB21B8AE01C00D3C7BA /* TitleInstance+DropBox.swift in Sources */,
 				7B14B43A1B6C7F9B007B8840 /* Database.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

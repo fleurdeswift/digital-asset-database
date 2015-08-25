@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A261" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A271" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
@@ -35,6 +35,9 @@
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
+                                    <connections>
+                                        <action selector="setTitleName:" target="c22-O7-iKe" id="oHl-ih-Ihw"/>
+                                    </connections>
                                 </textField>
                                 <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eTo-h2-4XE">
                                     <rect key="frame" x="240" y="0.0" width="38" height="16"/>
@@ -69,11 +72,14 @@
                         <tokenField translatesAutoresizingMaskIntoConstraints="NO" id="l9E-Fv-wfQ">
                             <rect key="frame" x="-2" y="0.0" width="331" height="77"/>
                             <animations/>
-                            <tokenFieldCell key="cell" selectable="YES" editable="YES" alignment="left" placeholderString="Tags" allowsEditingTextAttributes="YES" id="xKr-D3-Efp">
+                            <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Tags" allowsEditingTextAttributes="YES" id="xKr-D3-Efp">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </tokenFieldCell>
+                            <connections>
+                                <action selector="setTitleTags:" target="c22-O7-iKe" id="xYk-Cf-T9q"/>
+                            </connections>
                         </tokenField>
                     </subviews>
                     <constraints>

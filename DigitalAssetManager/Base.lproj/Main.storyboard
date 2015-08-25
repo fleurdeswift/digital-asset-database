@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8152.3" systemVersion="15A238a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8164.2" systemVersion="15A271" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8152.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8164.2"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -334,6 +334,22 @@
                                                     </menuItem>
                                                 </items>
                                             </menu>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="duS-zH-Gcr"/>
+                                        <menuItem title="Next Item in Dropbox" keyEquivalent="" id="wen-KS-KwV">
+                                            <connections>
+                                                <action selector="moveToNextItemInDropbox:" target="Ady-hI-5gd" id="2gf-DR-fuR"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Previous Item in Dropbox" keyEquivalent="" id="hKM-2p-OIP">
+                                            <connections>
+                                                <action selector="moveToPreviousItemInDropbox:" target="Ady-hI-5gd" id="obh-uN-o6E"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Remove Item from Dropbox" keyEquivalent="b" id="JLB-JO-oc3">
+                                            <connections>
+                                                <action selector="moveOutsideDropbox:" target="Ady-hI-5gd" id="WJT-x9-wjm"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

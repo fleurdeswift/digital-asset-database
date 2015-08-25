@@ -310,10 +310,11 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
 
     private func produceMoveMap(titleInstance: TitleInstance, urls: [NSURL]) -> [NSURL: NSURL] {
-        var moves = [NSURL: NSURL]();
+        var moves   = [NSURL: NSURL]();
+        let baseURL = self.library.database.urlForTitleInstance(titleInstance.id, create: true);
 
         for url in urls {
-            moves[url] = self.library.urlFor(titleInstance, create: true).URLByAppendingPathComponent(url.lastPathComponent!);
+            moves[url] = baseURL.URLByAppendingPathComponent(url.lastPathComponent!);
         }
 
         return moves;
@@ -321,9 +322,10 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
 
     private func produceImageMap(titleInstance: TitleInstance, urls: [NSURL]) -> [NSURL: NSURL] {
         var moves = [NSURL: NSURL]();
+        let baseURL = self.library.database.urlForTitleInstance(titleInstance.id, create: true);
 
         for url in urls {
-            moves[url] = self.library.urlFor(titleInstance, create: true).URLByAppendingPathComponent(url.lastPathComponent!);
+            moves[url] = baseURL.URLByAppendingPathComponent(url.lastPathComponent!);
         }
 
         return moves;
@@ -359,7 +361,7 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
 
     private func previewURL(titleInstance: TitleInstance, movieFile: NSURL) -> NSURL {
-        let instanceURL = self.library.urlFor(titleInstance, create: true);
+        let instanceURL = self.library.database.urlForTitleInstance(titleInstance.id, create: true);
         let previewName = movieFile.lastPathComponent!.stringByDeletingPathExtension + ".jpg";
         return instanceURL.URLByAppendingPathComponent(previewName);
     }

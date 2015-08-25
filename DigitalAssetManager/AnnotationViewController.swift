@@ -42,6 +42,7 @@ public class AnnotationVideoBackgroundView : NSView {
 public class AnnotationViewController: NSViewController {
     @IBOutlet public weak var vlcView:     VLCView!;
     @IBOutlet public weak var annotations: VideoClipView!;
+    @IBOutlet public weak var tokens:      NSTokenField!;
 
     public var titleInstance: TitleInstance! {
         didSet {
@@ -58,13 +59,16 @@ public class AnnotationViewController: NSViewController {
 
                     let mediaPlayer = try VLCMediaPlayer(medias: medias);
                     let dataSource  = TitleInstanceVideoClipDataSource(titleInstance: titleInstance, medias: medias, withAccess: access);
+                    let tags        = try titleInstance.getTagInstances(ignoreSpecialTags: true, withAccess: access)
 
                     dispatch_async_main {
                         self.vlcView.mediaPlayer    = mediaPlayer;
                         self.annotations.dataSource = dataSource;
                         self.annotations.delegate   = TitleInstanceVideoClipDelegate(mediaPlayer: mediaPlayer);
+                        self.tokens.objectValue     = tags;
                         mediaPlayer.play();
                     }
+
                 }
                 catch {
                 }
@@ -114,6 +118,23 @@ public class AnnotationViewController: NSViewController {
     public override func viewDidAppear() {
         if let library = self.library {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timedTagsChanged:"), name: DADTitleInstanceTagsChangedNotification, object: library);
+            tokens.delegate = library.tokenDelegate;
+            tokens.tokenizingCharacterSet = tagSeparators;
+        }
+    }
+
+    @IBAction
+    public func saveTitleTags(sender: AnyObject?) {
+        let titleInstance = self.titleInstance;
+
+        if let tags = tokens.objectValue as? [AnyObject] {
+            titleInstance.database.handle.writeAsync { access in
+                do {
+                    try titleInstance.setTags(tags, withAccess: access);
+                }
+                catch {
+                }
+            }
         }
     }
 
@@ -182,6 +203,55 @@ public class AnnotationViewController: NSViewController {
             if let info = self.representedObject as? [String: AnyObject] {
                 self.titleInstance = info["object"] as! TitleInstance;
             }
+        }
+    }
+
+    @IBAction
+    public func moveToNextItemInDropbox(sender: AnyObject?) {
+        do {
+            if let editor = tokens.currentEditor() {
+                tokens.endEditing(editor);
+            }
+
+            try titleInstance.database.handle.read { (access: SQLRead) throws in
+                if let before = self.titleInstance.nextItemInDropbox(access) {
+                    dispatch_async_main {
+                        self.titleInstance = before;
+                    }
+                }
+            }
+        }
+        catch {
+        }
+    }
+
+    @IBAction
+    public func moveToPreviousItemInDropbox(sender: AnyObject?) {
+        do {
+            if let editor = tokens.currentEditor() {
+                tokens.endEditing(editor);
+            }
+
+            try titleInstance.database.handle.read { (access: SQLRead) throws in
+                if let after = self.titleInstance.previousItemInDropbox(access) {
+                    dispatch_async_main {
+                        self.titleInstance = after;
+                    }
+                }
+            }
+        }
+        catch {
+        }
+    }
+
+    @IBAction
+    public func moveOutsideDropbox(sender: AnyObject?) {
+        do {
+            try titleInstance.database.handle.write { (access: SQLWrite) throws in
+                try self.titleInstance.removeFromDropbox(access);
+            }
+        }
+        catch {
         }
     }
 }

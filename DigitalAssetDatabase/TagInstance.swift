@@ -342,38 +342,4 @@ public extension Database {
 
         try access.exec(sql);
     }
-
-    public func dropBox(maxResults: Int, block: ([TitleInstance]) -> Void) -> Void {
-        handle.readAsync { (access: SQLRead) in
-            do {
-                let dropBoxSQL =
-                    "SELECT dad_title_instance_id " +
-                    "FROM   dad_tag_instance " +
-                    "WHERE  dad_title_instance_id IS NOT NULL AND " +
-                    "       dad_tag_id = '\(StandardTagID.DropBox.rawValue)' " +
-                    "LIMIT  \(maxResults)";
-
-                let sql = "SELECT   * " +
-                          "FROM     dad_title_instance " +
-                          "WHERE    dad_title_instance_id IN (\(dropBoxSQL)) " +
-                          "ORDER BY date_added";
-
-                let statement = try access.prepare(sql);
-                var results   = [TitleInstance]();
-
-                while try statement.step() {
-                    do {
-                        results.append(try TitleInstance.shared(statement, fromDatabase: self, withAccess: access));
-                    }
-                    catch {
-                    }
-                }
-
-                block(results);
-            }
-            catch {
-                block([]);
-            }
-        }
-    }
 }

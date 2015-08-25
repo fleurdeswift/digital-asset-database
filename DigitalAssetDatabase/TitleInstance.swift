@@ -198,6 +198,7 @@ public class TitleInstance {
         }
 
         titleInstanceCache.getOrSet(self.id, value: self)
+        database.fireTitleInstanceTagsChanged(self, tags: [])
     }
 
     internal init(id: String, title: Title, duration: NSTimeInterval, dateProduced: NSTimeInterval?, datePublished: NSTimeInterval?, dateAdded: NSTimeInterval, dateModified: NSTimeInterval, fromDatabase database: Database) {
@@ -251,7 +252,7 @@ public class TitleInstance {
 
     public var url: NSURL {
         get {
-            return database.storageURL.URLByAppendingPathComponent(self.id, isDirectory: true);
+            return database.urlForTitleInstance(self.id);
         }
     }
 
@@ -387,7 +388,28 @@ public class TitleInstance {
             }
         }
 
+        database.fireTitleInstanceTagsChanged(self, tags: toKeep)
         return toKeep;
+    }
+
+    public func nextItemInDropbox(access: SQLRead) -> TitleInstance? {
+        var results = database.dropBox(1, after: self.dateAdded, withAccess: access);
+
+        if results.count == 0 {
+            return nil;
+        }
+
+        return results[0];
+    }
+
+    public func previousItemInDropbox(access: SQLRead) -> TitleInstance? {
+        var results = database.dropBox(1, before: self.dateAdded, withAccess: access);
+
+        if results.count == 0 {
+            return nil;
+        }
+
+        return results[0];
     }
 }
 
@@ -453,6 +475,69 @@ public extension Database {
         for delegate in delegates {
             delegate.titleInstanceTagsChanged(titleInstance, tags: tags);
         }
+
+        updateShallowCopy(titleInstance);
+    }
+
+    internal func updateShallowCopy(titleInstance: TitleInstance) {
+        handle.readAsync { access in
+            do {
+                let statement = try access.prepare("SELECT * FROM dad_tag_instance WHERE dad_title_instance_id = ?")
+                var dump = [String: AnyObject]();
+
+                dump["dad_title_instance_id"] = titleInstance.id;
+                dump["dad_title_id"]          = titleInstance.title.id;
+                dump["dad_title"]             = titleInstance.title.name;
+                dump["duration"]              = titleInstance.duration;
+
+                if let dateProduced = titleInstance.dateProduced {
+                    dump["date_produced"] = dateProduced;
+                }
+
+                if let datePublished = titleInstance.datePublished {
+                    dump["date_published"] = datePublished;
+                }
+
+                dump["date_added"]    = titleInstance.dateAdded;
+                dump["date_modified"] = titleInstance.dateModified;
+
+                var tags = [[String: AnyObject]]();
+
+                try statement.bind(titleInstance.id, atIndex: 1)
+                while try statement.step() {
+                    var tag = [String: AnyObject]();
+
+                    if let value = statement.columnString(0) {
+                        tag["dad_tag_instance_id"] = value
+                    }
+
+                    if let value = statement.columnString(1) {
+                        tag["dad_tag_id"] = value
+                        tag["dad_tag"]    = try Tag.shared(value, fromDatabase: self, withAccess: access).name;
+                    }
+
+                    if let value = statement.columnDouble(6) as Double? {
+                        tag["start"] = value
+                    }
+
+                    if let value = statement.columnDouble(7) as Double? {
+                        tag["end"] = value
+                    }
+
+                    if let value = statement.columnString(8) {
+                        tag["data"] = value
+                    }
+
+                    tags.append(tag);
+                }
+
+                dump["tags"] = tags;
+
+                NSDictionary(dictionary: dump).writeToURL(titleInstance.url.URLByAppendingPathComponent("Info.plist"), atomically: true);
+            }
+            catch {
+            }
+        }
     }
 
     public func createTitleInstanceTable(access: SQLWrite) throws {
@@ -467,5 +552,28 @@ public extension Database {
             ");";
 
         try access.exec(sql);
+    }
+
+    public func urlForTitleInstance(id: String, create: Bool = false) -> NSURL {
+        let prefix = id[0...2];
+        let suffix = id.suffix(start: 3);
+
+        let firstPart = storageURL.URLByAppendingPathComponent(prefix, isDirectory: true);
+
+        if create {
+            if let path = firstPart.path {
+                Darwin.mkdir(path, 0o755);
+            }
+        }
+
+        let lastPart = firstPart.URLByAppendingPathComponent(suffix, isDirectory: true);
+
+        if create {
+            if let path = lastPart.path {
+                Darwin.mkdir(path, 0o755);
+            }
+        }
+
+        return lastPart;
     }
 }

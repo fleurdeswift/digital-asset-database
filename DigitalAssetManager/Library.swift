@@ -112,24 +112,4 @@ public class Library : NSDocument {
             }
         }
     }
-
-    public func urlFor(titleInstance titleInstance: String, create: Bool) -> NSURL {
-        let url = storageURL.URLByAppendingPathComponent(titleInstance, isDirectory: true);
-
-        if create {
-            if let path = url.path {
-                Darwin.mkdir(path, 0o755);
-            }
-        }
-
-        return url;
-    }
-
-    public func urlFor(titleInstance: TitleInstance) -> NSURL {
-        return urlFor(titleInstance: titleInstance.id, create: false);
-    }
-
-    public func urlFor(titleInstance: TitleInstance, create: Bool) -> NSURL {
-        return urlFor(titleInstance: titleInstance.id, create: create);
-    }
 }

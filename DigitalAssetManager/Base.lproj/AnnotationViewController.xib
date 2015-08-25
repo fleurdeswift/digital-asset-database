@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="AnnotationViewController" customModule="DigitalAssetManager" customModuleProvider="target">
             <connections>
                 <outlet property="annotations" destination="R6M-wz-Ewd" id="HYd-of-oTJ"/>
+                <outlet property="tokens" destination="cjh-5B-b91" id="iVg-Ol-TZw"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
                 <outlet property="vlcView" destination="iCv-bU-utf" id="jWN-0x-qJl"/>
             </connections>
@@ -22,11 +23,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="563" height="484"/>
                     <subviews>
                         <customView id="sWV-6C-ics" customClass="AnnotationVideoBackgroundView" customModule="DigitalAssetManager" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="563" height="259"/>
+                            <rect key="frame" x="0.0" y="0.0" width="563" height="272"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
-                                <customView misplaced="YES" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="240" translatesAutoresizingMaskIntoConstraints="NO" id="iCv-bU-utf" userLabel="VLC View" customClass="VLCView">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
+                                <customView placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="240" translatesAutoresizingMaskIntoConstraints="NO" id="iCv-bU-utf" userLabel="VLC View" customClass="VLCView">
+                                    <rect key="frame" x="4" y="28" width="555" height="240"/>
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="0ph-oj-38d"/>
                                     </constraints>
@@ -35,27 +36,42 @@
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="preserveInitialSize" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </customView>
+                                <tokenField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cjh-5B-b91">
+                                    <rect key="frame" x="6" y="8" width="551" height="16"/>
+                                    <animations/>
+                                    <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" focusRingType="none" alignment="left" placeholderString="Tags" allowsEditingTextAttributes="YES" id="8ec-wQ-yOb">
+                                        <font key="font" metaFont="cellTitle"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </tokenFieldCell>
+                                    <connections>
+                                        <action selector="saveTitleTags:" target="-2" id="OPx-T3-7gb"/>
+                                    </connections>
+                                </tokenField>
                             </subviews>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="iCv-bU-utf" secondAttribute="bottom" constant="4" id="0jc-MV-dNi"/>
                                 <constraint firstItem="iCv-bU-utf" firstAttribute="leading" secondItem="sWV-6C-ics" secondAttribute="leading" constant="4" id="82X-sk-ceo"/>
                                 <constraint firstAttribute="trailing" secondItem="iCv-bU-utf" secondAttribute="trailing" constant="4" id="FWh-Xz-9t6"/>
+                                <constraint firstItem="cjh-5B-b91" firstAttribute="leading" secondItem="sWV-6C-ics" secondAttribute="leading" constant="8" id="VRZ-Cn-9FI"/>
+                                <constraint firstItem="cjh-5B-b91" firstAttribute="top" secondItem="iCv-bU-utf" secondAttribute="bottom" constant="4" id="ZUN-Vc-95T"/>
+                                <constraint firstAttribute="bottom" secondItem="cjh-5B-b91" secondAttribute="bottom" constant="8" id="ZjV-SM-LIq"/>
                                 <constraint firstItem="iCv-bU-utf" firstAttribute="top" secondItem="sWV-6C-ics" secondAttribute="top" constant="4" id="lRf-uk-XPU"/>
+                                <constraint firstAttribute="trailing" secondItem="cjh-5B-b91" secondAttribute="trailing" constant="8" id="snM-Ku-UrR"/>
                             </constraints>
                             <animations/>
                         </customView>
                         <customView id="6Na-Fo-bUJ">
-                            <rect key="frame" x="0.0" y="260" width="563" height="224"/>
+                            <rect key="frame" x="0.0" y="273" width="563" height="211"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
                                 <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMr-WA-bhZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="563" height="224"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="563" height="211"/>
                                     <clipView key="contentView" id="Ef3-lK-opM">
-                                        <rect key="frame" x="0.0" y="0.0" width="563" height="224"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="563" height="211"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R6M-wz-Ewd" customClass="VideoClipView" customModule="VideoClipAnnotationEditor">
-                                                <rect key="frame" x="2" y="-173" width="88" height="175"/>
+                                                <rect key="frame" x="2" y="-186" width="88" height="175"/>
                                                 <animations/>
                                             </customView>
                                         </subviews>
@@ -64,12 +80,12 @@
                                     </clipView>
                                     <animations/>
                                     <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="EQi-xP-YRa">
-                                        <rect key="frame" x="0.0" y="208" width="563" height="16"/>
+                                        <rect key="frame" x="0.0" y="195" width="563" height="16"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <animations/>
                                     </scroller>
                                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="X9U-Cb-ZHl">
-                                        <rect key="frame" x="548" y="0.0" width="15" height="224"/>
+                                        <rect key="frame" x="547" y="0.0" width="16" height="211"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <animations/>
                                     </scroller>
