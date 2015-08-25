@@ -21,6 +21,6 @@ public extension NSAlert {
         let lines: [String] = urls.map({ return "\($0): \($1)"});
 
         self.informativeText = infoText;
-        self.messageText     = "\n".join(lines);
+        self.messageText     = lines.joinWithSeparator("\n");
     }
 }

@@ -11,7 +11,7 @@
       location = "group:../data-structure/ExtraDataStructures.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Volumes/Work/fds/sqlite/SQL.xcodeproj">
+      location = "group:../sqlite/SQL.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../video-clip-annotation-editor/VideoClipAnnotationEditor.xcodeproj">

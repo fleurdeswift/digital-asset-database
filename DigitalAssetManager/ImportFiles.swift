@@ -7,6 +7,7 @@
 
 import Cocoa
 import DigitalAssetDatabase
+import ExtraAppKit
 import ExtraDataStructures
 import SQL
 import VLCKit
@@ -301,7 +302,7 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
 
                 results.append(TitleInstanceFile(
                     moveFileName:    lpc,
-                    previewFileName: lpc.stringByDeletingPathExtension + ".jpg",
+                    previewFileName: url.lastPathComponent(newExtension: "jpg")!,
                     duration:        media.duration))
             }
         }
@@ -362,7 +363,7 @@ public class ImportFiles: NSViewController, NSTableViewDataSource, NSTableViewDe
 
     private func previewURL(titleInstance: TitleInstance, movieFile: NSURL) -> NSURL {
         let instanceURL = self.library.database.urlForTitleInstance(titleInstance.id, create: true);
-        let previewName = movieFile.lastPathComponent!.stringByDeletingPathExtension + ".jpg";
+        let previewName = movieFile.lastPathComponent(newExtension: "jpg")!;
         return instanceURL.URLByAppendingPathComponent(previewName);
     }
 
